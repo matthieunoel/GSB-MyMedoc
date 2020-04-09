@@ -1,17 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Mes Rappels
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; width: 100%; overflow: hidden;">
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>
+  <h1 style="color: white">Page "Mes Rappels"</h1>
+
+  <ion-buttons>
+    <ion-button color="success" fill="solid" size="large" (click)="goAnOtherPage('/tabs/tab2')">Nav Button for tests</ion-button>
+  </ion-buttons>
+
+</div>
