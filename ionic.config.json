@@ -1,0 +1,7 @@
+{
+  "name": "MedocProjectV1",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
