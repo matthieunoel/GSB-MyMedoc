@@ -1,19 +1,17 @@
-<ion-header [translucent]="trues">
-  <ion-toolbar>
-    <ion-title color="primary">
-      Mes ordonnances
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<div
-  style="display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; width: 100%; overflow: hidden; background-color: whitesmoke;">
-
-  <h1>Page "Mes ordonnances"</h1>
-
-  <ion-buttons>
-    <ion-button color="success" fill="solid" size="large" (click)="goAnOtherPage('/tabs/tab2')">Nav Button for tests
-    </ion-button>
-  </ion-buttons>
-  
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-icon name="document" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Mes Ordonances</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;">
+      <h1>Mes ordonances</h1>
+    </div>
+  </ion-content>
 </div>
