@@ -9,7 +9,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "release": "git push --follow-tags origin master",
+    "build-android": "ng build && ionic cap copy android && npx cap sync",
+    "open-android": "npx cap open android"
   },
   "private": true,
   "dependencies": {
