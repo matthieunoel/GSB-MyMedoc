@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Ordonnance } from '../GSB-Provider/provider';
-import { Time } from '@angular/common';
-import { PopoverController, AlertController } from '@ionic/angular';
 import { GsbMainService } from '../gsb-main.service';
+// import { Animation, AnimationController } from '@ionic/angular';
+// import { createAnimation } from "@ionic/core";
 
 @Component({
   selector: 'app-tab2',
@@ -16,8 +16,8 @@ export class Tab2Page {
   subPage: string = "main"
   selectedOrdonnance: Ordonnance
 
-  constructor(private alertController: AlertController, private gsbMainService: GsbMainService) {
-    
+  constructor(private gsbMainService: GsbMainService, /*private animationController: AnimationController*/) {
+
     // For tests
     this.listeOrdonnances.push(
       {
@@ -69,6 +69,10 @@ export class Tab2Page {
     return step === this.subPage
   }
 
+  changeStepTo(step: string) {
+    this.subPage = step;
+  }
+
   selectOrdonnance(id: number) {
 
     // console.log(id);
@@ -101,7 +105,5 @@ export class Tab2Page {
     
 
   }
-
-  
 
 }
