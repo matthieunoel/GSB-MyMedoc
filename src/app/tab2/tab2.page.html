@@ -5,13 +5,425 @@
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title>Mes Ordonances</ion-title>
+      <ion-title>Mes Ordonnances</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
-    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+
+<!-- <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
-      <h1>Mes ordonances</h1>
-    </div>
+    </div> -->
+
+  <ion-content *ngIf="checkStep('main')">
+      <ion-list *ngFor="let ordonnance of listeOrdonnances">
+
+        <!-- <ion-item-sliding (click)="selectOrdonnance(ordonnance.id)"> -->
+          <ion-item (click)="selectOrdonnance(ordonnance.id)">
+            <ion-label>
+              <h2 style="font-size: large">{{ ordonnance.titre }}</h2>
+            </ion-label>
+          </ion-item>
+          <!-- <ion-item-options side="end" >
+            <ion-item-option (click)="unread(item)" color="danger">
+              <ion-icon name="trash-outline" size="large"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding> -->
+
+        <!-- <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>Item</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding> -->
+
+      </ion-list>
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('ordonnance-details')">
+    <ion-list>
+
+      <ion-item class=' animated fadeIn  delay-0.5s' button>
+      <!-- <ion-item style=' transition: all linear 1s; '> -->
+        <ion-icon slot="end" name="chevron-back-outline"></ion-icon>
+        <p slot="end" style="padding: 0; margin: 0; font-size: small">Retour</p>
+        <ion-label class="ion-text-wrap">
+          <h1 style="font-size: x-large">{{ selectedOrdonnance.titre }}</h1>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Description :</h2>
+          <p style="font-size: medium">{{ selectedOrdonnance.description }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Date de la prescription :</h2>
+          <p style="font-size: medium">{{ selectedOrdonnance.dateDebut }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Date butoire :</h2>
+          <p style="font-size: medium">{{ selectedOrdonnance.dateFin }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Médicaments préscrits :</h2>
+          <!-- <p style="font-size: medium">{{ selectedOrdonnance.dateFin }}</p> -->
+
+          <ion-list *ngFor="let medoc of selectedOrdonnance.medocs">
+
+            <!-- nom: "MEDOC1-NOM-XYZ",
+            nbBoiteMax: 0,
+            nbBoiteAchetees: 0,
+            nbMedocParBoite: 12,
+            nbFoisParJour: 1,
+            nbFoisParSemaine: 7,
+            finDeLaPrise: new Date(),
+            heuresPrises: [] -->
+
+            <ion-item button (click)="this.gsbMainService.alertInfo('Info : ', 'Yo')">
+              <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+              <ion-label class="ion-text-wrap">
+                <p style="font-size: medium">{{ medoc.nom }}</p>
+              </ion-label>
+            </ion-item>
+
+          </ion-list>
+
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
   </ion-content>
 </div>
+
+
+<!-- <ion-list>
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Nombre de boites préscrites :</h2>
+                    <p style="font-size: medium">{{ medoc.nbBoiteMax }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Nombre boites achetées :</h2>
+                    <p style="font-size: medium">{{ medoc.nbBoiteAchetees }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Nombre de cachets dans une boite :</h2>
+                    <p style="font-size: medium">{{ medoc.nbMedocParBoite }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Nombre de prises par jour :</h2>
+                    <p style="font-size: medium">{{ medoc.nbFoisParJour }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Nombre de prises par semaines :</h2>
+                    <p style="font-size: medium">{{ medoc.nbFoisParSemaine }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Date de la fin des prises :</h2>
+                    <p style="font-size: medium">{{ medoc.finDeLaPrise }}</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label class="ion-text-wrap">
+                    <h2 style="font-size: large">Heures des prises :</h2>
+                    <p style="font-size: medium">{{ medoc.heuresPrises }}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list> -->
