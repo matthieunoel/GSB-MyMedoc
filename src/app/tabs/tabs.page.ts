@@ -10,6 +10,8 @@ export class TabsPage {
 
   constructor(private navController: NavController, public menuController: MenuController) {}
 
+  // TODO: Remmener au "main" d'une page on click
+
   goTo(address: string) {
     this.navController.navigateForward(address);
     this.menuController.close();

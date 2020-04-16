@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { Ordonnance } from '../GSB-Provider/provider';
+import { Component, Directive } from '@angular/core';
+import { Ordonnance, Medoc } from '../GSB-Provider/provider';
 import { GsbMainService } from '../gsb-main.service';
+import { error } from 'protractor';
 // import { Animation, AnimationController } from '@ionic/angular';
 // import { createAnimation } from "@ionic/core";
 
@@ -15,6 +16,12 @@ export class Tab2Page {
   listeOrdonnances: Ordonnance[] = []
   subPage: string = "main"
   selectedOrdonnance: Ordonnance
+  selectedMedoc: Medoc
+  formMedocList: Medoc[] = []
+  formInternalId = 0
+  formEditMedoc: boolean = false
+  formSelectedMedoc: Medoc
+  stringopif: string = "BITE" 
 
   constructor(private gsbMainService: GsbMainService, /*private animationController: AnimationController*/) {
 
@@ -63,17 +70,46 @@ export class Tab2Page {
         ]
       }
     )
+
+    // this.formMedocList.push(
+    //   {
+    //     id: 100,
+    //     nom: "MEDOC100",
+    //     nbBoiteMax: 0,
+    //     nbBoiteAchetees: 0,
+    //     nbMedocParBoite: 0,
+    //     nbFoisParJour: 0,
+    //     nbFoisParSemaine: 0,
+    //     finDeLaPrise: new Date(),
+    //     heuresPrises: []
+    //   }
+    // )
+
+    // this.formMedocList.push(
+    //   {
+    //     id: 101,
+    //     nom: "MEDOC101",
+    //     nbBoiteMax: 0,
+    //     nbBoiteAchetees: 0,
+    //     nbMedocParBoite: 0,
+    //     nbFoisParJour: 0,
+    //     nbFoisParSemaine: 0,
+    //     finDeLaPrise: new Date(),
+    //     heuresPrises: []
+    //   }
+    // )
+
   }
 
-  checkStep(step: string) {
+  public checkStep(step: string) {
     return step === this.subPage
   }
 
-  changeStepTo(step: string) {
+  public changeStepTo(step: string) {
     this.subPage = step;
   }
 
-  selectOrdonnance(id: number) {
+  public selectOrdonnance(id: number) {
 
     // console.log(id);
 
@@ -99,10 +135,164 @@ export class Tab2Page {
     } else {
       
       this.subPage = "ordonnance-details"
+      // console.log(document.querySelector(".ordonnance-details"))
+      // animated slideInDown
 
     }
 
     
+
+  }
+
+  public selectMedoc(id: number) {
+
+    for (let index = 0; index < this.listeOrdonnances.length; index++) {
+      const ordonnance: Ordonnance = this.listeOrdonnances[index];
+      for (let index2 = 0; index2 < ordonnance.medocs.length; index2++) {
+        const medoc: Medoc = ordonnance.medocs[index2];
+        if (medoc.id === id) {
+          this.selectedMedoc = medoc
+        }
+      }
+    }
+
+    if (this.selectedOrdonnance == undefined) {
+      this.gsbMainService.alertInfo("Erreur : ", "Il semblerait que ce médicament n'existe pas ...")
+    } else {
+      this.subPage = "medoc-details"
+    }
+
+  }
+
+  public addOrdonnance(form: any) {
+
+    try {
+
+      // console.log(form.form.value)
+
+      const formedOrdonnance = 
+      {
+        id: this.formInternalId,
+        titre: form.form.value.titre,
+        description: form.form.value.description,
+        dateDebut: form.form.value.dateDebut,
+        dateFin: form.form.value.dateFin,
+        medocs: this.formMedocList
+      }
+
+      this.listeOrdonnances.push(formedOrdonnance)
+
+      form.reset();
+      this.changeStepTo('main');
+
+    }
+    catch(err) {
+      console.error(err)
+      this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
+    }
+
+  }
+
+  public addMedoc(form: any) {
+
+    try {
+      // console.log(form.form.value)
+
+      const formedMedoc: Medoc = 
+        {
+          id: this.formInternalId,
+          nom: form.form.value.nom,
+          nbBoiteMax: form.form.value.nbBoiteMax,
+          nbBoiteAchetees: form.form.value.nbBoiteAchetees,
+          nbMedocParBoite: form.form.value.nbMedocParBoite,
+          nbFoisParJour: form.form.value.nbFoisParJour,
+          nbFoisParSemaine: form.form.value.nbFoisParSemaine,
+          finDeLaPrise: form.form.value.finDeLaPrise,
+          heuresPrises: []
+        }
+
+      this.formMedocList.push(formedMedoc)
+
+      this.formInternalId++;
+
+      form.reset();
+      this.changeStepTo('ordonnance-add');
+
+    }
+    catch(err) {
+      console.error(err)
+      this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
+    }
+
+  }
+
+  public startEditMedoc(id:number) {
+    
+    console.log("StartEditeMEdoc")
+
+    for (let index = 0; index < this.formMedocList.length; index++) {
+      const medoc = this.formMedocList[index];
+      if (medoc.id === id) {
+        this.formSelectedMedoc = medoc
+      }
+    }
+
+    console.log(this.formSelectedMedoc)
+
+    if (this.formSelectedMedoc == undefined) {
+      this.gsbMainService.alertInfo("Erreur : ", "Il semblerait que cette ordonnance n'existe pas ...")
+    } else {
+      // this.formEditMedoc = true
+      this.subPage = "medoc-edit"
+    }
+
+  }
+
+  public editMedoc(form: any) {
+    
+    // for (let index = 0; index < this.formMedocList.length; index++) {
+    //   const medoc = this.formMedocList[index];
+    //   if (medoc.id === id) {
+    //     this.formSelectedMedoc = medoc
+    //   }
+    // }
+
+    // if (this.formSelectedMedoc == undefined) {
+    //   this.gsbMainService.alertInfo("Erreur : ", "Il semblerait que cette ordonnance n'existe pas ...")
+    // } else {
+    //   this.formEditMedoc = true
+    //   this.subPage = "medoc-add"
+    // }
+
+    // this.gsbMainService.alertInfo("TODO", form.form.value)
+
+    try {
+
+      const formedMedoc: Medoc = 
+        {
+          id: this.formInternalId,
+          nom: form.form.value.nom,
+          nbBoiteMax: form.form.value.nbBoiteMax,
+          nbBoiteAchetees: form.form.value.nbBoiteAchetees,
+          nbMedocParBoite: form.form.value.nbMedocParBoite,
+          nbFoisParJour: form.form.value.nbFoisParJour,
+          nbFoisParSemaine: form.form.value.nbFoisParSemaine,
+          finDeLaPrise: new Date(),
+          heuresPrises: []
+        }
+
+      this.formMedocList.push(formedMedoc)
+
+      this.formInternalId++;
+
+      form.reset();
+      this.changeStepTo('ordonnance-add');
+
+    }
+    catch(err) {
+      console.error(err)
+      this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
+    }
 
   }
 

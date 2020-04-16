@@ -13,16 +13,19 @@
       flex-direction: column; align-items: center; justify-content: center;">
     </div> -->
 
-  <ion-content *ngIf="checkStep('main')">
-      <ion-list *ngFor="let ordonnance of listeOrdonnances">
+  <ion-content *ngIf="checkStep('main')" class="main animated slideInRight"  style="animation-duration: 0.5s;">
+      <ion-list >
+
+        <div *ngFor="let ordonnance of listeOrdonnances">
+          <ion-item (click)="selectOrdonnance(ordonnance.id)">
+              <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+              <ion-label>
+                <h2 style="font-size: large">{{ ordonnance.titre }}</h2>
+              </ion-label>
+            </ion-item>
+        </div>
 
         <!-- <ion-item-sliding (click)="selectOrdonnance(ordonnance.id)"> -->
-          <ion-item (click)="selectOrdonnance(ordonnance.id)">
-            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            <ion-label>
-              <h2 style="font-size: large">{{ ordonnance.titre }}</h2>
-            </ion-label>
-          </ion-item>
           <!-- <ion-item-options side="end" >
             <ion-item-option (click)="unread(item)" color="danger">
               <ion-icon name="trash-outline" size="large"></ion-icon>
@@ -30,290 +33,19 @@
           </ion-item-options>
         </ion-item-sliding> -->
 
-        <!-- <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-
-        <ion-item-sliding>
-          <ion-item>
-            <ion-label>Item</ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option (click)="unread(item)">Unread</ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding> -->
+        <ion-button expand="block" style="margin: 1em 1.7em;" color="light" (click)="changeStepTo('ordonnance-add')">
+          <ion-icon slot="end" name="add-outline"></ion-icon>
+          Ajouter
+        </ion-button>
 
       </ion-list>
+
+      
+      
   </ion-content>
 
-  <!-- <ion-content *ngIf="checkStep('ordonnance-details')" class='animated slideInDown'> -->
-  <ion-content *ngIf="checkStep('ordonnance-details')" class="ordonnance-details">
+  <!-- <ion-content *ngIf="checkStep('ordonnance-details')" class='animated slideInDown'> --> <!-- [className]="checkStep('ordonnance-details') ? 'animated slideInRight' : 'animated slideInUp'"" -->
+  <ion-content *ngIf="checkStep('ordonnance-details')" class="ordonnance-details animated slideInRight"  style="animation-duration: 0.5s;" >
     <ion-list>
 
       <ion-item button (click)="changeStepTo('main')">
@@ -352,16 +84,7 @@
 
           <ion-list *ngFor="let medoc of selectedOrdonnance.medocs">
 
-            <!-- nom: "MEDOC1-NOM-XYZ",
-            nbBoiteMax: 0,
-            nbBoiteAchetees: 0,
-            nbMedocParBoite: 12,
-            nbFoisParJour: 1,
-            nbFoisParSemaine: 7,
-            finDeLaPrise: new Date(),
-            heuresPrises: [] -->
-
-            <ion-item button (click)="this.gsbMainService.alertInfo('Info : ', 'Yo')">
+            <ion-item button (click)="selectMedoc(medoc.id)">
               <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
               <ion-label class="ion-text-wrap">
                 <p style="font-size: medium">{{ medoc.nom }}</p>
@@ -375,56 +98,362 @@
 
     </ion-list>
   </ion-content>
+
+  <ion-content *ngIf="checkStep('medoc-details')" class="medoc-details animated slideInRight"  style="animation-duration: 0.5s;">
+    <ion-list>
+
+      <ion-item button (click)="changeStepTo('ordonnance-details')">
+        <ion-icon slot="end" name="chevron-back-outline"></ion-icon>
+        <ion-label class="ion-text-wrap">
+          <h1 style="font-size: x-large">{{ selectedMedoc.nom }}</h1>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="selectedMedoc.nbBoiteMax > 0"> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Nombre de boites prescrites :</h2>
+          <p style="font-size: medium">{{ selectedMedoc.nbBoiteMax }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Nombre de boites achetées :</h2>
+          <p style="font-size: medium">{{ selectedMedoc.nbBoiteAchetees }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Nombre d'unités par boite :</h2>
+          <p style="font-size: medium">{{ selectedMedoc.nbMedocParBoite }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Nombre de prises par semaines :</h2>
+          <p *ngIf="selectedMedoc.nbFoisParSemaine == 7" style="font-size: medium">Tout les jours</p>
+          <p *ngIf="selectedMedoc.nbFoisParSemaine != 7" style="font-size: medium">{{ selectedMedoc.nbFoisParSemaine }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="selectedMedoc.nbFoisParJour > 1"> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Nombre de prises par jours :</h2>
+          <p style="font-size: medium">{{ selectedMedoc.nbFoisParJour }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="selectedMedoc.finDeLaPrise != undefined"> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">Date de fin de la prise du médicament :</h2>
+          <p style="font-size: medium">{{ selectedMedoc.finDeLaPrise }}</p>
+        </ion-label>
+      </ion-item>
+
+      <!-- nom: "MEDOC2-NOM-0047-AAB2",
+            nbBoiteMax: 4,
+            nbBoiteAchetees: 2,
+            nbMedocParBoite: 20,
+            nbFoisParJour: 2,
+            nbFoisParSemaine: 3,
+            finDeLaPrise: new Date(),
+            heuresPrises: [
+              {
+                id: 0,
+                heurePrise: { hours: 7, minutes: 30 },
+                pris: true
+              },
+              {
+                id: 0,
+                heurePrise: { hours: 19, minutes: 30 },
+                pris: false
+              }
+            ] -->
+      <!-- <ion-item *ngIf="selectedMedoc.nbBoiteMax >= 1"> 
+        <ion-label class="ion-text-wrap">
+          <h2 style="font-size: large">heuresPrises :</h2>
+          <p style="font-size: medium">XXX</p>
+        </ion-label>
+      </ion-item> -->
+
+      <!-- <ion-item button (click)="this.gsbMainService.alertInfo('Message', 'VOUS AVEZ CLIQUE, OK')">
+        <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        <ion-label class="ion-text-wrap">
+          <h1 style="font-size: x-large; text-align: end;">Meh</h1>
+        </ion-label>
+      </ion-item> -->
+
+      <ion-button expand="block" style="margin: 1em 1.7em;" color="medium" (click)="this.gsbMainService.alertInfo('Message:', 'TODO')">
+        <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        Voir les prévisions
+      </ion-button>
+
+    </ion-list>
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('ordonnance-add')" class="ordonnance-add animated slideInRight"  style="animation-duration: 0.5s;" >
+ 
+      <ion-list>
+        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="addOrdonnance(form)">
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Titre :
+          </ion-label>
+            <ion-input style="font-size: medium;" type="text" name="titre"
+            placeholder="Ordonnance du Docteur Leruyet" ngModel required>
+            </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Description :
+          </ion-label>
+            <ion-textarea style="font-size: medium; margin-bottom: 0.7em;" type="text" name="description" auto-grow="true"
+            placeholder="Cette ordonnance m'a été donnée lors du rendez-vous de mai ..." ngModel required>
+            </ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Date de la prescription :
+          </ion-label>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date" name="dateDebut" ngModel required>
+            </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Date butoire :
+          </ion-label> <!--  max="((new Date()).getFullYear()+10).toString()" -->
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" name="dateFin" ngModel required>
+            </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h2 style="font-size: large">Médicaments préscrits :</h2>
+
+            <ion-list>
+
+              <div *ngFor="let medoc of formMedocList">
+                <ion-item button (click)="startEditMedoc(medoc.id)">
+                  <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+                  <ion-label class="ion-text-wrap">
+                    <p style="font-size: medium">{{ medoc.nom }}</p>
+                  </ion-label>
+                </ion-item>
+              </div>
+
+              <ion-item button (click)="this.changeStepTo('medoc-add')">
+                <!-- <ion-button color="light" [disabled]="form.invalid"> -->
+                  <ion-icon slot="end" name="add-outline"></ion-icon>
+                  Ajouter
+                <!-- </ion-button> -->
+              </ion-item>
+
+            </ion-list>
+
+          </ion-label>
+        </ion-item>
+
+        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+          <ion-button color="light" (click)="changeStepTo('main')">
+            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            Annuler
+          </ion-button>
+          <ion-button color="light" [disabled]="form.invalid" type="submit">
+            <ion-icon slot="end" name="add-outline"></ion-icon>
+            Ajouter
+          </ion-button>
+        </section>
+
+      </form>
+    </ion-list>
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('medoc-add')" class="medoc-add animated slideInRight"  style="animation-duration: 0.5s;" >
+ 
+      <ion-list>
+        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="addMedoc(form)">
+
+        <!-- <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h1 style="font-size: x-large">TITRE</h1>
+          </ion-label>
+        </ion-item> -->
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nom du médicament :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="text" name="nom"
+            placeholder="Sildénafil" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de boites préscrites :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax" pattern="[0-9]+"
+            placeholder="0 si non précisé" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de boites déjà achetées :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteAchetees" pattern="[0-9]+"
+            placeholder="0" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de comprimés par boite :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbMedocParBoite" pattern="[0-9]+"
+            placeholder="0" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de prises par semaine:
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbFoisParSemaine" pattern="[0-7]"
+            placeholder="7" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de prises par jour :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbFoisParJour"
+            placeholder="1" ngModel required>
+          </ion-input> 
+        </ion-item>
+
+        <!-- finDeLaPrise -->
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Date de fin de la prise :
+          </ion-label>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"
+            max="2040" name="dateFin" ngModel>
+            </ion-datetime>
+        </ion-item>
+
+        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+          <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
+            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            Annuler
+          </ion-button>
+          <ion-button color="light" [disabled]="form.invalid" type="submit">
+            <ion-icon slot="end" name="add-outline"></ion-icon>
+            Ajouter
+          </ion-button>
+        </section>
+
+        </form>
+      </ion-list>
+
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('medoc-edit')" class="medoc-add animated slideInRight"  style="animation-duration: 0.5s;" >
+ 
+      <ion-list>
+        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="editMedoc(form)">
+
+        <!-- <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h1 style="font-size: x-large">TITRE</h1>
+          </ion-label>
+        </ion-item> -->
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nom du médicament :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="text" name="nom"
+            placeholder="Sildénafil" ngModel required [ngModel]="formSelectedMedoc.nom">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de boites préscrites :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbBoiteMax"
+            placeholder="0 si non précisé" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de boites déjà achetées :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteAchetees" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbBoiteAchetees"
+            placeholder="0" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de comprimés par boite :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbMedocParBoite" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbMedocParBoite"
+            placeholder="0" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de prises par semaine:
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbFoisParSemaine" pattern="[0-7]" [ngModel]="formSelectedMedoc.nbFoisParSemaine"
+            placeholder="7" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Nombre de prises par jour :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="number" name="nbFoisParJour" [ngModel]="formSelectedMedoc.nbFoisParJour"
+            placeholder="1" ngModel required>
+          </ion-input> 
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            Date de fin de la prise :
+          </ion-label>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" value="formSelectedMedoc.dateFin" [ngModel]="formSelectedMedoc.dateFin"
+            name="dateFin" ngModel>
+            </ion-datetime>
+        </ion-item>
+
+        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+          <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
+            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            Annuler
+          </ion-button>
+          <ion-button color="light" [disabled]="form.invalid" type="submit">
+            <ion-icon slot="end" name="add-outline"></ion-icon>
+            Editer
+          </ion-button>
+        </section>
+
+        </form>
+      </ion-list>
+
+  </ion-content>
+
 </div>
-
-
-<!-- <ion-list>
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Nombre de boites préscrites :</h2>
-                    <p style="font-size: medium">{{ medoc.nbBoiteMax }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Nombre boites achetées :</h2>
-                    <p style="font-size: medium">{{ medoc.nbBoiteAchetees }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Nombre de cachets dans une boite :</h2>
-                    <p style="font-size: medium">{{ medoc.nbMedocParBoite }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Nombre de prises par jour :</h2>
-                    <p style="font-size: medium">{{ medoc.nbFoisParJour }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Nombre de prises par semaines :</h2>
-                    <p style="font-size: medium">{{ medoc.nbFoisParSemaine }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Date de la fin des prises :</h2>
-                    <p style="font-size: medium">{{ medoc.finDeLaPrise }}</p>
-                  </ion-label>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label class="ion-text-wrap">
-                    <h2 style="font-size: large">Heures des prises :</h2>
-                    <p style="font-size: medium">{{ medoc.heuresPrises }}</p>
-                  </ion-label>
-                </ion-item>
-              </ion-list> -->
