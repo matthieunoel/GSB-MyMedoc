@@ -202,8 +202,8 @@
           <ion-label class="ion-text-wrap" style="font-size: large">
             Titre :
           </ion-label>
-            <ion-input style="font-size: medium;" type="text" name="titre"
-            placeholder="Ordonnance du Docteur Leruyet" ngModel required>
+            <ion-input style="font-size: medium;" type="text" name="titre" [ngModel]="formSavedOrdonnance.titre"
+            placeholder="Ordonnance du Docteur Leruyet" ngModel required >
             </ion-input>
         </ion-item>
 
@@ -211,7 +211,7 @@
           <ion-label class="ion-text-wrap" style="font-size: large">
             Description :
           </ion-label>
-            <ion-textarea style="font-size: medium; margin-bottom: 0.7em;" type="text" name="description" auto-grow="true"
+            <ion-textarea style="font-size: medium; margin-bottom: 0.7em;" type="text" name="description" auto-grow="true" [ngModel]="formSavedOrdonnance.description"
             placeholder="Cette ordonnance m'a été donnée lors du rendez-vous de mai ..." ngModel required>
             </ion-textarea>
         </ion-item>
@@ -220,7 +220,7 @@
           <ion-label class="ion-text-wrap" style="font-size: large">
             Date de la prescription :
           </ion-label>
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date" name="dateDebut" ngModel required>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date" name="dateDebut" [ngModel]="formSavedOrdonnance.dateDebut" ngModel required>
             </ion-datetime>
         </ion-item>
 
@@ -228,7 +228,7 @@
           <ion-label class="ion-text-wrap" style="font-size: large">
             Date butoire :
           </ion-label> <!--  max="((new Date()).getFullYear()+10).toString()" -->
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" name="dateFin" ngModel required>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" name="dateFin" [ngModel]="formSavedOrdonnance.dateFin" ngModel required>
             </ion-datetime>
         </ion-item>
 
@@ -239,7 +239,7 @@
             <ion-list>
 
               <div *ngFor="let medoc of formMedocList">
-                <ion-item button (click)="startEditMedoc(medoc.id)">
+                <ion-item button (click)="startEditMedoc(medoc.id, form)">
                   <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
                   <ion-label class="ion-text-wrap">
                     <p style="font-size: medium">{{ medoc.nom }}</p>
@@ -247,7 +247,7 @@
                 </ion-item>
               </div>
 
-              <ion-item button (click)="this.changeStepTo('medoc-add')">
+              <ion-item button (click)="this.startAddMedoc(form)">
                 <!-- <ion-button color="light" [disabled]="form.invalid"> -->
                   <ion-icon slot="end" name="add-outline"></ion-icon>
                   Ajouter
@@ -346,7 +346,7 @@
             Date de fin de la prise :
           </ion-label>
             <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"
-            max="2040" name="dateFin" ngModel>
+            max="2040" name="finDeLaPrise" ngModel>
             </ion-datetime>
         </ion-item>
 
@@ -435,8 +435,8 @@
           <ion-label class="ion-text-wrap">
             Date de fin de la prise :
           </ion-label>
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" value="formSelectedMedoc.dateFin" [ngModel]="formSelectedMedoc.dateFin"
-            name="dateFin" ngModel>
+            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" 
+            name="finDeLaPrise" ngModel [ngModel]="formSelectedMedoc.finDeLaPrise">
             </ion-datetime>
         </ion-item>
 
@@ -446,7 +446,7 @@
             Annuler
           </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
-            <ion-icon slot="end" name="add-outline"></ion-icon>
+            <ion-icon slot="end" name="pencil-sharp"></ion-icon>
             Editer
           </ion-button>
         </section>
