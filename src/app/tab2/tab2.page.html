@@ -1,7 +1,8 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-icon name="document" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
+      <ion-icon name="document" slot="start" style="margin: 0.4em;"
+        size="large"></ion-icon>
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -9,43 +10,45 @@
     </ion-toolbar>
   </ion-header>
 
-<!-- <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+  <!-- <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
     </div> -->
+  <ion-content *ngIf="checkStep('main')" class="main animated slideInRight"
+    style="animation-duration: 0.5s;">
+    <ion-list>
 
-  <ion-content *ngIf="checkStep('main')" class="main animated slideInRight"  style="animation-duration: 0.5s;">
-      <ion-list >
+      <div *ngFor="let ordonnance of listeOrdonnances">
+        <ion-item (click)="selectOrdonnance(ordonnance.id)">
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          <ion-label>
+            <h2 style="font-size: large">{{ ordonnance.titre }}</h2>
+          </ion-label>
+        </ion-item>
+      </div>
 
-        <div *ngFor="let ordonnance of listeOrdonnances">
-          <ion-item (click)="selectOrdonnance(ordonnance.id)">
-              <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-              <ion-label>
-                <h2 style="font-size: large">{{ ordonnance.titre }}</h2>
-              </ion-label>
-            </ion-item>
-        </div>
-
-        <!-- <ion-item-sliding (click)="selectOrdonnance(ordonnance.id)"> -->
-          <!-- <ion-item-options side="end" >
+      <!-- <ion-item-sliding (click)="selectOrdonnance(ordonnance.id)"> -->
+      <!-- <ion-item-options side="end" >
             <ion-item-option (click)="unread(item)" color="danger">
               <ion-icon name="trash-outline" size="large"></ion-icon>
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding> -->
+      <ion-button expand="block" style="margin: 1em 1.7em;" color="light"
+        (click)="startAddOrdonnance()">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+        Ajouter
+      </ion-button>
 
-        <ion-button expand="block" style="margin: 1em 1.7em;" color="light" (click)="changeStepTo('ordonnance-add')">
-          <ion-icon slot="end" name="add-outline"></ion-icon>
-          Ajouter
-        </ion-button>
+    </ion-list>
 
-      </ion-list>
 
-      
-      
+
   </ion-content>
 
-  <!-- <ion-content *ngIf="checkStep('ordonnance-details')" class='animated slideInDown'> --> <!-- [className]="checkStep('ordonnance-details') ? 'animated slideInRight' : 'animated slideInUp'"" -->
-  <ion-content *ngIf="checkStep('ordonnance-details')" class="ordonnance-details animated slideInRight"  style="animation-duration: 0.5s;" >
+  <!-- <ion-content *ngIf="checkStep('ordonnance-details')" class='animated slideInDown'> -->
+  <!-- [className]="checkStep('ordonnance-details') ? 'animated slideInRight' : 'animated slideInUp'"" -->
+  <ion-content *ngIf="checkStep('ordonnance-details')" class="ordonnance-details
+    animated slideInRight" style="animation-duration: 0.5s;">
     <ion-list>
 
       <ion-item button (click)="changeStepTo('main')">
@@ -63,7 +66,7 @@
         </ion-label>
       </ion-item>
 
-      <ion-item> 
+      <ion-item>
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Date de la prescription :</h2>
           <p style="font-size: medium">{{ selectedOrdonnance.dateDebut }}</p>
@@ -81,7 +84,6 @@
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Médicaments préscrits :</h2>
           <!-- <p style="font-size: medium">{{ selectedOrdonnance.dateFin }}</p> -->
-
           <ion-list *ngFor="let medoc of selectedOrdonnance.medocs">
 
             <ion-item button (click)="selectMedoc(medoc.id)">
@@ -99,7 +101,8 @@
     </ion-list>
   </ion-content>
 
-  <ion-content *ngIf="checkStep('medoc-details')" class="medoc-details animated slideInRight"  style="animation-duration: 0.5s;">
+  <ion-content *ngIf="checkStep('medoc-details')" class="medoc-details animated
+    slideInRight" style="animation-duration: 0.5s;">
     <ion-list>
 
       <ion-item button (click)="changeStepTo('ordonnance-details')">
@@ -109,43 +112,45 @@
         </ion-label>
       </ion-item>
 
-      <ion-item *ngIf="selectedMedoc.nbBoiteMax > 0"> 
+      <ion-item *ngIf="selectedMedoc.nbBoiteMax> 0">
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Nombre de boites prescrites :</h2>
           <p style="font-size: medium">{{ selectedMedoc.nbBoiteMax }}</p>
         </ion-label>
       </ion-item>
 
-      <ion-item> 
+      <ion-item>
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Nombre de boites achetées :</h2>
           <p style="font-size: medium">{{ selectedMedoc.nbBoiteAchetees }}</p>
         </ion-label>
       </ion-item>
 
-      <ion-item> 
+      <ion-item>
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Nombre d'unités par boite :</h2>
           <p style="font-size: medium">{{ selectedMedoc.nbMedocParBoite }}</p>
         </ion-label>
       </ion-item>
 
-      <ion-item> 
+      <ion-item>
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Nombre de prises par semaines :</h2>
-          <p *ngIf="selectedMedoc.nbFoisParSemaine == 7" style="font-size: medium">Tout les jours</p>
-          <p *ngIf="selectedMedoc.nbFoisParSemaine != 7" style="font-size: medium">{{ selectedMedoc.nbFoisParSemaine }}</p>
+          <p *ngIf="selectedMedoc.nbFoisParSemaine == 7" style="font-size:
+            medium">Tout les jours</p>
+          <p *ngIf="selectedMedoc.nbFoisParSemaine != 7" style="font-size:
+            medium">{{ selectedMedoc.nbFoisParSemaine }}</p>
         </ion-label>
       </ion-item>
 
-      <ion-item *ngIf="selectedMedoc.nbFoisParJour > 1"> 
+      <ion-item *ngIf="selectedMedoc.nbFoisParJour> 1">
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Nombre de prises par jours :</h2>
           <p style="font-size: medium">{{ selectedMedoc.nbFoisParJour }}</p>
         </ion-label>
       </ion-item>
 
-      <ion-item *ngIf="selectedMedoc.finDeLaPrise != undefined"> 
+      <ion-item *ngIf="selectedMedoc.finDeLaPrise != undefined">
         <ion-label class="ion-text-wrap">
           <h2 style="font-size: large">Date de fin de la prise du médicament :</h2>
           <p style="font-size: medium">{{ selectedMedoc.finDeLaPrise }}</p>
@@ -177,15 +182,14 @@
           <p style="font-size: medium">XXX</p>
         </ion-label>
       </ion-item> -->
-
       <!-- <ion-item button (click)="this.gsbMainService.alertInfo('Message', 'VOUS AVEZ CLIQUE, OK')">
         <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
         <ion-label class="ion-text-wrap">
           <h1 style="font-size: x-large; text-align: end;">Meh</h1>
         </ion-label>
       </ion-item> -->
-
-      <ion-button expand="block" style="margin: 1em 1.7em;" color="medium" (click)="this.gsbMainService.alertInfo('Message:', 'TODO')">
+      <ion-button expand="block" style="margin: 1em 1.7em;" color="medium"
+        (click)="this.gsbMainService.alertInfo('Message:', 'TODO')">
         <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
         Voir les prévisions
       </ion-button>
@@ -193,43 +197,53 @@
     </ion-list>
   </ion-content>
 
-  <ion-content *ngIf="checkStep('ordonnance-add')" class="ordonnance-add animated slideInRight"  style="animation-duration: 0.5s;" >
- 
-      <ion-list>
-        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="addOrdonnance(form)">
+  <ion-content *ngIf="checkStep('ordonnance-add')" class="ordonnance-add
+    animated slideInRight" style="animation-duration: 0.5s;">
+
+    <ion-list>
+      <form style="margin-top: 1.4em;" #form="ngForm"
+        (ngSubmit)="addOrdonnance(form)">
 
         <ion-item>
           <ion-label class="ion-text-wrap" style="font-size: large">
             Titre :
           </ion-label>
-            <ion-input style="font-size: medium;" type="text" name="titre" [ngModel]="formSavedOrdonnance.titre"
-            placeholder="Ordonnance du Docteur Leruyet" ngModel required >
-            </ion-input>
+          <ion-input style="font-size: medium;" type="text" name="titre"
+            [ngModel]="formSavedOrdonnance.titre"
+            placeholder="Ordonnance du Docteur Leruyet" ngModel required>
+          </ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label class="ion-text-wrap" style="font-size: large">
             Description :
           </ion-label>
-            <ion-textarea style="font-size: medium; margin-bottom: 0.7em;" type="text" name="description" auto-grow="true" [ngModel]="formSavedOrdonnance.description"
-            placeholder="Cette ordonnance m'a été donnée lors du rendez-vous de mai ..." ngModel required>
-            </ion-textarea>
+          <ion-textarea style="font-size: medium; margin-bottom: 0.7em;"
+            type="text" name="description" auto-grow="true"
+            [ngModel]="formSavedOrdonnance.description"
+            placeholder="Cette ordonnance m'a été donnée lors du rendez-vous de mai ..."
+            ngModel required>
+          </ion-textarea>
         </ion-item>
 
         <ion-item>
           <ion-label class="ion-text-wrap" style="font-size: large">
             Date de la prescription :
           </ion-label>
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date" name="dateDebut" [ngModel]="formSavedOrdonnance.dateDebut" ngModel required>
-            </ion-datetime>
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date" name="dateDebut"
+            [ngModel]="formSavedOrdonnance.dateDebut" ngModel required>
+          </ion-datetime>
         </ion-item>
 
         <ion-item>
           <ion-label class="ion-text-wrap" style="font-size: large">
             Date butoire :
           </ion-label> <!--  max="((new Date()).getFullYear()+10).toString()" -->
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" name="dateFin" [ngModel]="formSavedOrdonnance.dateFin" ngModel required>
-            </ion-datetime>
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date" max="2040" name="dateFin"
+            [ngModel]="formSavedOrdonnance.dateFin" ngModel required>
+          </ion-datetime>
         </ion-item>
 
         <ion-item>
@@ -249,8 +263,8 @@
 
               <ion-item button (click)="this.startAddMedoc(form)">
                 <!-- <ion-button color="light" [disabled]="form.invalid"> -->
-                  <ion-icon slot="end" name="add-outline"></ion-icon>
-                  Ajouter
+                <ion-icon slot="end" name="add-outline"></ion-icon>
+                Ajouter
                 <!-- </ion-button> -->
               </ion-item>
 
@@ -259,9 +273,11 @@
           </ion-label>
         </ion-item>
 
-        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+        <section style="display: flex; align-items: center; justify-content:
+          space-evenly; margin: 0.7em 0;">
           <ion-button color="light" (click)="changeStepTo('main')">
-            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            <ion-icon slot="end" name="add-outline" style="transform:
+              rotate(45deg);"></ion-icon>
             Annuler
           </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
@@ -274,17 +290,18 @@
     </ion-list>
   </ion-content>
 
-  <ion-content *ngIf="checkStep('medoc-add')" class="medoc-add animated slideInRight"  style="animation-duration: 0.5s;" >
- 
-      <ion-list>
-        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="addMedoc(form)">
+  <ion-content *ngIf="checkStep('medoc-add')" class="medoc-add animated
+    slideInRight" style="animation-duration: 0.5s;">
+
+    <ion-list>
+      <form style="margin-top: 1.4em;" #form="ngForm"
+        (ngSubmit)="addMedoc(form)">
 
         <!-- <ion-item>
           <ion-label class="ion-text-wrap">
             <h1 style="font-size: x-large">TITRE</h1>
           </ion-label>
         </ion-item> -->
-
         <ion-item>
           <ion-label class="ion-text-wrap">
             Nom du médicament :
@@ -298,7 +315,8 @@
           <ion-label class="ion-text-wrap">
             Nombre de boites préscrites :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax" pattern="[0-9]+"
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax"
+            pattern="[0-9]+"
             placeholder="0 si non précisé" ngModel required>
           </ion-input>
         </ion-item>
@@ -307,7 +325,8 @@
           <ion-label class="ion-text-wrap">
             Nombre de boites déjà achetées :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbBoiteAchetees" pattern="[0-9]+"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbBoiteAchetees" pattern="[0-9]+"
             placeholder="0" ngModel required>
           </ion-input>
         </ion-item>
@@ -316,7 +335,8 @@
           <ion-label class="ion-text-wrap">
             Nombre de comprimés par boite :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbMedocParBoite" pattern="[0-9]+"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbMedocParBoite" pattern="[0-9]+"
             placeholder="0" ngModel required>
           </ion-input>
         </ion-item>
@@ -325,7 +345,8 @@
           <ion-label class="ion-text-wrap">
             Nombre de prises par semaine:
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbFoisParSemaine" pattern="[0-7]"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbFoisParSemaine" pattern="[0-7]"
             placeholder="7" ngModel required>
           </ion-input>
         </ion-item>
@@ -334,9 +355,10 @@
           <ion-label class="ion-text-wrap">
             Nombre de prises par jour :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbFoisParJour"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbFoisParJour"
             placeholder="1" ngModel required>
-          </ion-input> 
+          </ion-input>
         </ion-item>
 
         <!-- finDeLaPrise -->
@@ -345,14 +367,17 @@
           <ion-label class="ion-text-wrap">
             Date de fin de la prise :
           </ion-label>
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date"
             max="2040" name="finDeLaPrise" ngModel>
-            </ion-datetime>
+          </ion-datetime>
         </ion-item>
 
-        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+        <section style="display: flex; align-items: center; justify-content:
+          space-evenly; margin: 0.7em 0;">
           <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
-            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            <ion-icon slot="end" name="add-outline" style="transform:
+              rotate(45deg);"></ion-icon>
             Annuler
           </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
@@ -361,28 +386,30 @@
           </ion-button>
         </section>
 
-        </form>
-      </ion-list>
+      </form>
+    </ion-list>
 
   </ion-content>
 
-  <ion-content *ngIf="checkStep('medoc-edit')" class="medoc-add animated slideInRight"  style="animation-duration: 0.5s;" >
- 
-      <ion-list>
-        <form style="margin-top: 1.4em;" #form="ngForm" (ngSubmit)="editMedoc(form)">
+  <ion-content *ngIf="checkStep('medoc-edit')" class="medoc-add animated
+    slideInRight" style="animation-duration: 0.5s;">
+
+    <ion-list>
+      <form style="margin-top: 1.4em;" #form="ngForm"
+        (ngSubmit)="editMedoc(form)">
 
         <!-- <ion-item>
           <ion-label class="ion-text-wrap">
             <h1 style="font-size: x-large">TITRE</h1>
           </ion-label>
         </ion-item> -->
-
         <ion-item>
           <ion-label class="ion-text-wrap">
             Nom du médicament :
           </ion-label>
           <ion-input style="font-size: medium;" type="text" name="nom"
-            placeholder="Sildénafil" ngModel required [ngModel]="formSelectedMedoc.nom">
+            placeholder="Sildénafil" ngModel required
+            [ngModel]="formSelectedMedoc.nom">
           </ion-input>
         </ion-item>
 
@@ -390,7 +417,8 @@
           <ion-label class="ion-text-wrap">
             Nombre de boites préscrites :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbBoiteMax"
+          <ion-input style="font-size: medium;" type="number" name="nbBoiteMax"
+            pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbBoiteMax"
             placeholder="0 si non précisé" ngModel required>
           </ion-input>
         </ion-item>
@@ -399,7 +427,9 @@
           <ion-label class="ion-text-wrap">
             Nombre de boites déjà achetées :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbBoiteAchetees" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbBoiteAchetees"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbBoiteAchetees" pattern="[0-9]+"
+            [ngModel]="formSelectedMedoc.nbBoiteAchetees"
             placeholder="0" ngModel required>
           </ion-input>
         </ion-item>
@@ -408,7 +438,9 @@
           <ion-label class="ion-text-wrap">
             Nombre de comprimés par boite :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbMedocParBoite" pattern="[0-9]+" [ngModel]="formSelectedMedoc.nbMedocParBoite"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbMedocParBoite" pattern="[0-9]+"
+            [ngModel]="formSelectedMedoc.nbMedocParBoite"
             placeholder="0" ngModel required>
           </ion-input>
         </ion-item>
@@ -417,7 +449,9 @@
           <ion-label class="ion-text-wrap">
             Nombre de prises par semaine:
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbFoisParSemaine" pattern="[0-7]" [ngModel]="formSelectedMedoc.nbFoisParSemaine"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbFoisParSemaine" pattern="[0-7]"
+            [ngModel]="formSelectedMedoc.nbFoisParSemaine"
             placeholder="7" ngModel required>
           </ion-input>
         </ion-item>
@@ -426,23 +460,28 @@
           <ion-label class="ion-text-wrap">
             Nombre de prises par jour :
           </ion-label>
-          <ion-input style="font-size: medium;" type="number" name="nbFoisParJour" [ngModel]="formSelectedMedoc.nbFoisParJour"
+          <ion-input style="font-size: medium;" type="number"
+            name="nbFoisParJour" [ngModel]="formSelectedMedoc.nbFoisParJour"
             placeholder="1" ngModel required>
-          </ion-input> 
+          </ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label class="ion-text-wrap">
             Date de fin de la prise :
           </ion-label>
-            <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY" placeholder="Saisir une date"  max="2040" 
-            name="finDeLaPrise" ngModel [ngModel]="formSelectedMedoc.finDeLaPrise">
-            </ion-datetime>
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date" max="2040"
+            name="finDeLaPrise" ngModel
+            [ngModel]="formSelectedMedoc.finDeLaPrise">
+          </ion-datetime>
         </ion-item>
 
-        <section style="display: flex; align-items: center; justify-content: space-evenly; margin: 0.7em 0;">
+        <section style="display: flex; align-items: center; justify-content:
+          space-evenly; margin: 0.7em 0;">
           <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
-            <ion-icon slot="end" name="add-outline" style="transform: rotate(45deg);"></ion-icon>
+            <ion-icon slot="end" name="add-outline" style="transform:
+              rotate(45deg);"></ion-icon>
             Annuler
           </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
@@ -451,8 +490,8 @@
           </ion-button>
         </section>
 
-        </form>
-      </ion-list>
+      </form>
+    </ion-list>
 
   </ion-content>
 
