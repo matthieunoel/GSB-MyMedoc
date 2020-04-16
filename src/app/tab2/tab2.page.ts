@@ -13,6 +13,8 @@ import { error } from 'protractor';
 
 export class Tab2Page {
 
+  // TODO: Add an edit page for ordonnance
+
   listeOrdonnances: Ordonnance[] = []
   currentStep: string = "main"
   selectedOrdonnance: Ordonnance
@@ -52,8 +54,6 @@ export class Tab2Page {
       this.currentStep = "ordonnance-details"
 
     }
-
-
 
   }
 
