@@ -30,11 +30,11 @@
   </ion-header>
   <ion-content class="ion-padding">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
-      flex-direction: column; align-items: center; justify-content: center;">
+      flex-direction: column; align-items: center;">
       
       <!-- {{ calendar }} -->
 
-      <iq-calendar-week-hours-view
+      <!-- <iq-calendar-week-hours-view
             *ngSwitchCase="'week'"
             [viewDate]="viewDate"
             [events]="events"
@@ -45,7 +45,11 @@
             (hourSegmentClicked)="hourSegmentClicked($event)"
             (eventTimesChanged)="eventTimesChanged($event)"
             [refresh]="refresh">
-        </iq-calendar-week-hours-view>
+        </iq-calendar-week-hours-view> -->
+
+        <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek" [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22" [events]="events" style="width: 100%;">
+          <!-- [days]="[Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche]"  -->
+        </mwl-calendar-week-view>
 
     </div>
   </ion-content>
