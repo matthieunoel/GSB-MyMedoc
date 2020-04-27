@@ -23,7 +23,7 @@
     <ion-toolbar>
       <ion-icon name="alarm-outline" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
       <ion-buttons slot="end">
-        <ion-menu-button></ion-menu-button>
+        <ion-menu-button></ion-menu-button> 
       </ion-buttons>
       <ion-title>Mes rappels</ion-title>
     </ion-toolbar>
@@ -31,7 +31,22 @@
   <ion-content class="ion-padding">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
-      <h1>Mes rappels</h1>
+      
+      <!-- {{ calendar }} -->
+
+      <iq-calendar-week-hours-view
+            *ngSwitchCase="'week'"
+            [viewDate]="viewDate"
+            [events]="events"
+            [hourSegments]="2"
+            [dayStartHour]="8"
+            [dayEndHour]="20"
+            (eventClicked)="eventClicked($event)"
+            (hourSegmentClicked)="hourSegmentClicked($event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+            [refresh]="refresh">
+        </iq-calendar-week-hours-view>
+
     </div>
   </ion-content>
-</div>x
+</div>

@@ -42,6 +42,7 @@ export class Tab2Page {
       const ordonnance = this.listeOrdonnances[index];
       if (ordonnance.id === id) {
         this.selectedOrdonnance = ordonnance
+        // console.log("this.selectedOrdonnance : ", this.selectedOrdonnance)
       }
     }
 
@@ -103,6 +104,8 @@ export class Tab2Page {
         dateFin: form.form.value.dateFin,
         medocs: this.formMedocList
       }
+
+      console.log("Adding Ordonnance : ", formedOrdonnance)
 
       this.listeOrdonnances.push(formedOrdonnance)
 
