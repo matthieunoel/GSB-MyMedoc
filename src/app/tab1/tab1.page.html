@@ -47,7 +47,8 @@
             [refresh]="refresh">
         </iq-calendar-week-hours-view> -->
 
-        <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek" [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22" [events]="events" style="width: 100%;">
+        <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek" [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22"
+        [events]="events" [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)" style="width: 100%;">
           <!-- [days]="[Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche]"  -->
         </mwl-calendar-week-view>
 
