@@ -1,57 +1,58 @@
-<!-- <ion-header [translucent]="trues">
-  <ion-toolbar>
-    <ion-icon name="heart" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
-    <ion-buttons slot="end">
-      <ion-menu-button auto-hide="false"></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Mes Rappels</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<div style="display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; width: 100%; overflow: hidden;">
-
-  <h1 style="color: var(--ion-color-dark)">Page "Mes Rappels"</h1>
-
-  <ion-buttons>
-    <ion-button color="success" fill="solid" size="large" (click)="goAnOtherPage('/tabs/tab2')">Nav Button for tests</ion-button>
-  </ion-buttons>
-
-</div> -->
-
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-icon name="alarm-outline" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
+      <ion-icon name="alarm-outline" slot="start" style="margin: 0.4em;"
+        size="large"></ion-icon>
+        <!-- <ion-button color="light" slot="end" (click)="switch()"><ion-icon name="calendar-sharp" size="large" class="animated slow swing infinite"></ion-icon></ion-button> -->
       <ion-buttons slot="end">
-        <ion-menu-button></ion-menu-button> 
+        <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title>Mes rappels</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
-    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
-      flex-direction: column; align-items: center;">
-      
-      <!-- {{ calendar }} -->
+  
+  <!-- <ion-button (click)="switch()" color="light" expand="block"
+    style="margin: 1.4em;">TOUCH-ME</ion-button> -->
 
-      <!-- <iq-calendar-week-hours-view
-            *ngSwitchCase="'week'"
-            [viewDate]="viewDate"
-            [events]="events"
-            [hourSegments]="2"
-            [dayStartHour]="8"
-            [dayEndHour]="20"
-            (eventClicked)="eventClicked($event)"
-            (hourSegmentClicked)="hourSegmentClicked($event)"
-            (eventTimesChanged)="eventTimesChanged($event)"
-            [refresh]="refresh">
-        </iq-calendar-week-hours-view> -->
-
-        <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek" [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22"
-        [events]="events" [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)" style="width: 100%;">
-          <!-- [days]="[Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche]"  -->
-        </mwl-calendar-week-view>
-
+  <ion-content class="ion-padding" *ngIf="checkStep('calendar')">
+    <div id="CONTENT" style="width: 100%; display: flex; flex-direction: column;
+      align-items: center; animation-duration: 0.5s;" class="animated slideInUp">
+      <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek"
+        [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22"
+        [events]="events" [refresh]="refresh"
+        (eventTimesChanged)="eventTimesChanged($event)" style="width: 100%;">
+      </mwl-calendar-week-view>
     </div>
   </ion-content>
+
+  <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
+    <ion-list style="margin-bottom: 10vh;"> 
+      <ion-item *ngFor="let prise of prisesListe" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
+        <!-- <ion-icon slot="end" name="chevron-forward-outline"
+          (click)="this.gsbMainService.alertInfo('TITRE', 'INFO')"></ion-icon> -->
+          <ion-toggle slot="end" [(ngModel)]="prise.pris"></ion-toggle>
+        <ion-label>
+          <h2 style="font-size: large">{{ prise.event.title }}</h2>
+          <!-- <p style="font-size: ridiculous;">({{ prise.datePrise.toLocaleString() }})</p> -->
+          <p style="font-size: ridiculous;">({{ printDate(prise.datePrise) }})</p>
+          <!-- <p style="font-size: ridiculous;">({{ prise.datePrise.format("mm/dd/yy h:MM:ss TT") }})</p> -->
+        </ion-label>
+      </ion-item>
+      <ion-item style="width: 100%;">
+        <ion-toggle slot="end" [(ngModel)]="sausage" disabled="true"></ion-toggle>
+        <ion-label>
+          <h2 style="font-size: large">. . .</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="switch()">
+        <ion-fab-button color="dark">
+          <ion-icon name="calendar-sharp" size="large" class="animated slow swing"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list>
+        </ion-fab-list>
+      </ion-fab>
+
 </div>

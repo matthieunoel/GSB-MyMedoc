@@ -14,6 +14,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 // import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
+declare const require: any;
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

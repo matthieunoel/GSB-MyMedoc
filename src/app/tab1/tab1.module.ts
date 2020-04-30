@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 
+// import { TemplateComponent } from './template/template.component';
+
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -21,6 +23,9 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
       useFactory: adapterFactory,
     }),
   ],
-  declarations: [Tab1Page]
+  declarations: [
+    Tab1Page,
+    // TemplateComponent
+  ]
 })
 export class Tab1PageModule {}

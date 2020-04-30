@@ -1,7 +1,6 @@
-import { Component, Directive } from '@angular/core';
-import { Ordonnance, Medoc } from '../GSB-Provider/provider';
+import { Component } from '@angular/core';
+import { Ordonnance, Medoc } from '../interfaces';
 import { GsbMainService } from '../gsb-main.service';
-import { error } from 'protractor';
 // import { Animation, AnimationController } from '@ionic/angular';
 // import { createAnimation } from "@ionic/core";
 
@@ -26,7 +25,10 @@ export class Tab2Page {
   formSelectedMedocIndex: number
   formSavedOrdonnance: any
 
-  constructor(private gsbMainService: GsbMainService, /*private animationController: AnimationController*/) {}
+
+  constructor(private gsbMainService: GsbMainService) {
+    this.updateData()
+  }
 
   public checkStep(step: string) {
     return step === this.currentStep
@@ -108,6 +110,7 @@ export class Tab2Page {
       console.log("Adding Ordonnance : ", formedOrdonnance)
 
       this.listeOrdonnances.push(formedOrdonnance)
+      this.listeOrdonnances = this.gsbMainService.data.ordonnances
 
       form.reset();
       this.formMedocList = []
@@ -149,7 +152,7 @@ export class Tab2Page {
         nbFoisParJour: form.form.value.nbFoisParJour,
         nbFoisParSemaine: form.form.value.nbFoisParSemaine,
         finDeLaPrise: form.form.value.finDeLaPrise,
-        heuresPrises: []
+        prises: []
       }
 
       this.formMedocList.push(formedMedoc)
@@ -206,7 +209,7 @@ export class Tab2Page {
         nbFoisParJour: form.form.value.nbFoisParJour,
         nbFoisParSemaine: form.form.value.nbFoisParSemaine,
         finDeLaPrise: new Date(),
-        heuresPrises: []
+        prises: []
       }
 
       this.formMedocList[this.formSelectedMedocIndex] = formedMedoc
@@ -220,6 +223,11 @@ export class Tab2Page {
       this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
     }
 
+  }
+
+  private async updateData() {
+    await this.gsbMainService.refresh();
+    this.listeOrdonnances = this.gsbMainService.data.ordonnances
   }
 
 }

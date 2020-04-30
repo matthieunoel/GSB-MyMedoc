@@ -17,7 +17,7 @@
     style="animation-duration: 0.5s;">
     <ion-list>
 
-      <div *ngFor="let ordonnance of listeOrdonnances">
+      <div *ngFor="let ordonnance of listeOrdonnances" class="main animated slideInRight" style="animation-duration: 0.5s;">
         <ion-item (click)="selectOrdonnance(ordonnance.id)">
           <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
           <ion-label>
@@ -167,12 +167,12 @@
             heuresPrises: [
               {
                 id: 0,
-                heurePrise: { hours: 7, minutes: 30 },
+                datePrise: { hours: 7, minutes: 30 },
                 pris: true
               },
               {
                 id: 0,
-                heurePrise: { hours: 19, minutes: 30 },
+                datePrise: { hours: 19, minutes: 30 },
                 pris: false
               }
             ] -->
