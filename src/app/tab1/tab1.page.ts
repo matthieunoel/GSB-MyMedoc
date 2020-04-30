@@ -23,7 +23,7 @@ export class Tab1Page {
 
   currentStep = "list"
   // gsbProvider: GsbProvider = new GsbProvider();
-  prisesListe: PriseMedoc[] = []
+  // gsbMainService.listeDesPrises: PriseMedoc[] = []
 
   // Calendar params
   view: CalendarView = CalendarView.Week;
@@ -38,7 +38,16 @@ export class Tab1Page {
     //   (err) => { console.error("Google calendar link error : " + err); }
     // )
     
-    this.updateData()
+    // this.updateData()
+
+    this.gsbMainService.refresh();
+
+    // window.setInterval(() => {
+
+    //   this.events = this.gsbMainService.listeDesPrises.map(obj => obj.event)
+    //   this.refresh.next()
+      
+    // }, 2000);
 
     // this.currentStep = "calendar"
 
@@ -54,6 +63,7 @@ export class Tab1Page {
   }
 
   public changeStepTo(step: string) {
+    // this.refresh.next()
     this.currentStep = step;
   }
 
@@ -63,6 +73,7 @@ export class Tab1Page {
     }
     else {
       this.currentStep = "calendar"
+      // this.gsbMainService.refreshEventList()
     }
   }
 
@@ -71,38 +82,25 @@ export class Tab1Page {
     return dateFormater.asString(`${listeJours[date.getDay()]} dd/MM, hh:mm`, date)
   }
 
-  public async updateData() {
+  // public async updateData() {
 
-    // console.log("Updating data ...");
-    // this.prisesListe = this.gsbMainService.getPrisesList();
-    await this.gsbMainService.refresh();
-    this.prisesListe = this.gsbMainService.listeDesPrises;
-    // console.log("Data updated : ", this.prisesListe);
-    this.events = []
-    this.prisesListe.forEach(element => {
-      this.events.push(element.event)
-    });
+  //   await this.gsbMainService.refresh();
+  //   // this.gsbMainService.listeDesPrises = this.gsbMainService.listeDesPrises;
+  //   // this.events = []
+  //   // this.gsbMainService.listeDesPrises.forEach(element => {
+  //   //   this.events.push(element.event)
+  //   // });
 
-    this.events.push(
-      
-      {
-        allDay: false,
-        draggable: true,
-        start: addHours(startOfDay(new Date()), 12),
-        title: "title",
-        color: {
-          primary: "",
-          secondary: "whitesmoke",
-        },
-      }
-    
-    )
-
-  }
+  // }
 
   refresh: Subject<any> = new Subject();
   eventTimesChanged({event, newStart}: CalendarEventTimesChangedEvent): void {
     event.start = newStart;
+    this.gsbMainService.listeDesPrises.map(obj => obj.event).forEach(GSBevent => {
+      if (GSBevent.id === event.id) {
+        GSBevent.start = newStart
+      }
+    });
     console.log(`Event ${event.title} changed to ${event.start}`);
     this.refresh.next();
   }

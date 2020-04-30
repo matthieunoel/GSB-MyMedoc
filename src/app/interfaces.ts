@@ -24,7 +24,7 @@ export interface Medoc {
     nbFoisParSemaine: number
     finDeLaPrise: Date
     prises: PriseMedoc[]
-    color?: string 
+    couleur?: string 
 }
 
 export interface PriseMedoc {
@@ -32,6 +32,7 @@ export interface PriseMedoc {
     datePrise: Date;
     pris: boolean;
     event?: {
+        id: number,
         title: string,
         start: Date,
         allDay: boolean,

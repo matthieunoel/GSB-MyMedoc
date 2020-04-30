@@ -14,9 +14,9 @@ export class Tab2Page {
 
   // TODO: Add an edit page for ordonnance
 
-  listeOrdonnances: Ordonnance[] = []
+  // listeOrdonnances: Ordonnance[] = []
   currentStep: string = "main"
-  selectedOrdonnance: Ordonnance
+  selectedOrdonnance: Ordonnance 
   selectedMedoc: Medoc
   formMedocList: Medoc[] = []
   formInternalId = 0
@@ -40,8 +40,8 @@ export class Tab2Page {
 
   public selectOrdonnance(id: number) {
 
-    for (let index = 0; index < this.listeOrdonnances.length; index++) {
-      const ordonnance = this.listeOrdonnances[index];
+    for (let index = 0; index < this.gsbMainService.data.ordonnances.length; index++) {
+      const ordonnance = this.gsbMainService.data.ordonnances[index];
       if (ordonnance.id === id) {
         this.selectedOrdonnance = ordonnance
         // console.log("this.selectedOrdonnance : ", this.selectedOrdonnance)
@@ -62,8 +62,8 @@ export class Tab2Page {
 
   public selectMedoc(id: number) {
 
-    for (let index = 0; index < this.listeOrdonnances.length; index++) {
-      const ordonnance: Ordonnance = this.listeOrdonnances[index];
+    for (let index = 0; index < this.gsbMainService.data.ordonnances.length; index++) {
+      const ordonnance: Ordonnance = this.gsbMainService.data.ordonnances[index];
       for (let index2 = 0; index2 < ordonnance.medocs.length; index2++) {
         const medoc: Medoc = ordonnance.medocs[index2];
         if (medoc.id === id) {
@@ -97,9 +97,13 @@ export class Tab2Page {
 
       // console.log(form.form.value)
 
+      this.formMedocList.forEach((medoc: Medoc) => {
+        medoc.id = GsbMainService.generateId()
+      });
+
       const formedOrdonnance =
       {
-        id: this.formInternalId,
+        id: GsbMainService.generateId(),
         titre: form.form.value.titre,
         description: form.form.value.description,
         dateDebut: form.form.value.dateDebut,
@@ -109,8 +113,8 @@ export class Tab2Page {
 
       console.log("Adding Ordonnance : ", formedOrdonnance)
 
-      this.listeOrdonnances.push(formedOrdonnance)
-      this.listeOrdonnances = this.gsbMainService.data.ordonnances
+      this.gsbMainService.data.ordonnances.push(formedOrdonnance)
+      this.gsbMainService.data.ordonnances = this.gsbMainService.data.ordonnances
 
       form.reset();
       this.formMedocList = []
@@ -225,9 +229,26 @@ export class Tab2Page {
 
   }
 
+  public selectColor(color: string) {
+    // console.log("Color changed to :", color)
+    this.selectedMedoc.couleur = color
+
+    this.gsbMainService.data.ordonnances.forEach((ordonnance: Ordonnance) => {
+      if (ordonnance.id === this.selectedOrdonnance.id) {
+        ordonnance.medocs.forEach((medoc: Medoc) => {
+          if (medoc.id === this.selectedMedoc.id) {
+            medoc.couleur = color
+          }
+         });
+      }
+    });
+
+  }
+
   private async updateData() {
     await this.gsbMainService.refresh();
-    this.listeOrdonnances = this.gsbMainService.data.ordonnances
+    // this.listeOrdonnances = this.gsbMainService.data.ordonnances
   }
+  
 
 }

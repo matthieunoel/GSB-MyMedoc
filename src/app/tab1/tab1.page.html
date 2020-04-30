@@ -27,7 +27,7 @@
 
   <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
     <ion-list style="margin-bottom: 10vh;"> 
-      <ion-item *ngFor="let prise of prisesListe" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
+      <ion-item *ngFor="let prise of gsbMainService.listeDesPrises" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
         <!-- <ion-icon slot="end" name="chevron-forward-outline"
           (click)="this.gsbMainService.alertInfo('TITRE', 'INFO')"></ion-icon> -->
           <ion-toggle slot="end" [(ngModel)]="prise.pris"></ion-toggle>

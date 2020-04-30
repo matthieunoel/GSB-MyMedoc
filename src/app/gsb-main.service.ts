@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { PriseMedoc, Ordonnance, Medoc } from './interfaces';
+import { PriseMedoc, Ordonnance, Medoc, Data } from './interfaces';
 import { startOfDay, addHours, addDays } from 'date-fns';
-import { Data } from '@angular/router';
 import { Parameters } from './parameters'
 // const parameters: Parameters = require('./parameters')
 
@@ -11,11 +10,27 @@ import { Parameters } from './parameters'
 })
 export class GsbMainService {
 
+  static availableId: number = 0
+
   constructor(private alertController: AlertController) {
-    // window.setInterval(() => {
-    //   this.refresh()
-    // }, 5000);
+
+    window.setInterval(() => {
+
+      this.listeDesPrises = this.getPrisesList(this.data)
+      if (typeof (Storage) != "undefined") {
+        localStorage.setItem("ordo", JSON.stringify(this.data.ordonnances))
+      } else {
+        console.error("Storage is not available for now ...")
+      }
+
+    }, 500);
+
     this.loadParameters()
+
+    // window.setInterval(() => {
+    //   console.log("this.data", this.data)
+    // }, 5000);
+
   }
 
   private loadParameters() {
@@ -53,14 +68,14 @@ export class GsbMainService {
   TEST_listeOrdonnances: Ordonnance[] =
     [
       {
-        id: 0,
+        id: GsbMainService.generateId(),
         titre: "Ordonnance du docteur",
         description: "Cette ordonnance est coooooool",
         dateDebut: new Date('2020-03-24T11:15:00'),
         dateFin: new Date('2020-05-24T11:15:00'),
         medocs: [
           {
-            id: 0,
+            id: GsbMainService.generateId(),
             nom: "Salbutamol",
             nbBoiteMax: 2,
             nbBoiteAchetees: 1,
@@ -68,31 +83,32 @@ export class GsbMainService {
             nbFoisParJour: 3,
             nbFoisParSemaine: 7,
             finDeLaPrise: undefined,
+            couleur: "#0097e6",
             prises: [
               {
-                id: 1,
+                id: GsbMainService.generateId(),
                 datePrise: addHours(startOfDay(addDays(new Date(), -3)), 20),
                 pris: false
               },
               {
-                id: 2,
+                id: GsbMainService.generateId(),
                 datePrise: addHours(startOfDay(addDays(new Date(), -2)), 20),
                 pris: false
               },
               {
-                id: 3,
+                id: GsbMainService.generateId(),
                 datePrise: addHours(startOfDay(addDays(new Date(), -1)), 20),
                 pris: false
               },
               {
-                id: 4,
+                id: GsbMainService.generateId(),
                 datePrise: addHours(startOfDay(new Date()), 20),
                 pris: false
               },
             ]
           },
           {
-            id: 1,
+            id: GsbMainService.generateId(),
             nom: "Endorphine",
             nbBoiteMax: 7,
             nbBoiteAchetees: 2,
@@ -106,49 +122,65 @@ export class GsbMainService {
       }
   ]
 
-  TEST_listePrises: PriseMedoc[] = [
-    {
-      id: 4,
-      datePrise: addHours(startOfDay(new Date()), 20),
-      pris: false,
-      event: {
-        allDay: false,
-        draggable: true,
-        start: addHours(startOfDay(new Date()), 20),
-        title: "CrystalMeth"
-      }
-    },
-    {
-      id: 5,
-      datePrise: addHours(startOfDay(addDays(new Date(), 1)), 20),
-      pris: false,
-      event: {
-        allDay: false,
-        draggable: true,
-        // start: new Date("2020-05-01T20:00:00"),
-        start: addHours(startOfDay(addDays(new Date(), 1)), 20),
-        title: "CrystalMeth"
-      }
-    },
-    {
-      id: 5,
-      datePrise: addHours(startOfDay(addDays(new Date(), 2)), 20),
-      pris: false,
-      event: {
-        allDay: false,
-        draggable: true,
-        start: addHours(startOfDay(addDays(new Date(), 2)), 20),
-        title: "CrystalMeth"
-      }
-    }
-  ]
+  // TEST_listePrises: PriseMedoc[] = [
+  //   {
+  //     id: 4,
+  //     datePrise: addHours(startOfDay(new Date()), 20),
+  //     pris: false,
+  //     event: {
+  //       id: GsbMainService.generateId(),
+  //       allDay: false,
+  //       draggable: true,
+  //       start: addHours(startOfDay(new Date()), 20),
+  //       title: "CrystalMeth"
+  //     }
+  //   },
+  //   {
+  //     id: 5,
+  //     datePrise: addHours(startOfDay(addDays(new Date(), 1)), 20),
+  //     pris: false,
+  //     event: {
+  //       id: GsbMainService.generateId(),
+  //       allDay: false,
+  //       draggable: true,
+  //       // start: new Date("2020-05-01T20:00:00"),
+  //       start: addHours(startOfDay(addDays(new Date(), 1)), 20),
+  //       title: "CrystalMeth"
+  //     }
+  //   },
+  //   {
+  //     id: 5,
+  //     datePrise: addHours(startOfDay(addDays(new Date(), 2)), 20),
+  //     pris: false,
+  //     event: {
+  //       id: GsbMainService.generateId(),
+  //       allDay: false,
+  //       draggable: true,
+  //       start: addHours(startOfDay(addDays(new Date(), 2)), 20),
+  //       title: "CrystalMeth"
+  //     }
+  //   }
+  // ]
 
-  private getData(): Data {
-    return this.TEST_listeOrdonnances
+  private getOrdonnances(): Ordonnance[] {
+
+    let ordo: Ordonnance[]
+    console.log("Reading cache ...")
+    if (typeof (Storage) != "undefined") {
+        ordo = JSON.parse(localStorage.getItem("ordo"))
+        console.log("Data extracted succesfully from cache")
+    } else {
+      console.error("Cache is not available for now ...")
+    }
+
+    return ordo
+    // return this.TEST_listeOrdonnances
   }
 
   private getPrisesList(data: Data): PriseMedoc[] {
     
+    // console.log("XXXXXXXXXXXXXXX :", data.ordonnances[0])
+
     let listeDesPrises: PriseMedoc[] = []
     let listesDatesProgramee: Date[] = []
 
@@ -157,8 +189,8 @@ export class GsbMainService {
 
         let color: string
 
-        if (medoc.color != undefined) {
-          color = medoc.color
+        if (medoc.couleur != undefined) {
+          color = medoc.couleur
         } else {
           color = "#a3aaaf"
         }
@@ -203,16 +235,32 @@ export class GsbMainService {
           // console.log("ordonnance.dateFin >= (new Date()) :", `${ordonnance.dateFin} >= (${new Date()}) :`, ordonnance.dateFin >= (new Date()))
           // console.log("\n")
 
+          const actualDate: string = `${(new Date()).getFullYear()}-${(new Date()).getMonth()}-${(new Date()).getDate()}`
+          const ordoDate: string = ordonnance.dateFin.toString().substring(0, ordonnance.dateFin.toString().indexOf('T')).replace(/-0/g, '-')
+          let medocDate: string
+          if (medoc.finDeLaPrise != undefined) {
+            medocDate = medoc.finDeLaPrise.toString().substring(0, ordonnance.dateFin.toString().indexOf('T')).replace(/-0/g, '-')
+          }
+          else {
+            medocDate = ""
+          }
+
+          // console.log("\n")
+
+          // console.log(!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), medoc.nbFoisParSemaine) && ordoDate >= actualDate && (medocDate >= actualDate || medocDate === ""))
+
           // Si il n'y a pas de prises ce jour là  ET  qu'il est censé y avoir des prises ce jour là
           // ET  que l'ordonnance est valide  ET  que le médicament est encore prescrit  (en gros s'il faut ajouter une prise)
-          if (!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), medoc.nbFoisParSemaine) && ordonnance.dateFin >= (new Date()) && !(medoc.finDeLaPrise < (new Date()))) {
+          if (!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), medoc.nbFoisParSemaine) && ordoDate >= actualDate && (medocDate >= actualDate || medocDate === "")) {
 
             // console.log(`Creation de ${medoc.nom} : ${addDays(startOfDay(new Date()), dayIncrement)}`)
+            
 
             // S'il y a un médicament a prendre par jour
             if (medoc.nbFoisParJour === 1) {
 
               listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+              // console.log("README-listeDesPrises: ", listeDesPrises)
 
             }
             // S'il y a 2 médicaments a prendre par jour
@@ -262,7 +310,7 @@ export class GsbMainService {
     });
 
     // console.log("listeDesPrises", listeDesPrises)
-
+    
     return listeDesPrises
 
 
@@ -280,13 +328,14 @@ export class GsbMainService {
       // TO SIMULATE A CONNECTION
       setTimeout((self: GsbMainService = this) => {
 
-        self.data.ordonnances = self.getData()
+        self.data.ordonnances = self.getOrdonnances()
         self.listeDesPrises = self.getPrisesList(self.data)
+        console.log("this.listeDesPrises", self.listeDesPrises)
 
         console.log('Data loading completed : ', this.data.ordonnances)
         this.dataLoaded = true
         resolve();
-      }, 1500);
+      }, 1);
 
     })
   }
@@ -319,10 +368,11 @@ export class GsbMainService {
 
   private createPrise(date: Date, medocName, color):PriseMedoc {
     return {
-        id: -1,
+        id: GsbMainService.generateId(),
         datePrise: date,
         pris: false,
-        event: {
+      event: {
+        id: GsbMainService.generateId(),
           allDay: false,
           draggable: true,
           start: date,
@@ -341,6 +391,7 @@ export class GsbMainService {
       datePrise: priseMedoc.datePrise,
       pris: priseMedoc.pris,
       event: {
+        id: GsbMainService.generateId(),
         allDay: false,
         draggable: true,
         start: priseMedoc.datePrise,
@@ -351,6 +402,15 @@ export class GsbMainService {
         },
       }
     }
+  }
+
+  public static generateId() {
+    this.availableId--
+    return this.availableId
+  }
+
+  public refreshEventList() {
+    this.listeDesPrises = this.getPrisesList(this.data)
   }
 
 }

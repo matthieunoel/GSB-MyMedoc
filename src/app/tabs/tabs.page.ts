@@ -13,6 +13,7 @@ export class TabsPage {
   // TODO: Remmener au "main" d'une page on click
 
   goTo(address: string) {
+    // console.log("address :", address)
     this.navController.navigateForward(address);
     this.menuController.close();
   }
