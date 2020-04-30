@@ -40,7 +40,7 @@ export class Tab1Page {
     
     // this.updateData()
 
-    this.gsbMainService.refresh();
+    // this.gsbMainService.refresh();
 
     // window.setInterval(() => {
 

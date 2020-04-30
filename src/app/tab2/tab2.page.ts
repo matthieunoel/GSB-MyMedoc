@@ -27,8 +27,9 @@ export class Tab2Page {
 
 
   constructor(private gsbMainService: GsbMainService) {
-    this.updateData()
+    this.gsbMainService.init();
   }
+
 
   public checkStep(step: string) {
     return step === this.currentStep
@@ -37,6 +38,7 @@ export class Tab2Page {
   public changeStepTo(step: string) {
     this.currentStep = step;
   }
+
 
   public selectOrdonnance(id: number) {
 
@@ -60,6 +62,7 @@ export class Tab2Page {
 
   }
 
+
   public selectMedoc(id: number) {
 
     for (let index = 0; index < this.gsbMainService.data.ordonnances.length; index++) {
@@ -79,6 +82,7 @@ export class Tab2Page {
     }
 
   }
+
 
   public startAddOrdonnance() {
     this.formSavedOrdonnance = {
@@ -111,10 +115,10 @@ export class Tab2Page {
         medocs: this.formMedocList
       }
 
-      console.log("Adding Ordonnance : ", formedOrdonnance)
+      // console.log("Adding Ordonnance : ", formedOrdonnance)
 
-      this.gsbMainService.data.ordonnances.push(formedOrdonnance)
-      this.gsbMainService.data.ordonnances = this.gsbMainService.data.ordonnances
+      // this.gsbMainService.data.ordonnances.push(formedOrdonnance)
+      this.gsbMainService.addOrdonnance(formedOrdonnance)
 
       form.reset();
       this.formMedocList = []
@@ -127,6 +131,7 @@ export class Tab2Page {
     }
 
   }
+
 
   public startAddMedoc(form: any) {
 
@@ -173,6 +178,7 @@ export class Tab2Page {
     }
 
   }
+
 
   public startEditMedoc(id: number, form: any) {
 
@@ -228,26 +234,24 @@ export class Tab2Page {
     }
 
   }
+  
 
   public selectColor(color: string) {
     // console.log("Color changed to :", color)
-    this.selectedMedoc.couleur = color
+    // this.selectedMedoc.couleur = color
 
-    this.gsbMainService.data.ordonnances.forEach((ordonnance: Ordonnance) => {
-      if (ordonnance.id === this.selectedOrdonnance.id) {
-        ordonnance.medocs.forEach((medoc: Medoc) => {
-          if (medoc.id === this.selectedMedoc.id) {
-            medoc.couleur = color
-          }
-         });
-      }
-    });
+    // this.gsbMainService.data.ordonnances.forEach((ordonnance: Ordonnance) => {
+    //   if (ordonnance.id === this.selectedOrdonnance.id) {
+    //     ordonnance.medocs.forEach((medoc: Medoc) => {
+    //       if (medoc.id === this.selectedMedoc.id) {
+    //         medoc.couleur = color
+    //       }
+    //     });
+    //   }
+    // });
 
-  }
+    this.gsbMainService.changeColor(this.selectedMedoc, color)
 
-  private async updateData() {
-    await this.gsbMainService.refresh();
-    // this.listeOrdonnances = this.gsbMainService.data.ordonnances
   }
   
 

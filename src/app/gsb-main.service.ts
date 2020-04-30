@@ -14,113 +14,91 @@ export class GsbMainService {
 
   constructor(private alertController: AlertController) {
 
-    window.setInterval(() => {
+    // window.setInterval(() => {
 
-      this.listeDesPrises = this.getPrisesList(this.data)
-      if (typeof (Storage) != "undefined") {
-        localStorage.setItem("ordo", JSON.stringify(this.data.ordonnances))
-      } else {
-        console.error("Storage is not available for now ...")
-      }
+    //   this.listeDesPrises = this.getPrisesList(this.data)
+    //   if (typeof (Storage) != "undefined") {
+    //     localStorage.setItem("ordo", JSON.stringify(this.data.ordonnances))
+    //   } else {
+    //     console.error("Storage is not available for now ...")
+    //   }
 
-    }, 500);
+    // }, 500);
 
     this.loadParameters()
 
-    // window.setInterval(() => {
-    //   console.log("this.data", this.data)
-    // }, 5000);
-
-  }
-
-  private loadParameters() {
-    Parameters.heureMatin = 8
-    Parameters.heureSoir = 20
-  }
-
-  async alertInfo(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: [
-        {
-          text: 'Ok'
-        }
-      ]
-    });
-
-    await alert.present();
   }
 
   dataLoaded: boolean = false;
-
   niceColors: string[] = ["#ff7b00", "#c23616", "#0097e6", "#8c7ae6", "#e1b12c", "#44bd32"]
-
   data: Data = {
     id: 0,
     login: 'LOGIN',
     password: 'PASSWORD',
     ordonnances: []
   }
+
+
   listeDesPrises: PriseMedoc[] = []
 
   
-  TEST_listeOrdonnances: Ordonnance[] =
-    [
-      {
-        id: GsbMainService.generateId(),
-        titre: "Ordonnance du docteur",
-        description: "Cette ordonnance est coooooool",
-        dateDebut: new Date('2020-03-24T11:15:00'),
-        dateFin: new Date('2020-05-24T11:15:00'),
-        medocs: [
-          {
-            id: GsbMainService.generateId(),
-            nom: "Salbutamol",
-            nbBoiteMax: 2,
-            nbBoiteAchetees: 1,
-            nbMedocParBoite: 45,
-            nbFoisParJour: 3,
-            nbFoisParSemaine: 7,
-            finDeLaPrise: undefined,
-            couleur: "#0097e6",
-            prises: [
-              {
-                id: GsbMainService.generateId(),
-                datePrise: addHours(startOfDay(addDays(new Date(), -3)), 20),
-                pris: false
-              },
-              {
-                id: GsbMainService.generateId(),
-                datePrise: addHours(startOfDay(addDays(new Date(), -2)), 20),
-                pris: false
-              },
-              {
-                id: GsbMainService.generateId(),
-                datePrise: addHours(startOfDay(addDays(new Date(), -1)), 20),
-                pris: false
-              },
-              {
-                id: GsbMainService.generateId(),
-                datePrise: addHours(startOfDay(new Date()), 20),
-                pris: false
-              },
-            ]
-          },
-          {
-            id: GsbMainService.generateId(),
-            nom: "Endorphine",
-            nbBoiteMax: 7,
-            nbBoiteAchetees: 2,
-            nbMedocParBoite: 45,
-            nbFoisParJour: 1,
-            nbFoisParSemaine: 6,
-            finDeLaPrise: new Date('2020-05-24T11:15:00'),
-            prises: []
-          }
-        ]
-      }
-  ]
+
+  // TEST_listeOrdonnances: Ordonnance[] =
+  //   [
+  //     {
+  //       id: GsbMainService.generateId(),
+  //       titre: "Ordonnance du docteur",
+  //       description: "Cette ordonnance est coooooool",
+  //       dateDebut: new Date('2020-03-24T11:15:00'),
+  //       dateFin: new Date('2020-05-24T11:15:00'),
+  //       medocs: [
+  //         {
+  //           id: GsbMainService.generateId(),
+  //           nom: "Salbutamol",
+  //           nbBoiteMax: 2,
+  //           nbBoiteAchetees: 1,
+  //           nbMedocParBoite: 45,
+  //           nbFoisParJour: 3,
+  //           nbFoisParSemaine: 7,
+  //           finDeLaPrise: undefined,
+  //           couleur: "#0097e6",
+  //           prises: [
+  //             {
+  //               id: GsbMainService.generateId(),
+  //               datePrise: addHours(startOfDay(addDays(new Date(), -3)), 20),
+  //               pris: false
+  //             },
+  //             {
+  //               id: GsbMainService.generateId(),
+  //               datePrise: addHours(startOfDay(addDays(new Date(), -2)), 20),
+  //               pris: false
+  //             },
+  //             {
+  //               id: GsbMainService.generateId(),
+  //               datePrise: addHours(startOfDay(addDays(new Date(), -1)), 20),
+  //               pris: false
+  //             },
+  //             {
+  //               id: GsbMainService.generateId(),
+  //               datePrise: addHours(startOfDay(new Date()), 20),
+  //               pris: false
+  //             },
+  //           ]
+  //         },
+  //         {
+  //           id: GsbMainService.generateId(),
+  //           nom: "Endorphine",
+  //           nbBoiteMax: 7,
+  //           nbBoiteAchetees: 2,
+  //           nbMedocParBoite: 45,
+  //           nbFoisParJour: 1,
+  //           nbFoisParSemaine: 6,
+  //           finDeLaPrise: new Date('2020-05-24T11:15:00'),
+  //           prises: []
+  //         }
+  //       ]
+  //     }
+  // ]
 
   // TEST_listePrises: PriseMedoc[] = [
   //   {
@@ -162,13 +140,57 @@ export class GsbMainService {
   //   }
   // ]
 
-  private getOrdonnances(): Ordonnance[] {
+
+
+  private loadParameters() {
+    Parameters.heureMatin = 8
+    Parameters.heureSoir = 20
+  }
+
+  public init() {
+    if (!this.dataLoaded) {
+      console.log("FIRST INIT");
+      this.loadData()
+      this.dataLoaded = true
+    }
+  }
+
+  public loadData(): Promise<void> {
+
+    // console.log('Loading data ...');
+
+    return new Promise(async (resolve, reject) => {
+
+      // TO SIMULATE A CONNECTION
+      setTimeout((self: GsbMainService = this) => {
+
+        self.data.ordonnances = self.getOrdonnances()
+        // self.listeDesPrises = self.getPrisesList(self.data)
+
+        resolve();
+
+      }, 1000);
+
+    })
+  }
+
+  public saveData() {
+    console.log("Saving data ...")
+    this.listeDesPrises = this.getPrisesList(this.data)
+    if (typeof (Storage) != "undefined") {
+      localStorage.setItem("ordo", JSON.stringify(this.data.ordonnances))
+    } else {
+      console.error("Storage is not available for now ...")
+    }
+  }
+
+  public getOrdonnances(): Ordonnance[] {
 
     let ordo: Ordonnance[]
     console.log("Reading cache ...")
     if (typeof (Storage) != "undefined") {
-        ordo = JSON.parse(localStorage.getItem("ordo"))
-        console.log("Data extracted succesfully from cache")
+      ordo = JSON.parse(localStorage.getItem("ordo"))
+      console.log("Data extracted succesfully from cache")
     } else {
       console.error("Cache is not available for now ...")
     }
@@ -177,7 +199,31 @@ export class GsbMainService {
     // return this.TEST_listeOrdonnances
   }
 
-  private getPrisesList(data: Data): PriseMedoc[] {
+  public addOrdonnance(ordonnance: Ordonnance) {
+    this.data.ordonnances.push(ordonnance)
+    console.log("Ordonnance added :");
+    console.log("this.data.ordonnances", this.data.ordonnances)
+    this.saveData()
+  }
+
+  public changeColor(paramMedoc: Medoc, paramColor: string) {
+
+    this.data.ordonnances.forEach((ordonnance: Ordonnance) => {
+      ordonnance.medocs.forEach((medoc: Medoc) => {
+        if (medoc.id === paramMedoc.id) {
+          medoc.couleur = paramColor
+        }
+      });
+    });
+
+    console.log(`Medoc "${paramMedoc.nom}" color changed to ${paramMedoc.couleur}`)
+
+    this.saveData()
+  }
+
+  
+
+  public getPrisesList(data: Data): PriseMedoc[] {
     
     // console.log("XXXXXXXXXXXXXXX :", data.ordonnances[0])
 
@@ -316,31 +362,7 @@ export class GsbMainService {
 
   }
 
-  public refresh(): Promise<void> {
-
-    // const provider: GsbProvider = this
-
-    console.log('Loading data ...');
-    // console.log("this.data.ordonnances : ", this.data.ordonnances)
-
-    return new Promise(async (resolve, reject) => {
-
-      // TO SIMULATE A CONNECTION
-      setTimeout((self: GsbMainService = this) => {
-
-        self.data.ordonnances = self.getOrdonnances()
-        self.listeDesPrises = self.getPrisesList(self.data)
-        console.log("this.listeDesPrises", self.listeDesPrises)
-
-        console.log('Data loading completed : ', this.data.ordonnances)
-        this.dataLoaded = true
-        resolve();
-      }, 1);
-
-    })
-  }
-
-  private testNewPriseMedoc(idJour: number, nbPrisesSemaines: number): boolean {
+  public testNewPriseMedoc(idJour: number, nbPrisesSemaines: number): boolean {
 
     let monTableau: boolean[][] = [];
     // [DAY][NB]
@@ -366,7 +388,7 @@ export class GsbMainService {
 
   }
 
-  private createPrise(date: Date, medocName, color):PriseMedoc {
+  public createPrise(date: Date, medocName, color):PriseMedoc {
     return {
         id: GsbMainService.generateId(),
         datePrise: date,
@@ -385,7 +407,7 @@ export class GsbMainService {
       }
   }
 
-  private addPriseEvent(priseMedoc: PriseMedoc, medocName: string, color: string): PriseMedoc {
+  public addPriseEvent(priseMedoc: PriseMedoc, medocName: string, color: string): PriseMedoc {
     return {
       id: priseMedoc.id,
       datePrise: priseMedoc.datePrise,
@@ -411,6 +433,20 @@ export class GsbMainService {
 
   public refreshEventList() {
     this.listeDesPrises = this.getPrisesList(this.data)
+  }
+
+  public async alertInfo(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }
