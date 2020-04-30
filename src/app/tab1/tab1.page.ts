@@ -10,6 +10,9 @@ const dateFormater = require('date-format');
 // import { colors } from '../demo-utils/colors';
 // import { EventColor } from '';
 
+//TODO : Faire en sorte qu'on arrive au milieu de la liste
+//TODO : Virer les dates trop éloignés
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -20,52 +23,13 @@ export class Tab1Page {
 
   currentStep = "list"
   // gsbProvider: GsbProvider = new GsbProvider();
-  listeJours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+  prisesListe: PriseMedoc[] = []
 
-
-  prisesListe: PriseMedoc[] = [
-    // {
-    //   id: 1, 
-    //   datePrise: addHours(startOfDay(new Date()), 8),
-    //   pris: false,
-    //   event: {
-    //     title: 'Salbutamol',
-    //     start: addHours(startOfDay(new Date()), 8),
-    //     allDay: false,
-    //     draggable: true
-    //   },
-    // },
-  ]
-
+  // Calendar params
   view: CalendarView = CalendarView.Week;
   viewDate: Date = new Date();
   daysInWeek = 3;
-  events: CalendarEvent[] = [
-    // {
-    //   start: addHours(startOfDay(new Date()), 8),
-    //   title: 'Salbutamol',
-    //   // eventBackgroundColor: '#ffffff',
-    //   allDay: false,
-    //   draggable: true,
-    //   id: 1
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 20),
-    //   title: 'Salbutamol',
-    //   // color: ,
-    //   allDay: false,
-    //   draggable: true,
-    //   id: 2
-    // },
-    // {
-    //   start: addHours(startOfDay(addDays(new Date(), 1)), 20),
-    //   title: 'Salbutamol',
-    //   // color: colors.blue,
-    //   allDay: false,
-    //   draggable: true,
-    //   id: 3
-    // }
-  ];
+  events: CalendarEvent[] = [];
 
   constructor(private gsbMainService: GsbMainService, public navController: NavController, private calendar: Calendar) {
 
@@ -103,7 +67,8 @@ export class Tab1Page {
   }
 
   public printDate(date: Date): string {
-    return dateFormater.asString(`${this.listeJours[date.getDay()]} dd/MM, hh:mm`, date)
+    const listeJours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+    return dateFormater.asString(`${listeJours[date.getDay()]} dd/MM, hh:mm`, date)
   }
 
   public async updateData() {
@@ -117,6 +82,21 @@ export class Tab1Page {
     this.prisesListe.forEach(element => {
       this.events.push(element.event)
     });
+
+    this.events.push(
+      
+      {
+        allDay: false,
+        draggable: true,
+        start: addHours(startOfDay(new Date()), 12),
+        title: "title",
+        color: {
+          primary: "",
+          secondary: "whitesmoke",
+        },
+      }
+    
+    )
 
   }
 

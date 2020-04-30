@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { PriseMedoc, Ordonnance } from './interfaces';
+import { PriseMedoc, Ordonnance, Medoc } from './interfaces';
 import { startOfDay, addHours, addDays } from 'date-fns';
 import { Data } from '@angular/router';
 import { Parameters } from './parameters'
@@ -39,7 +39,7 @@ export class GsbMainService {
 
   dataLoaded: boolean = false;
 
-  
+  niceColors: string[] = ["#ff7b00", "#c23616", "#0097e6", "#8c7ae6", "#e1b12c", "#44bd32"]
 
   data: Data = {
     id: 0,
@@ -69,21 +69,21 @@ export class GsbMainService {
             nbFoisParSemaine: 7,
             finDeLaPrise: undefined,
             prises: [
-              // {
-              //   id: 1,
-              //   datePrise: addHours(startOfDay(addDays(new Date(), -3)), 20),
-              //   pris: false
-              // },
-              // {
-              //   id: 2,
-              //   datePrise: addHours(startOfDay(addDays(new Date(), -2)), 20),
-              //   pris: false
-              // },
-              // {
-              //   id: 3,
-              //   datePrise: addHours(startOfDay(addDays(new Date(), -1)), 20),
-              //   pris: false
-              // },
+              {
+                id: 1,
+                datePrise: addHours(startOfDay(addDays(new Date(), -3)), 20),
+                pris: false
+              },
+              {
+                id: 2,
+                datePrise: addHours(startOfDay(addDays(new Date(), -2)), 20),
+                pris: false
+              },
+              {
+                id: 3,
+                datePrise: addHours(startOfDay(addDays(new Date(), -1)), 20),
+                pris: false
+              },
               {
                 id: 4,
                 datePrise: addHours(startOfDay(new Date()), 20),
@@ -91,17 +91,17 @@ export class GsbMainService {
               },
             ]
           },
-          // {
-          //   id: 1,
-          //   nom: "Endorphine",
-          //   nbBoiteMax: 7,
-          //   nbBoiteAchetees: 2,
-          //   nbMedocParBoite: 45,
-          //   nbFoisParJour: 1,
-          //   nbFoisParSemaine: 3,
-          //   finDeLaPrise: new Date('2020-05-24T11:15:00'),
-          //   prises: []
-          // }
+          {
+            id: 1,
+            nom: "Endorphine",
+            nbBoiteMax: 7,
+            nbBoiteAchetees: 2,
+            nbMedocParBoite: 45,
+            nbFoisParJour: 1,
+            nbFoisParSemaine: 6,
+            finDeLaPrise: new Date('2020-05-24T11:15:00'),
+            prises: []
+          }
         ]
       }
   ]
@@ -143,6 +143,131 @@ export class GsbMainService {
     }
   ]
 
+  private getData(): Data {
+    return this.TEST_listeOrdonnances
+  }
+
+  private getPrisesList(data: Data): PriseMedoc[] {
+    
+    let listeDesPrises: PriseMedoc[] = []
+    let listesDatesProgramee: Date[] = []
+
+    data.ordonnances.forEach((ordonnance: Ordonnance) => {
+      ordonnance.medocs.forEach((medoc: Medoc) => {
+
+        let color: string
+
+        if (medoc.color != undefined) {
+          color = medoc.color
+        } else {
+          color = "#a3aaaf"
+        }
+
+        // On ajoute les prises enregistrées
+        medoc.prises.forEach(prise => {
+
+          // listeDesPrises.push({
+          //   id: prise.id,
+          //   datePrise: prise.datePrise,
+          //   pris: prise.pris,
+          //   event: {
+          //     allDay: false,
+          //     draggable: true,
+          //     start: prise.datePrise,
+          //     title: medoc.nom
+          //   }
+          // })
+
+          listeDesPrises.push(this.addPriseEvent(prise, medoc.nom, color)) 
+        
+
+          // On note au passage les dates de ces prises pour savoir quand en créer et là où n'y en a pas
+          if (!listesDatesProgramee.includes(prise.datePrise)) {
+            listesDatesProgramee.push(startOfDay(prise.datePrise))
+          }
+
+        });
+
+        // On teste les ajout de prises sur 3 jours, le jour actuel comptant
+        for (let dayIncrement = 0; dayIncrement < 3; dayIncrement++) {
+
+          // On teste s'il y a déjà des prises pour ce médicament le jour en question
+          let founded: boolean = false
+          listesDatesProgramee.forEach(date => {
+            if (date.getDate() === addDays(startOfDay(new Date()), dayIncrement).getDate()) {
+              founded = true
+            }
+          });
+
+          // console.log("!(medoc.finDeLaPrise < (new Date()))) :", `!(${medoc.finDeLaPrise} < (${new Date()})) :`, !(medoc.finDeLaPrise < (new Date())))
+          // console.log("ordonnance.dateFin >= (new Date()) :", `${ordonnance.dateFin} >= (${new Date()}) :`, ordonnance.dateFin >= (new Date()))
+          // console.log("\n")
+
+          // Si il n'y a pas de prises ce jour là  ET  qu'il est censé y avoir des prises ce jour là
+          // ET  que l'ordonnance est valide  ET  que le médicament est encore prescrit  (en gros s'il faut ajouter une prise)
+          if (!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), medoc.nbFoisParSemaine) && ordonnance.dateFin >= (new Date()) && !(medoc.finDeLaPrise < (new Date()))) {
+
+            // console.log(`Creation de ${medoc.nom} : ${addDays(startOfDay(new Date()), dayIncrement)}`)
+
+            // S'il y a un médicament a prendre par jour
+            if (medoc.nbFoisParJour === 1) {
+
+              listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+
+            }
+            // S'il y a 2 médicaments a prendre par jour
+            else if (medoc.nbFoisParJour === 2) {
+
+              listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom, color))
+              listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+
+            }
+            // S'il y a plus de 2 médicaments a prendre par jour
+            else if (medoc.nbFoisParJour !== 0) {
+
+              listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom, color))
+              listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+
+              const nbFoisEnPlus = medoc.nbFoisParJour - 1
+
+              // On fais une moyenne et on attribue des médicaments entre les heures du matin et du soir
+              let timeLeft = (Parameters.heureSoir - Parameters.heureMatin) / nbFoisEnPlus
+
+              for (let index = 1; index < nbFoisEnPlus; index++) {
+
+                listeDesPrises
+                  .push(
+                    this.createPrise(
+                      addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin + index * timeLeft),
+                      medoc.nom,
+                      color
+                    )
+                  )
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Finallement, on trie la liste avant de la renvoyer
+    listeDesPrises = listeDesPrises.sort((n1, n2) => {
+      if (n1.datePrise > n2.datePrise) {
+        return 1;
+      }
+      if (n1.datePrise < n2.datePrise) {
+        return -1;
+      }
+      return 0;
+    });
+
+    // console.log("listeDesPrises", listeDesPrises)
+
+    return listeDesPrises
+
+
+  }
+
   public refresh(): Promise<void> {
 
     // const provider: GsbProvider = this
@@ -155,90 +280,8 @@ export class GsbMainService {
       // TO SIMULATE A CONNECTION
       setTimeout((self: GsbMainService = this) => {
 
-        self.data.ordonnances = self.TEST_listeOrdonnances
-        // self.listeDesPrises = self.TEST_listePrises
-
-        this.data.ordonnances.forEach(ordonnance => {
-          ordonnance.medocs.forEach(medoc => {
-
-            console.log(medoc);
-
-            let listesDatesProgramee: Date[] = []
-
-            // Les anciennes prises
-            medoc.prises.forEach(prise => {
-              this.listeDesPrises.push({
-                id: prise.id,
-                datePrise: prise.datePrise,
-                pris: prise.pris,
-                event: {
-                  allDay: false,
-                  draggable: true,
-                  start: prise.datePrise,
-                  title: medoc.nom
-                }
-              })
-
-              if (!listesDatesProgramee.includes(prise.datePrise)) {
-                listesDatesProgramee.push(startOfDay(prise.datePrise))
-              }
-
-            });
-
-
-            for (let dayIncrement = 0; dayIncrement < 3; dayIncrement++) {
-
-              let founded: boolean = false
-              listesDatesProgramee.forEach(date => {
-                if (date.getDate() === addDays(startOfDay(new Date()), dayIncrement).getDate()) {
-                  founded = true
-                }
-              });
-
-              if (!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), 7)) {
-                
-                // console.log(`Creation de ${medoc.nom} : ${addDays(startOfDay(new Date()), dayIncrement)}`)
-
-                if (medoc.nbFoisParJour === 1) {
-
-                  this.listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom))
-
-                }
-                else if (medoc.nbFoisParJour === 2) {
-
-                  this.listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom))
-                  this.listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom))
-
-                }
-                else if (medoc.nbFoisParJour !== 0) {
-
-                  this.listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom))
-                  this.listeDesPrises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom))
-
-                  const nbFoisEnPlus = medoc.nbFoisParJour - 1
-
-                  let timeLeft = (Parameters.heureSoir - Parameters.heureMatin) / nbFoisEnPlus
-
-                  for (let index = 1; index < nbFoisEnPlus; index++) {
-
-                    this.listeDesPrises
-                    .push(
-                      this.createPrise(
-                        addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin + index * timeLeft),
-                        medoc.nom
-                      )
-                    )
-
-                  }
-
-                }
-
-              } 
-              
-            }
-
-          });
-        });
+        self.data.ordonnances = self.getData()
+        self.listeDesPrises = self.getPrisesList(self.data)
 
         console.log('Data loading completed : ', this.data.ordonnances)
         this.dataLoaded = true
@@ -262,26 +305,50 @@ export class GsbMainService {
     monTableau[6] = [false, false, true, false, true, true, true, true]
 
     /* To print the array */
-    // console.log("   0 1 2 3 4 5 6\n");
+    // console.log("   0 1 2 3 4 5 6 (DAY)\n");
     // for (var i: number = 7; i >= 0; i--) {
     //   console.log(`${i} |${monTableau[0][i] ? 1 : 0}|${monTableau[1][i] ? 1 : 0}|${monTableau[2][i] ? 1 : 0}|${monTableau[3][i] ? 1 : 0}|${monTableau[4][i] ? 1 : 0}|${monTableau[5][i] ? 1 : 0}|${monTableau[6][i] ? 1 : 0}`);
     // }
+    // console.log("(NB)");
+    // console.log(`Test (jour=${idJour}, nb=${nbPrisesSemaines}) = ${monTableau[idJour][nbPrisesSemaines]}`)
+    // console.log("\n")
 
-    // console.log(`Test (jour=${idJour}, nb=${nbPrisesSemaines}) = ${monTableau[idJour][nbPrisesSemaines]}`);
     return monTableau[idJour][nbPrisesSemaines];
 
   }
 
-  private createPrise(date: Date, medocName):PriseMedoc {
+  private createPrise(date: Date, medocName, color):PriseMedoc {
     return {
-      id: -1,
-      datePrise: date,
-      pris: false,
+        id: -1,
+        datePrise: date,
+        pris: false,
+        event: {
+          allDay: false,
+          draggable: true,
+          start: date,
+          title: medocName,
+          color: {
+            primary: color,
+            secondary: color + "50",
+          },
+        }
+      }
+  }
+
+  private addPriseEvent(priseMedoc: PriseMedoc, medocName: string, color: string): PriseMedoc {
+    return {
+      id: priseMedoc.id,
+      datePrise: priseMedoc.datePrise,
+      pris: priseMedoc.pris,
       event: {
         allDay: false,
         draggable: true,
-        start: date,
-        title: medocName
+        start: priseMedoc.datePrise,
+        title: medocName,
+        color: {
+          primary: color,
+          secondary: color + "50",
+        },
       }
     }
   }
