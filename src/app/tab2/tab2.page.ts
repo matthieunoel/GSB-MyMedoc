@@ -37,6 +37,15 @@ export class Tab2Page {
   }
 
 
+  public refreshList(refresher: any) {
+    // this.updatePrisesList()
+    // this.updateEventListFromPrisesList()
+    setTimeout(() => {
+      refresher.detail.complete()
+    }, 1500);
+  }
+
+
   public selectOrdonnance(id: number) {
 
     for (let index = 0; index < this.gsbMainService.data.ordonnances.length; index++) {

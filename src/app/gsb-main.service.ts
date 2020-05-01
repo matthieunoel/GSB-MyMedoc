@@ -27,6 +27,10 @@ export class GsbMainService {
 
     // }, 500);
 
+    // window.setInterval(() => {
+    //   console.log(this.data);
+    // }, 5000);
+
     this.loadParameters()
 
   }
@@ -156,7 +160,7 @@ export class GsbMainService {
       this.dataLoaded = true
     }
   }
-
+ 
   public loadData(): Promise<void> {
 
     // console.log('Loading data ...');
@@ -200,7 +204,14 @@ export class GsbMainService {
     let ordo: Ordonnance[]
     console.log("Reading cache ...")
     if (typeof (Storage) != "undefined") {
-      ordo = JSON.parse(localStorage.getItem("ordo"))
+      const str: string = localStorage.getItem("ordo")
+      // console.log(str)
+      if (str !== "NaN" && str != null && str != undefined) {
+        ordo = JSON.parse(str)  
+      }
+      else {
+        ordo = []
+      }
       console.log("Data extracted succesfully from cache")
     } else {
       console.error("Cache is not available for now ...")
@@ -211,6 +222,7 @@ export class GsbMainService {
   }
 
   public addOrdonnance(ordonnance: Ordonnance) {
+    // console.log("addOrdonnance START")
     this.data.ordonnances.push(ordonnance)
     console.log("Ordonnance added :");
     console.log("this.data.ordonnances", this.data.ordonnances)
@@ -488,7 +500,7 @@ export class GsbMainService {
     let id: number = 0
     if (typeof (Storage) != "undefined") {
       let str = localStorage.getItem("id")
-      if (str !== "NaN") {
+      if (str !== "NaN" && str != null && str != undefined) {
         id = parseInt(str)
       }
     } else {

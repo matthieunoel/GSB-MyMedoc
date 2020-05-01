@@ -75,6 +75,17 @@ export class Tab1Page {
     if (step === "list") {  
       this.updatePrisesList()
     }
+    else if (step === "calendar") {
+      // console.log("CAAAAAAAAAAALENDAAAAAR");
+      this.updateEventListFromPrisesList()
+      this.refresh.next()
+      // this.events.push({
+      //   title: "TEST",
+      //   start: new Date(),
+      // })
+      // console.log(this.events);
+      
+    }
     this.currentStep = step;
   }
 
@@ -97,7 +108,6 @@ export class Tab1Page {
     this.gsbMainService.changePrise(prise)
   }
 
-
   public refreshList(refresher: any) {
     this.updatePrisesList()
     setTimeout(() => {
@@ -105,22 +115,32 @@ export class Tab1Page {
     }, 1500);
   }
 
-  public DELETE_ME_TEST() {
-    // this.updatePrisesList()
-    console.log('this.gsbMainService.data :', this.gsbMainService.data);
+  public refreshCalendar(refresher: any) {
+    this.updatePrisesList()
+    this.updateEventListFromPrisesList()
+    setTimeout(() => {
+      refresher.detail.complete()
+    }, 1500);
   }
 
-  // public switch() {
-  //   if (this.currentStep === "calendar") {
-  //     this.currentStep = "list"
-  //   }
-  //   else {
-  //     this.currentStep = "calendar"
-  //     // this.gsbMainService.refreshEventList()
-  //   }
-  // }
 
+  public switchListCalendar() {
+    if (this.currentStep === "list") {
+      this.changeStepTo("calendar")
+    }
+    else {
+      this.changeStepTo("list")
+    }
+  }
 
+  public updateEventListFromPrisesList() {
+    this.events = []
+    this.prisesList.forEach((prise: PriseMedoc) => {
+      prise.event.start = new Date(prise.event.start.toString())
+      // console.log(prise.event)
+      this.events.push(prise.event)
+    })
+  }
   
 
   // public async updateData() {
@@ -134,16 +154,25 @@ export class Tab1Page {
 
   // }
 
-  // refresh: Subject<any> = new Subject();
-  // eventTimesChanged({event, newStart}: CalendarEventTimesChangedEvent): void {
-  //   event.start = newStart;
-  //   this.gsbMainService.listeDesPrises.map(obj => obj.event).forEach(GSBevent => {
-  //     if (GSBevent.id === event.id) {
-  //       GSBevent.start = newStart
-  //     }
-  //   });
-  //   console.log(`Event ${event.title} changed to ${event.start}`);
-  //   this.refresh.next();
-  // }
+  /* When events moved on the calendar */
+  refresh: Subject<any> = new Subject();
+  eventTimesChanged({event, newStart}: CalendarEventTimesChangedEvent): void {
+    event.start = newStart;
+    // this.gsbMainService.listeDesPrises.map(obj => obj.event).forEach(GSBevent => {
+    //   if (GSBevent.id === event.id) {
+    //     GSBevent.start = newStart
+    //   }
+    // });
+    // console.log(`Event ${event.title} changed to ${event.start}`);
+    for (let index = 0; index < this.prisesList.length; index++) {
+      if (this.prisesList[index].event.id === event.id) {
+        this.prisesList[index].event.start = newStart
+        this.prisesList[index].datePrise = newStart
+        this.gsbMainService.changePrise(this.prisesList[index])
+      }
+      
+    }
+    this.refresh.next();
+  }
  
 }

@@ -15,6 +15,9 @@
     </div> -->
   <ion-content *ngIf="checkStep('main')" class="main animated slideInRight"
     style="animation-duration: 0.5s;">
+    <ion-refresher slot = "fixed"(ionRefresh) = "refreshList($event)" >
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-list>
 
       <div *ngFor="let ordonnance of this.gsbMainService.data.ordonnances"

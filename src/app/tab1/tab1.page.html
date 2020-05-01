@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-icon name="alarm-outline" slot="start" style="margin: 0.4em;"
         size="large"></ion-icon>
-        <!-- <ion-button color="light" slot="end" (click)="switch()"><ion-icon name="calendar-sharp" size="large" class="animated slow swing infinite"></ion-icon></ion-button> -->
+      <!-- <ion-button color="light" slot="end" (click)="switch()"><ion-icon name="calendar-sharp" size="large" class="animated slow swing infinite"></ion-icon></ion-button> -->
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -12,14 +12,20 @@
   </ion-header>
 
 
-  <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
-      <ion-refresher slot="fixed" (ionRefresh)="refreshList($event)">
-        <ion-refresher-content></ion-refresher-content>
-      </ion-refresher>
-    <ion-list style="margin-bottom: 10vh;"> 
-      <ion-item *ngFor="let prise of prisesList" style="width: 100%;">
-        <ion-toggle slot="end" (click)="switchClick(prise)" [(ngModel)]="prise.pris"></ion-toggle>
-        <!-- checked="{{ prise.pris }}" -->
+  <ion-content *ngIf="checkStep('list')" class="animated slideInDown"
+    style="animation-duration: 0.5s;">
+    <ion-refresher slot="fixed" (ionRefresh)="refreshList($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list style="margin-bottom: 10vh;">
+      <ion-item *ngFor="let prise of prisesList" style="width: 100%;
+        padding-left: 0;">
+        <ion-toggle slot="end" (click)="switchClick(prise)"
+          [(ngModel)]="prise.pris"></ion-toggle>
+        <div style="height: calc(100% - 4px); width: 10px; border: 2px solid;
+          margin-right: 0.7em;"
+          [ngStyle]="{'color': prise.event.color.primary, 'background-color':
+          prise.event.color.secondary}"> </div>
         <ion-label>
           <h2 style="font-size: large">{{ prise.event.title }}</h2>
           <p>({{ gsbMainService.printDate(prise.datePrise) }})</p>
@@ -31,20 +37,17 @@
           <h2 style="font-size: large">. . .</h2>
         </ion-label>
       </ion-item>
+
     </ion-list>
   </ion-content>
 
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="DELETED_ME_TEST()">
-    <ion-fab-button color="dark">
-      <ion-icon name="calendar-sharp" size="large" class="animated slow swing"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list>
-    </ion-fab-list>
-  </ion-fab>
-
-  <!-- <ion-content class="ion-padding" *ngIf="checkStep('calendar')">
+  <ion-content class="ion-padding" *ngIf="checkStep('calendar')">
+    <ion-refresher slot="fixed" (ionRefresh)="refreshCalendar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <div id="CONTENT" style="width: 100%; display: flex; flex-direction: column;
-      align-items: center; animation-duration: 0.5s;" class="animated slideInUp">
+      align-items: center; animation-duration: 0.5s;" class="animated
+      slideInUp">
       <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek"
         [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22"
         [events]="events" [refresh]="refresh"
@@ -53,7 +56,16 @@
     </div>
   </ion-content>
 
-  <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed"
+    (click)="switchListCalendar()">
+    <ion-fab-button color="dark">
+      <ion-icon name="calendar-sharp" size="large" class="animated slow swing"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!-- <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
     <ion-list style="margin-bottom: 10vh;"> 
       <ion-item *ngFor="let prise of gsbMainService.listeDesPrises" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
           <ion-toggle slot="end" [(ngModel)]="prise.pris"></ion-toggle>
@@ -78,5 +90,4 @@
         <ion-fab-list>
         </ion-fab-list>
       </ion-fab> -->
-
 </div>
