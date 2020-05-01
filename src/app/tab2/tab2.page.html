@@ -10,6 +10,7 @@
     </ion-toolbar>
   </ion-header>
 
+
   <!-- <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
     </div> -->
@@ -119,6 +120,7 @@
     </ion-list>
 
   </ion-content>
+
 
   <ion-content *ngIf="checkStep('medoc-details')" class="medoc-details animated
     slideInRight" style="animation-duration: 0.5s;">
@@ -246,6 +248,7 @@
     </ion-list>
   </ion-content>
 
+
   <ion-content *ngIf="checkStep('ordonnance-add')" class="ordonnance-add
     animated slideInRight" style="animation-duration: 0.5s;">
 
@@ -303,7 +306,7 @@
             <ion-list>
 
               <div *ngFor="let medoc of formMedocList">
-                <ion-item button (click)="startEditMedoc(medoc.id, form)">
+                <ion-item button (click)="startEditMedoc(medoc.id, form, true)">
                   <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
                   <ion-label class="ion-text-wrap">
                     <p style="font-size: medium">{{ medoc.nom }}</p>
@@ -325,11 +328,11 @@
 
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">
-          <ion-button color="light" (click)="changeStepTo('main')">
+          <!-- <ion-button color="light" (click)="changeStepTo('main')">
             <ion-icon slot="end" name="add-outline" style="transform:
               rotate(45deg);"></ion-icon>
             Annuler
-          </ion-button>
+          </ion-button> -->
           <ion-button color="light" [disabled]="form.invalid" type="submit">
             <ion-icon slot="end" name="add-outline"></ion-icon>
             Ajouter
@@ -339,6 +342,7 @@
       </form>
     </ion-list>
   </ion-content>
+
 
   <ion-content *ngIf="checkStep('ordonnance-modif')" class="ordonnance-add
     animated slideInRight" style="animation-duration: 0.5s;">
@@ -397,7 +401,7 @@
             <ion-list>
 
               <div *ngFor="let medoc of formMedocList">
-                <ion-item button (click)="startEditMedoc(medoc.id, form)">
+                <ion-item button (click)="startEditMedoc(medoc.id, form, false)">
                   <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
                   <ion-label class="ion-text-wrap">
                     <p style="font-size: medium">{{ medoc.nom }}</p>
@@ -419,7 +423,7 @@
 
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">
-          <ion-button color="light" (click)="changeStepTo('main')">
+          <ion-button color="light" (click)="changeStepTo('ordonnance-details')">
             <ion-icon slot="end" name="add-outline" style="transform:
               rotate(45deg);"></ion-icon>
             Annuler
@@ -433,6 +437,7 @@
       </form>
     </ion-list>
   </ion-content>
+
 
   <ion-content *ngIf="checkStep('medoc-add')" class="medoc-add animated
     slideInRight" style="animation-duration: 0.5s;">
@@ -517,9 +522,29 @@
           </ion-datetime>
         </ion-item>
 
+        <ion-item>
+        <div>
+          <!-- <h2 style="font-size: large">Couleur du rappel : </h2> -->
+          <ion-label class="ion-text-wrap">
+            Couleur du rappel :
+          </ion-label>
+          <div style="display: flex; flex-flow: row; justify-content:
+            flex-start; align-items: center; margin-top: 0.3em;">
+            <div *ngFor="let couleur of this.gsbMainService.niceColors">
+              <ion-icon name="square" [ngStyle]="{'color': couleur }"
+                style="font-size: calc(100vw/8);"
+                (click)="selectFormColor(couleur)"></ion-icon>
+              <ion-icon *ngIf="formSelectedMedocColor === couleur"
+                name="square-outline" style="font-size: calc(100vw/8); position:
+                relative; margin-left: calc(-100vw/8);"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">
-          <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
+          <ion-button color="light" (click)="cancelMedoc()">
             <ion-icon slot="end" name="add-outline" style="transform:
               rotate(45deg);"></ion-icon>
             Annuler
@@ -534,6 +559,7 @@
     </ion-list>
 
   </ion-content>
+
 
   <ion-content *ngIf="checkStep('medoc-edit')" class="medoc-add animated
     slideInRight" style="animation-duration: 0.5s;">
@@ -623,10 +649,14 @@
 
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">
-          <ion-button color="light" (click)="changeStepTo('ordonnance-add')">
+          <ion-button color="light" (click)="cancelMedoc()">
             <ion-icon slot="end" name="add-outline" style="transform:
               rotate(45deg);"></ion-icon>
             Annuler
+          </ion-button>
+          <ion-button color="light" (click)="removeEditedMedoc()">
+            <ion-icon slot="end" name="trash-sharp"></ion-icon>
+            Supprimer
           </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
             <ion-icon slot="end" name="pencil-sharp"></ion-icon>
@@ -638,5 +668,6 @@
     </ion-list>
 
   </ion-content>
+
 
 </div>

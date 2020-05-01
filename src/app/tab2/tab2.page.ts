@@ -19,8 +19,10 @@ export class Tab2Page {
   formInternalId = 0
   formEditMedoc: boolean = false
   formSelectedMedoc: Medoc
+  formSelectedMedocColor: string
   formSelectedMedocIndex: number
   formSavedOrdonnance: any
+  creationOrdonnance: boolean
 
 
   constructor(private gsbMainService: GsbMainService) {
@@ -204,6 +206,8 @@ export class Tab2Page {
       dateFin: form.form.value.dateFin
     }
 
+    this.formSelectedMedocColor = undefined
+
     this.currentStep = "medoc-add"
 
   }
@@ -223,6 +227,7 @@ export class Tab2Page {
         nbFoisParJour: form.form.value.nbFoisParJour,
         nbFoisParSemaine: form.form.value.nbFoisParSemaine,
         finDeLaPrise: form.form.value.finDeLaPrise,
+        couleur: this.formSelectedMedocColor,
         prises: []
       }
 
@@ -231,7 +236,13 @@ export class Tab2Page {
       this.formInternalId++;
 
       form.reset();
-      this.changeStepTo('ordonnance-add');
+      // this.changeStepTo('ordonnance-add');
+      if (this.creationOrdonnance) {
+        this.changeStepTo('ordonnance-add');
+      }
+      else {
+        this.changeStepTo('ordonnance-modif')
+      }
 
     }
     catch (err) {
@@ -241,8 +252,14 @@ export class Tab2Page {
 
   }
 
+  public selectFormColor(color: string) {
+    this.formSelectedMedocColor = color
+  }
 
-  public startEditMedoc(id: number, form: any) {
+
+  public startEditMedoc(id: number, form: any, returnToOrdoCrea: boolean) {
+
+    this.creationOrdonnance = returnToOrdoCrea
 
     this.formSavedOrdonnance = {
       titre: form.form.value.titre,
@@ -264,6 +281,8 @@ export class Tab2Page {
     } else {
       this.currentStep = "medoc-edit"
     }
+
+    this.formSelectedMedocColor = this.formSelectedMedoc.couleur
 
   }
 
@@ -287,7 +306,13 @@ export class Tab2Page {
       this.formMedocList[this.formSelectedMedocIndex] = formedMedoc
 
       form.reset();
-      this.changeStepTo('ordonnance-add');
+      
+      if (this.creationOrdonnance) {
+        this.changeStepTo('ordonnance-add');
+      }
+      else {
+        this.changeStepTo('ordonnance-modif')
+      }
 
     }
     catch (err) {
@@ -295,6 +320,18 @@ export class Tab2Page {
       this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
     }
 
+  }
+
+  public cancelMedoc(){
+    if (this.creationOrdonnance) {
+      this.changeStepTo('ordonnance-add')
+    } else {
+      this.changeStepTo('ordonnance-modif')
+    }
+  }
+
+  public removeEditedMedoc() {
+    console.log("OK")
   }
 
 
