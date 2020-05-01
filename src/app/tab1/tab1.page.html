@@ -10,11 +10,39 @@
       <ion-title>Mes rappels</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <!-- <ion-button (click)="switch()" color="light" expand="block"
-    style="margin: 1.4em;">TOUCH-ME</ion-button> -->
 
-  <ion-content class="ion-padding" *ngIf="checkStep('calendar')">
+
+  <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
+      <ion-refresher slot="fixed" (ionRefresh)="refreshList($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+    <ion-list style="margin-bottom: 10vh;"> 
+      <ion-item *ngFor="let prise of prisesList" style="width: 100%;">
+        <ion-toggle slot="end" (click)="switchClick(prise)" [(ngModel)]="prise.pris"></ion-toggle>
+        <!-- checked="{{ prise.pris }}" -->
+        <ion-label>
+          <h2 style="font-size: large">{{ prise.event.title }}</h2>
+          <p>({{ gsbMainService.printDate(prise.datePrise) }})</p>
+        </ion-label>
+      </ion-item>
+      <ion-item style="width: 100%;">
+        <ion-toggle slot="end" [(ngModel)]="sausage" disabled="true"></ion-toggle>
+        <ion-label>
+          <h2 style="font-size: large">. . .</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="DELETED_ME_TEST()">
+    <ion-fab-button color="dark">
+      <ion-icon name="calendar-sharp" size="large" class="animated slow swing"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!-- <ion-content class="ion-padding" *ngIf="checkStep('calendar')">
     <div id="CONTENT" style="width: 100%; display: flex; flex-direction: column;
       align-items: center; animation-duration: 0.5s;" class="animated slideInUp">
       <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek"
@@ -28,14 +56,10 @@
   <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
     <ion-list style="margin-bottom: 10vh;"> 
       <ion-item *ngFor="let prise of gsbMainService.listeDesPrises" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
-        <!-- <ion-icon slot="end" name="chevron-forward-outline"
-          (click)="this.gsbMainService.alertInfo('TITRE', 'INFO')"></ion-icon> -->
           <ion-toggle slot="end" [(ngModel)]="prise.pris"></ion-toggle>
         <ion-label>
           <h2 style="font-size: large">{{ prise.event.title }}</h2>
-          <!-- <p style="font-size: ridiculous;">({{ prise.datePrise.toLocaleString() }})</p> -->
           <p style="font-size: ridiculous;">({{ printDate(prise.datePrise) }})</p>
-          <!-- <p style="font-size: ridiculous;">({{ prise.datePrise.format("mm/dd/yy h:MM:ss TT") }})</p> -->
         </ion-label>
       </ion-item>
       <ion-item style="width: 100%;">
@@ -53,6 +77,6 @@
         </ion-fab-button>
         <ion-fab-list>
         </ion-fab-list>
-      </ion-fab>
+      </ion-fab> -->
 
 </div>

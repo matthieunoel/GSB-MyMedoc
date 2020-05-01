@@ -17,7 +17,8 @@
     style="animation-duration: 0.5s;">
     <ion-list>
 
-      <div *ngFor="let ordonnance of this.gsbMainService.data.ordonnances" class="main animated
+      <div *ngFor="let ordonnance of this.gsbMainService.data.ordonnances"
+        class="main animated
         slideInRight" style="animation-duration: 0.5s;">
         <ion-item (click)="selectOrdonnance(ordonnance.id)">
           <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
@@ -165,7 +166,6 @@
           <ion-item-option value="#000000">Black</ion-option>
         </ion-select>
       </ion-item> -->
-
       <ion-item>
         <!-- <ion-select interface="popover" [(ngModel)]="selectedMedoc.color">
           <ion-select-option *ngFor="let couleur of this.gsbMainService.niceColors" value="{{ couleur }}">
@@ -174,10 +174,15 @@
         </ion-select> -->
         <div>
           <h2 style="font-size: large">Couleur du rappel : </h2>
-          <div style="display: flex; flex-flow: row; justify-content: flex-start; align-items: center;">
+          <div style="display: flex; flex-flow: row; justify-content:
+            flex-start; align-items: center;">
             <div *ngFor="let couleur of this.gsbMainService.niceColors">
-              <ion-icon name="square" [ngStyle]="{'color': couleur }" style="font-size: calc(100vw/8);" (click)="selectColor(couleur)"></ion-icon>
-              <ion-icon *ngIf="selectedMedoc.couleur === couleur" name="square-outline" style="font-size: calc(100vw/8); position: relative; margin-left: calc(-100vw/8);"></ion-icon>
+              <ion-icon name="square" [ngStyle]="{'color': couleur }"
+                style="font-size: calc(100vw/8);"
+                (click)="selectColor(couleur)"></ion-icon>
+              <ion-icon *ngIf="selectedMedoc.couleur === couleur"
+                name="square-outline" style="font-size: calc(100vw/8); position:
+                relative; margin-left: calc(-100vw/8);"></ion-icon>
             </div>
             <!-- <div *ngIf="selectedMedoc.couleur === couleur" style="color: black; position: relative; width: 10px; margin-left: -10px;"> v </div> -->
           </div>

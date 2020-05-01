@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Ordonnance, Medoc } from '../interfaces';
 import { GsbMainService } from '../gsb-main.service';
-// import { Animation, AnimationController } from '@ionic/angular';
-// import { createAnimation } from "@ionic/core";
 
 @Component({
   selector: 'app-tab2',
@@ -14,9 +12,8 @@ export class Tab2Page {
 
   // TODO: Add an edit page for ordonnance
 
-  // listeOrdonnances: Ordonnance[] = []
   currentStep: string = "main"
-  selectedOrdonnance: Ordonnance 
+  selectedOrdonnance: Ordonnance
   selectedMedoc: Medoc
   formMedocList: Medoc[] = []
   formInternalId = 0
@@ -234,25 +231,11 @@ export class Tab2Page {
     }
 
   }
-  
+
 
   public selectColor(color: string) {
-    // console.log("Color changed to :", color)
-    // this.selectedMedoc.couleur = color
-
-    // this.gsbMainService.data.ordonnances.forEach((ordonnance: Ordonnance) => {
-    //   if (ordonnance.id === this.selectedOrdonnance.id) {
-    //     ordonnance.medocs.forEach((medoc: Medoc) => {
-    //       if (medoc.id === this.selectedMedoc.id) {
-    //         medoc.couleur = color
-    //       }
-    //     });
-    //   }
-    // });
-
     this.gsbMainService.changeColor(this.selectedMedoc, color)
-
   }
-  
+
 
 }
