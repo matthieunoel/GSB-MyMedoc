@@ -36,7 +36,9 @@ export class GsbMainService {
   }
 
   public dataLoaded: boolean = false;
-  public niceColors: string[] = ["#ff7b00", "#c23616", "#0097e6", "#8c7ae6", "#e1b12c", "#44bd32"]
+  // public niceColors: string[] = ["#ff7b00", "#c23616", "#0097e6", "#8c7ae6", "#e1b12c", "#44bd32"] /* Custom Palette */
+  // public niceColors: string[] = ["#f53b57", "#3c40c6", "#0fbcf9", "#05c46b", "#ffa801", "#1e272e"] /* Swedish Palette */
+  public niceColors: string[] = ["#F44336", "#9C27B0", "#2196F3", "#4CAF50", "#FF9800", "#607D8B"] /* Basic Palette */
   public data: Data = {
     id: 0,
     login: 'LOGIN',
@@ -250,6 +252,8 @@ export class GsbMainService {
     let listeDesPrises: PriseMedoc[] = []
     let listesDatesProgramee: Date[] = []
 
+    this.generateNewPrisesLists()
+
     this.data.ordonnances.forEach((ordonnance: Ordonnance) => {
       ordonnance.medocs.forEach((medoc: Medoc) => {
 
@@ -260,8 +264,6 @@ export class GsbMainService {
         } else {
           color = "#a3aaaf"
         }
-
-        this.generateNewPrisesLists()
 
         medoc.prises.forEach(prise => {
           listeDesPrises.push(this.addPriseEvent(prise, medoc.nom, color))
@@ -287,7 +289,6 @@ export class GsbMainService {
   private generateNewPrisesLists() {
 
     // let listeDesPrises: PriseMedoc[] = []
-    let listesDatesProgramee: Date[] = []
 
     this.data.ordonnances.forEach((ordonnance: Ordonnance) => {
       ordonnance.medocs.forEach((medoc: Medoc) => {
@@ -298,6 +299,8 @@ export class GsbMainService {
         } else {
           color = "#a3aaaf"
         }
+
+        let listesDatesProgramee: Date[] = []
 
         // On note les dates de ces prises pour savoir quand en créer et là où n'y en a pas
         medoc.prises.forEach(prise => {
@@ -311,7 +314,7 @@ export class GsbMainService {
 
         // On teste les ajout de prises sur 3 jours, le jour actuel comptant
         for (let dayIncrement = 0; dayIncrement < 3; dayIncrement++) {
-
+          
           // On teste s'il y a déjà des prises pour ce médicament le jour en question
           let founded: boolean = false
           listesDatesProgramee.forEach(date => {
@@ -321,7 +324,7 @@ export class GsbMainService {
             }
           });
 
-          // console.log(`The date ${addDays(startOfDay(new Date()), dayIncrement)} was founded :`, founded)
+          // console.log(`[${medoc.nom}] - The date ${addDays(startOfDay(new Date()), dayIncrement)} was founded :`, founded)
 
           // console.log("!(medoc.finDeLaPrise < (new Date()))) :", `!(${medoc.finDeLaPrise} < (${new Date()})) :`, !(medoc.finDeLaPrise < (new Date())))
           // console.log("ordonnance.dateFin >= (new Date()) :", `${ordonnance.dateFin} >= (${new Date()}) :`, ordonnance.dateFin >= (new Date()))
@@ -345,7 +348,7 @@ export class GsbMainService {
           // ET  que l'ordonnance est valide  ET  que le médicament est encore prescrit  (en gros s'il faut ajouter une prise)
           if (!founded && this.testNewPriseMedoc((addDays(startOfDay(new Date()), dayIncrement)).getDay(), medoc.nbFoisParSemaine) && ordoDate >= actualDate && (medocDate >= actualDate || medocDate === "")) {
 
-            // console.log(`Creation de ${medoc.nom} : ${addDays(startOfDay(new Date()), dayIncrement)}`)
+            console.log(`Creation de ${medoc.nom} : ${addDays(startOfDay(new Date()), dayIncrement)}`)
 
 
             // S'il y a un médicament a prendre par jour
