@@ -3,6 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { PriseMedoc, Ordonnance, Medoc, Data } from './interfaces';
 import { startOfDay, addHours, addDays } from 'date-fns';
 import { Parameters } from './parameters'
+import { promise } from 'protractor';
 // const parameters: Parameters = require('./parameters')
 
 const dateFormater = require('date-format');
@@ -244,6 +245,32 @@ export class GsbMainService {
     console.log(`Medoc "${paramMedoc.nom}" color changed to ${paramMedoc.couleur}`)
 
     this.saveData()
+  }
+
+  public modifyOrdonnance(ordonnance: Ordonnance) {
+    
+    for (let index = 0; index < this.data.ordonnances.length; index++) {
+      if (this.data.ordonnances[index].id === ordonnance.id) {
+        console.log(`Modifying ordonnance "${this.data.ordonnances[index].titre}" :`, ordonnance)
+        this.data.ordonnances[index] = ordonnance
+      }
+    }
+
+    this.saveData()
+
+  }
+
+  public removeOrdonnance(ordonnance: Ordonnance) {
+
+    for (let index = 0; index < this.data.ordonnances.length; index++) {
+      if (this.data.ordonnances[index].id === ordonnance.id) {
+        console.log(`Removing ordonnance "${this.data.ordonnances[index].titre}"`)
+        this.data.ordonnances.splice(index, 1)
+      }
+    }
+
+    this.saveData()
+
   }
 
 
@@ -538,6 +565,37 @@ export class GsbMainService {
     });
 
     await alert.present();
+  }
+
+  public async alertAreYouSure(header: string): Promise<boolean> {
+
+    return new Promise(async (resolve, reject) => {
+
+      const alert = await this.alertController.create({
+        header,
+        buttons: [
+          {
+            text: 'Annuler',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              resolve(false)
+            }
+          },
+          {
+            text: 'Confirmer',
+            handler: () => {
+              resolve(true)
+            }
+          }
+        ]
+      });
+
+      await alert.present()
+
+      // reject(false)
+    })
+    
   }
 
   public printDate(paramDate: Date): string {

@@ -139,6 +139,62 @@ export class Tab2Page {
   }
 
 
+  public startModifOrdonnance() {
+    // console.log('starting modif')
+    this.changeStepTo("ordonnance-modif") 
+    this.formSavedOrdonnance = this.selectedOrdonnance
+    this.formMedocList = this.selectedOrdonnance.medocs
+  }
+
+  public modifOrdonnance(form: any) {
+    console.log("modif :", form)
+
+    try {
+
+      // console.log(form.form.value)
+
+      this.formMedocList.forEach((medoc: Medoc) => {
+        medoc.id = GsbMainService.generateId()
+      });
+
+      const formedOrdonnance: Ordonnance =
+      {
+        id: this.selectedOrdonnance.id,
+        titre: form.form.value.titre,
+        description: form.form.value.description,
+        dateDebut: form.form.value.dateDebut,
+        dateFin: form.form.value.dateFin,
+        medocs: this.formMedocList
+      }
+
+      this.selectedOrdonnance = formedOrdonnance
+
+      // console.log("Adding Ordonnance : ", formedOrdonnance)
+
+      // this.gsbMainService.data.ordonnances.push(formedOrdonnance)
+      this.gsbMainService.modifyOrdonnance(formedOrdonnance)
+
+      form.reset();
+      this.formMedocList = []
+      
+      this.changeStepTo("ordonnance-details")
+
+    }
+    catch (err) {
+      console.error(err)
+      this.gsbMainService.alertInfo("Erreur", `Une erreur s'est produite : ${err}`)
+    }
+
+  }
+
+  public async supprimerOrdonnance() {
+    // console.log("MAIS VA TE FAIRE FOUTRE")
+    if (await this.gsbMainService.alertAreYouSure(`Etes-vous sûr de vouloir supprimer l'ordonnance "${this.selectedOrdonnance.titre}" ?`)) {
+      this.gsbMainService.removeOrdonnance(this.selectedOrdonnance)
+      this.changeStepTo("main")
+    }
+  }
+
   public startAddMedoc(form: any) {
 
     this.formSavedOrdonnance = {

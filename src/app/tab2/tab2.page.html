@@ -103,7 +103,21 @@
         </ion-label>
       </ion-item>
 
+      <div style="display: flex; flex-flow: row; justify-content: space-around; align-items: center;">
+        <ion-button expand="block" style="margin: 1em 0.3em; flex: 1;" color="light"
+          (click)="startModifOrdonnance()">
+          <ion-icon slot="end" name="pencil-outline" style="font-size: 25px;"></ion-icon>
+          Modifier
+        </ion-button>
+        <ion-button expand="block" style="margin: 1em 0.3em; flex: 1;" color="light"
+          (click)="supprimerOrdonnance()">
+          <ion-icon slot="end" name="trash-outline" style="font-size: 25px;"></ion-icon>
+          Supprimer
+        </ion-button>
+      </div>
+
     </ion-list>
+
   </ion-content>
 
   <ion-content *ngIf="checkStep('medoc-details')" class="medoc-details animated
@@ -319,6 +333,100 @@
           <ion-button color="light" [disabled]="form.invalid" type="submit">
             <ion-icon slot="end" name="add-outline"></ion-icon>
             Ajouter
+          </ion-button>
+        </section>
+
+      </form>
+    </ion-list>
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('ordonnance-modif')" class="ordonnance-add
+    animated slideInRight" style="animation-duration: 0.5s;">
+
+    <ion-list>
+      <form style="margin-top: 1.4em;" #form="ngForm"
+        (ngSubmit)="modifOrdonnance(form)">
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Titre :
+          </ion-label>
+          <ion-input style="font-size: medium;" type="text" name="titre"
+            [ngModel]="formSavedOrdonnance.titre"
+            placeholder="Ordonnance du Docteur Leruyet" ngModel required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Description :
+          </ion-label>
+          <ion-textarea style="font-size: medium; margin-bottom: 0.7em;"
+            type="text" name="description" auto-grow="true"
+            [ngModel]="formSavedOrdonnance.description"
+            placeholder="Cette ordonnance m'a été donnée lors du rendez-vous de
+            mai ..."
+            ngModel required>
+          </ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Date de la prescription :
+          </ion-label>
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date" name="dateDebut"
+            [ngModel]="formSavedOrdonnance.dateDebut" ngModel required>
+          </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap" style="font-size: large">
+            Date butoire :
+          </ion-label> <!--  max="((new Date()).getFullYear()+10).toString()" -->
+          <ion-datetime style="margin-top: 0.3em;" displayFormat="DD/MM/YYYY"
+            placeholder="Saisir une date" max="2040" name="dateFin"
+            [ngModel]="formSavedOrdonnance.dateFin" ngModel required>
+          </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h2 style="font-size: large">Médicaments préscrits :</h2>
+
+            <ion-list>
+
+              <div *ngFor="let medoc of formMedocList">
+                <ion-item button (click)="startEditMedoc(medoc.id, form)">
+                  <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+                  <ion-label class="ion-text-wrap">
+                    <p style="font-size: medium">{{ medoc.nom }}</p>
+                  </ion-label>
+                </ion-item>
+              </div>
+
+              <ion-item button (click)="this.startAddMedoc(form)">
+                <!-- <ion-button color="light" [disabled]="form.invalid"> -->
+                <ion-icon slot="end" name="add-outline"></ion-icon>
+                Ajouter
+                <!-- </ion-button> -->
+              </ion-item>
+
+            </ion-list>
+
+          </ion-label>
+        </ion-item>
+
+        <section style="display: flex; align-items: center; justify-content:
+          space-evenly; margin: 0.7em 0;">
+          <ion-button color="light" (click)="changeStepTo('main')">
+            <ion-icon slot="end" name="add-outline" style="transform:
+              rotate(45deg);"></ion-icon>
+            Annuler
+          </ion-button>
+          <ion-button color="light" [disabled]="form.invalid" type="submit">
+            <ion-icon slot="end" name="pencil-outline"></ion-icon>
+            Valider
           </ion-button>
         </section>
 
