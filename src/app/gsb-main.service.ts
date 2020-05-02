@@ -8,6 +8,8 @@ import { promise } from 'protractor';
 
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
 
+const appName = require('../../package.json').name
+
 const dateFormater = require('date-format');
 
 @Injectable({
@@ -34,18 +36,9 @@ export class GsbMainService {
     //   console.log(this.data);
     // }, 5000);
 
-    this.localNotifications.schedule({
-      id: 1,
-      title: 'Attention',
-      text: 'Simons Notification',
-      data: { mydata: 'My hidden message this is' },
-      // at: new Date(new Date().getTime() + 5 * 1000)
-      trigger: {
-        at: new Date(new Date().getTime() + 5 * 1000)
-      }
-    });
-
     this.loadParameters()
+
+    console.log("appName :", appName)
 
   }
 
@@ -458,7 +451,8 @@ export class GsbMainService {
   }
 
   private createPrise(date: Date, medocName, color): PriseMedoc {
-    return {
+
+    const newPrise: PriseMedoc = {
       id: GsbMainService.generateId(),
       datePrise: date,
       pris: false,
@@ -474,6 +468,10 @@ export class GsbMainService {
         },
       }
     }
+
+    this.notificate(newPrise.id, appName, `N'oubliez de prendre "${newPrise.event.title}" !`, newPrise.datePrise)
+
+    return newPrise
   }
 
   public getPrisesEventList() {
@@ -491,6 +489,8 @@ export class GsbMainService {
           // console.log('prise.id === paramPrise.id', `${medoc.prises[index3].id} === ${paramPrise.id}`, medoc.prises[index3].id === paramPrise.id)
           if (medoc.prises[index3].id === paramPrise.id) {
             medoc.prises[index3] = paramPrise
+            this.localNotifications.clear(paramPrise.id)
+            this.notificate(paramPrise.id, appName, `N'oubliez de prendre "${paramPrise.event.title}" !`, paramPrise.datePrise)
             // console.log("prise nom :", medoc.prises[index3])
           }
         }
@@ -615,6 +615,29 @@ export class GsbMainService {
     let date = new Date(paramDate.toString())
     const listeJours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
     return dateFormater.asString(`${listeJours[date.getDay()]} dd/MM, hh:mm`, date)
+  }
+
+  public notificate(id: number,title: string, text: string, date: Date) {
+    
+    try {
+      
+      this.localNotifications.schedule({
+        id,
+        title,
+        text,
+        trigger: {
+          at: date
+        }
+      });
+
+      console.log(`Notification scheduled the ${date}`)
+
+    } catch (error) {
+      
+      console.error('An error occured when scheduling :', error)
+
+    }
+
   }
 
 }
