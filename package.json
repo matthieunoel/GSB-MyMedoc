@@ -5,15 +5,14 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
+    "stock-start": "ng serve",
+    "stock-build": "ng build",
+    "stock-test": "ng test",
+    "stock-lint": "ng lint",
+    "stock-e2e": "ng e2e",
     "release": "git push --follow-tags origin master",
-    "build-android": "ng build && ionic cap copy android && npx cap sync",
-    "open-android": "npx cap open android",
-    "cordova-serve": "ionic cordova run browser"
+    "build-android": "ionic cordova build android",
+    "buildNrun-android": "ionic cordova run android"
   },
   "private": true,
   "dependencies": {
