@@ -1,7 +1,6 @@
 {
   "name": "MedocProjectV1",
   "integrations": {
-    "capacitor": {},
     "cordova": {}
   },
   "type": "angular"
