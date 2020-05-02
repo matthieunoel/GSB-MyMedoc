@@ -101,6 +101,7 @@ export class Tab2Page {
     }
     this.formMedocList = []
     this.currentStep = "ordonnance-add"
+    this.creationOrdonnance = true
   }
 
   public addOrdonnance(form: any) {
@@ -146,6 +147,7 @@ export class Tab2Page {
     this.changeStepTo("ordonnance-modif") 
     this.formSavedOrdonnance = this.selectedOrdonnance
     this.formMedocList = this.selectedOrdonnance.medocs
+    this.creationOrdonnance = false 
   }
 
   public modifOrdonnance(form: any) {
@@ -299,6 +301,7 @@ export class Tab2Page {
         nbMedocParBoite: form.form.value.nbMedocParBoite,
         nbFoisParJour: form.form.value.nbFoisParJour,
         nbFoisParSemaine: form.form.value.nbFoisParSemaine,
+        couleur: this.formSelectedMedocColor,
         finDeLaPrise: new Date(),
         prises: []
       }
@@ -331,7 +334,17 @@ export class Tab2Page {
   }
 
   public removeEditedMedoc() {
-    console.log("OK")
+    for (let index = 0; index < this.formMedocList.length; index++) {
+      if (this.formSelectedMedoc.id === this.formMedocList[index].id) {
+        this.formMedocList.splice(index, 1)
+        if (this.creationOrdonnance) {
+          this.changeStepTo("ordonnance-add")
+        }
+        else {
+          this.changeStepTo("ordonnance-modif")
+        }
+      }
+    }
   }
 
 

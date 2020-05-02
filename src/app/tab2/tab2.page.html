@@ -328,11 +328,11 @@
 
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">
-          <!-- <ion-button color="light" (click)="changeStepTo('main')">
+          <ion-button color="light" (click)="changeStepTo('main')">
             <ion-icon slot="end" name="add-outline" style="transform:
               rotate(45deg);"></ion-icon>
             Annuler
-          </ion-button> -->
+          </ion-button>
           <ion-button color="light" [disabled]="form.invalid" type="submit">
             <ion-icon slot="end" name="add-outline"></ion-icon>
             Ajouter
@@ -646,6 +646,26 @@
             [ngModel]="formSelectedMedoc.finDeLaPrise">
           </ion-datetime>
         </ion-item>
+
+        <ion-item>
+        <div>
+          <!-- <h2 style="font-size: large">Couleur du rappel : </h2> -->
+          <ion-label class="ion-text-wrap">
+            Couleur du rappel :
+          </ion-label>
+          <div style="display: flex; flex-flow: row; justify-content:
+            flex-start; align-items: center; margin-top: 0.3em;">
+            <div *ngFor="let couleur of this.gsbMainService.niceColors">
+              <ion-icon name="square" [ngStyle]="{'color': couleur }"
+                style="font-size: calc(100vw/8);"
+                (click)="selectFormColor(couleur)"></ion-icon>
+              <ion-icon *ngIf="formSelectedMedocColor === couleur"
+                name="square-outline" style="font-size: calc(100vw/8); position:
+                relative; margin-left: calc(-100vw/8);"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </ion-item>
 
         <section style="display: flex; align-items: center; justify-content:
           space-evenly; margin: 0.7em 0;">

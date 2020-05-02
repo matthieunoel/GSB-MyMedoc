@@ -15,7 +15,7 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController) {
+  constructor(private alertController: AlertController /* , private localNotifications: LocalNotifications */) {
 
     // window.setInterval(() => {
 
@@ -31,6 +31,17 @@ export class GsbMainService {
     // window.setInterval(() => {
     //   console.log(this.data);
     // }, 5000);
+
+    // this.localNotifications.schedule({
+    //   id: 1,
+    //   title: 'Attention',
+    //   text: 'Simons Notification',
+    //   data: { mydata: 'My hidden message this is' },
+    //   // at: new Date(new Date().getTime() + 5 * 1000)
+    //   trigger: {
+    //     at: new Date(new Date().getTime() + 5 * 1000)
+    //   }
+    // });
 
     this.loadParameters()
 
