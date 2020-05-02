@@ -6,6 +6,8 @@ import { Parameters } from './parameters'
 import { promise } from 'protractor';
 // const parameters: Parameters = require('./parameters')
 
+import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
+
 const dateFormater = require('date-format');
 
 @Injectable({
@@ -15,7 +17,7 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController /* , private localNotifications: LocalNotifications */) {
+  constructor(private alertController: AlertController, private localNotifications: LocalNotifications) {
 
     // window.setInterval(() => {
 
@@ -32,16 +34,16 @@ export class GsbMainService {
     //   console.log(this.data);
     // }, 5000);
 
-    // this.localNotifications.schedule({
-    //   id: 1,
-    //   title: 'Attention',
-    //   text: 'Simons Notification',
-    //   data: { mydata: 'My hidden message this is' },
-    //   // at: new Date(new Date().getTime() + 5 * 1000)
-    //   trigger: {
-    //     at: new Date(new Date().getTime() + 5 * 1000)
-    //   }
-    // });
+    this.localNotifications.schedule({
+      id: 1,
+      title: 'Attention',
+      text: 'Simons Notification',
+      data: { mydata: 'My hidden message this is' },
+      // at: new Date(new Date().getTime() + 5 * 1000)
+      trigger: {
+        at: new Date(new Date().getTime() + 5 * 1000)
+      }
+    });
 
     this.loadParameters()
 

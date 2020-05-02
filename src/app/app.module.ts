@@ -14,7 +14,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 // import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
-// import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
+import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
 
 declare const require: any;
 
@@ -35,7 +35,7 @@ declare const require: any;
     StatusBar,
     Calendar,
     SplashScreen,
-    // LocalNotifications,
+    LocalNotifications,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
