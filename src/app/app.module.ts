@@ -18,6 +18,8 @@ import { LocalNotifications } from '../../node_modules/@ionic-native/local-notif
 
 import { HTTP } from '@ionic-native/http/ngx';
 
+import { Network } from '@ionic-native/network/ngx';
+
 declare const require: any;
 
 @NgModule({
@@ -39,6 +41,7 @@ declare const require: any;
     SplashScreen,
     LocalNotifications,
     HTTP,
+    Network,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy

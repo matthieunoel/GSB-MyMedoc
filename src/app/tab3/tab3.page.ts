@@ -31,7 +31,7 @@ export class Tab3Page {
 
     if (await this.gsbMainService.checkIfLoggedIn()) {
       loading.remove()
-      this.changeStepTo("test")
+      this.changeStepTo("main")
       this.navController.navigateForward('/tabs/tab1');
     }
     else {
@@ -44,7 +44,7 @@ export class Tab3Page {
     // console.log('Loading dismissed!'); 
 
     if (this.gsbMainService.logedIn) {
-      this.changeStepTo("test")
+      this.changeStepTo("main")
     }
 
   }
@@ -73,7 +73,7 @@ export class Tab3Page {
 
     if (await this.gsbMainService.signIn(form.form.value.username, form.form.value.password)) {
       loading.remove()
-      this.changeStepTo("test")
+      this.changeStepTo("main")
       this.navController.navigateForward('/tabs/tab1');
     }
     else {
@@ -85,7 +85,7 @@ export class Tab3Page {
     // console.log('Loading dismissed!'); 
 
     // if (this.gsbMainService.logedIn) {
-    //   this.changeStepTo("test")
+    //   this.changeStepTo("main")
     // }
 
   }
@@ -112,7 +112,7 @@ export class Tab3Page {
 
     if (await this.gsbMainService.signUp(form.form.value.username, form.form.value.email, form.form.value.password)) {
       loading.remove()
-      this.changeStepTo("test")
+      this.changeStepTo("main")
       this.navController.navigateForward('/tabs/tab1');
     }
     else {

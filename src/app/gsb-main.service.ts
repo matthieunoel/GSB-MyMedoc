@@ -9,11 +9,12 @@ import { promise } from 'protractor';
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Platform } from '@ionic/angular';
+import { Network } from '@ionic-native/network/ngx';
+// import { setTimeout } from 'timers';
 
 const appName = require('../../package.json').name
 
-const sys = require('sys')
-// const exec = require('child_process').exec;
+// const pinger = require("net-ping");
 
 const dateFormater = require('date-format');
 
@@ -24,11 +25,76 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP, private platform: Platform) {
+  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP, private platform: Platform, private network: Network) {
 
-    window.setInterval(() => {
-      console.log("BITE")
-    }, 1000);
+    if (this.platform.is('cordova') || this.platform.is('capacitor')) {
+
+      // console.log("network.Connection :", network.Connection);
+      // console.log("network.downlinkMax :", network.downlinkMax);
+      // console.log("network.type :", network.type);
+
+      this.connected = true
+      this.serverUp = true
+      http.get('http://google.com/', {}, {})
+        .catch(() => {
+          this.connected = false
+          this.serverUp = false
+        })
+        .then(() => {
+          http.get('http://btsgpe12020.epsi-lyon.fr/', {}, {})
+            .then((res: any) => {
+              const resJson = JSON.parse(res.data)
+              if (resJson.message === 'OK') {
+                console.log("API confirmed")
+              }
+              else {
+                this.serverUp = false
+                console.error('Expected API message not found, API looks down.')
+              }
+            })
+            .catch((error: any) => {
+              this.serverUp = false
+              console.error("API unreachable : ", error)
+            })
+        })
+      
+
+      network.onDisconnect().subscribe(() => {
+        console.warn('Device disconnected !')
+        this.connected = false
+        this.serverUp = false
+      })
+
+      network.onConnect().subscribe(() => {
+        console.log('Device connected to internet')
+        this.connected = true
+        http.get('http://btsgpe12020.epsi-lyon.fr/', {}, {})
+          .then((res: any) => {
+            const resJson = JSON.parse(res.data)
+            if (resJson.message === 'OK') {
+              console.log("API confirmed")
+              this.serverUp = true
+            }
+            else {
+              console.error('Expected API message not found, API looks down.')
+            }
+          })
+          .catch((error: any) => {
+            console.error("API unreachable : ", error)
+          })
+      })
+
+      // window.setInterval(() => {
+        
+        
+
+      // }, 10000);
+
+    }
+
+    
+
+    
 
     // window.setInterval(() => {
     //   console.log(this.data);
@@ -53,7 +119,8 @@ export class GsbMainService {
   }
 
   public logedIn: boolean = false
-
+  public connected: boolean
+  public serverUp: boolean
 
   // listeDesPrises: PriseMedoc[] = []
 
@@ -519,6 +586,27 @@ export class GsbMainService {
 
   }
 
+  /* Don't use that, it fuck everything's up */
+  // private waitForConnection(): Promise<void> {
+    
+  //   return new Promise((resolve, reject) => {
+
+  //     setTimeout(() => {
+  //       if (!this.serverUp) {
+  //         reject("Server unreachable")
+  //         return
+  //       }
+  //     }, 15000);
+
+  //     while (!this.serverUp) {
+  //       console.log('Waiting ...')
+  //     }
+
+  //     console.log('RESOLVED!')
+  //     resolve()
+
+  //   });
+  // }
 
   public checkIfLoggedIn(): Promise<boolean> {
 
@@ -599,6 +687,8 @@ export class GsbMainService {
 
       try {
 
+        // await this.waitForConnection()
+
         const res: any = await this.http.post(
           `${Parameters.apiAddress}/api/auth/signin`,
           {
@@ -655,6 +745,8 @@ export class GsbMainService {
       // })
 
       try {
+
+        // await this.waitForConnection()
 
         const res: any = await this.http.post(
           `${Parameters.apiAddress}/api/auth/signup`,
