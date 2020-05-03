@@ -8,8 +8,12 @@ import { promise } from 'protractor';
 
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import { Platform } from '@ionic/angular';
 
 const appName = require('../../package.json').name
+
+const sys = require('sys')
+// const exec = require('child_process').exec;
 
 const dateFormater = require('date-format');
 
@@ -20,18 +24,11 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP) {
+  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP, private platform: Platform) {
 
-    // window.setInterval(() => {
-
-    //   this.listeDesPrises = this.getPrisesList(this.data)
-    //   if (typeof (Storage) != "undefined") {
-    //     localStorage.setItem("ordo", JSON.stringify(this.data.ordonnances))
-    //   } else {
-    //     console.error("Storage is not available for now ...")
-    //   }
-
-    // }, 500);
+    window.setInterval(() => {
+      console.log("BITE")
+    }, 1000);
 
     // window.setInterval(() => {
     //   console.log(this.data);
@@ -476,7 +473,7 @@ export class GsbMainService {
       }
     }
 
-    this.notificate(newPrise.id, appName, `N'oubliez de prendre "${newPrise.event.title}" !`, newPrise.datePrise)
+    this.notificate(newPrise.id, appName, `N'oubliez de prendre votre "${newPrise.event.title}" à ${(new Date(newPrise.datePrise.toString())).getHours()}h !`, newPrise.datePrise)
 
     return newPrise
   }
@@ -498,7 +495,7 @@ export class GsbMainService {
             medoc.prises[index3] = paramPrise
             this.localNotifications.clear(paramPrise.id)
             if (!paramPrise.pris) {
-              this.notificate(paramPrise.id, appName, `N'oubliez de prendre "${paramPrise.event.title}" à ${(new Date(paramPrise.datePrise.toString())).getHours()}h !`, paramPrise.datePrise)
+              this.notificate(paramPrise.id, appName, `N'oubliez de prendre votre "${paramPrise.event.title}" à ${(new Date(paramPrise.datePrise.toString())).getHours()}h !`, paramPrise.datePrise)
             }
             // console.log("prise nom :", medoc.prises[index3])
           }
@@ -527,14 +524,35 @@ export class GsbMainService {
 
     return new Promise(async (resolve, reject) => {
 
+      if (!this.platform.is('cordova') && !this.platform.is('capacitor')) {
+        // WHEN LOCAL
+        console.warn('LOGIN WITH DEVMODE')
+        
+        this.data = {
+          id: 0,
+          login: 'UserTest1',
+          password: 'PassPass',
+          ordonnances: []
+        }
+
+        this.logedIn = true
+
+        resolve(true)
+        return
+        
+      }
+
       let userData: Data
       console.log("Reading cache ...")
       if (typeof (Storage) != "undefined") {
-        const str: string = localStorage.getItem("userData")
+        let str: string = localStorage.getItem("userData")
         // console.log(str)
+
         if (str !== "NaN" && str != null && str != undefined) {
           userData = JSON.parse(str)
           console.log("User-data extracted succesfully from cache")
+          // console.log('str :', str)
+          // console.log('userData :', userData)
         }
         else {
           userData = undefined
@@ -590,12 +608,24 @@ export class GsbMainService {
           {}
         )
 
-        console.log("HTTP SIGNIN res :", res)
+        const resJSON: any = JSON.parse(res.data)
+
+        console.log("HTTP SIGNIN response :", resJSON)
+
+        // console.log("resJSON :", resJSON)
 
         this.logedIn = true
 
+        this.data = {
+          id: resJSON.id,
+          login: username,
+          password,
+          ordonnances: []
+        }
+
         console.log("Saving data ...")
         if (typeof (Storage) != "undefined") {
+          // console.log('WATCH THIS ! this.data :', this.data)
           localStorage.setItem("userData", JSON.stringify(this.data))
         } else {
           console.error("Storage is not available for now ...")
@@ -618,11 +648,11 @@ export class GsbMainService {
 
     return new Promise(async (resolve, reject) => {
       
-      console.log({
-        username,
-        email,
-        password
-      })
+      // console.log({
+      //   username,
+      //   email,
+      //   password
+      // })
 
       try {
 
@@ -636,9 +666,11 @@ export class GsbMainService {
           {}
         )
 
-        console.log("HTTP SIGNUP res :", res)
+        const resJSON: any = JSON.parse(res.data)
 
-         resolve(await this.signIn(username, password))
+        console.log("HTTP SIGNUP res :", resJSON)
+
+        resolve(await this.signIn(username, password))
 
       } catch (error) {
 

@@ -10,6 +10,7 @@ import { LoadingController, NavController } from '@ionic/angular';
 export class Tab3Page {
 
   currentStep: string = "menu"
+  formIAcceptConditions: boolean
 
   constructor(private gsbMainService: GsbMainService, private loadingController: LoadingController, private navController: NavController) {
 
@@ -53,6 +54,9 @@ export class Tab3Page {
   }
 
   public changeStepTo(step: string) {
+    if (step === 'signUp') {
+      this.formIAcceptConditions = false
+    }
     this.currentStep = step;
   }
 
@@ -92,6 +96,11 @@ export class Tab3Page {
 
     if (form.form.value.password !== form.form.value.passwordDoubleCheck) {
       this.gsbMainService.alertInfo('Erreur', 'Les mots de passes ne correspondent pas.')
+      return
+    }
+
+    if (!this.formIAcceptConditions) {
+      this.gsbMainService.alertInfo('Erreur', 'Vous n\'avez pas accépté les conditions d\'utilisation.')
       return
     }
 

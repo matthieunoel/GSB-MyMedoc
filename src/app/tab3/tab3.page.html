@@ -8,6 +8,11 @@
       <ion-title>Mon Compte</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-header *ngIf="!gsbMainService.logedIn">
+    <ion-toolbar>
+      <ion-title>Bienvenue</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-content class="ion-padding" *ngIf="checkStep('test')">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
@@ -31,25 +36,26 @@
       flex-direction: column; align-items: center; justify-content: center;">
       <!-- <h1>Mon compte</h1> -->
       <div style="display: flex; flex-flow: column; align-items: center;
-        justify-content: space-evenly; height: 60vh; width: 75vw; border:
-        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+        justify-content: space-evenly; height: 390px; width: 75vw; border:
+        solid 2px; border-radius: 15px; overflow: hidden;"
+        [ngStyle]="{'border-color': gsbMainService.defaultColor}">
 
         <div>
-          <h2 style="text-align: center;">Bienvenue sur</h2>
-          <h1 style="text-align: center; border-bottom: green solid 2px; color:
+          <h2 style="text-align: center; font-size: 1.2em;">Veuillez vous authentifier</h2>
+          <h1 style="text-align: center; font-size: 1.7em; border-bottom: green solid 2px; color:
             green; font-weight: 600;">GSB-MyMedoc</h1>
         </div>
 
         <div style="width: 100%; display: flex; flex-flow: column; align-items: center; justify-content: center;">
           <ion-button (click)="changeStepTo('logIn')" size="medium" color="medium"
-            expand="block" style="width: 90%;">
+            expand="block" style="width: 90%;" fill="outline">
             <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
               Se connecter
               <ion-icon name="log-in-outline" size="large"></ion-icon>
             </div>
           </ion-button>
           <ion-button (click)="changeStepTo('signUp')" size="medium" color="medium"
-            expand="block" style="width: 90%;">
+            expand="block" style="width: 90%;" fill="outline">
             <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
               Créer un compte
               <ion-icon name="person-add-outline" size="large"></ion-icon>
@@ -74,8 +80,9 @@
       </div>
 
       <div style="display: flex; flex-flow: column; align-items: center;
-        justify-content: space-evenly; height: 60vh; width: 75vw; border:
-        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+        justify-content: space-evenly; height: 390px; width: 75vw; border:
+        solid 2px; border-radius: 15px; overflow: hidden;"
+        [ngStyle]="{'border-color': gsbMainService.defaultColor}">
         
         <form style="margin-top: 1.4em; max-width: 100%;" #form="ngForm"
         (ngSubmit)="signIn(form)">
@@ -107,7 +114,7 @@
               Annuler
             </ion-button> -->
 
-            <ion-button color="medium" [disabled]="form.invalid" type="submit">
+            <ion-button color="medium" [disabled]="form.invalid" type="submit" fill="outline">
               <ion-icon slot="end" name="log-in-outline"></ion-icon>
               Se connecter
             </ion-button>
@@ -134,8 +141,9 @@
       </div>
 
       <div style="display: flex; flex-flow: column; align-items: center;
-        justify-content: space-evenly; height: 60vh; width: 75vw; border:
-        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+        justify-content: space-evenly; height: 390px; width: 75vw; border:
+        solid 2px; border-radius: 15px; overflow: hidden;"
+        [ngStyle]="{'border-color': gsbMainService.defaultColor}">
 
         <form style="margin-top: 1.4em;" #form="ngForm"
         (ngSubmit)="signUp(form)">
@@ -177,6 +185,14 @@
                 pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel required>
               </ion-input>
             </ion-item>
+
+            <ion-item>
+              <ion-label class="ion-text-wrap" style="font-size: x-small;" [ngStyle]="{'color': gsbMainService.defaultColor}">
+                J'accepte les conditions d'utilisations de l'application GSB-MyMedoc
+              </ion-label>
+              <ion-checkbox color="light" slot="end" [(ngModel)]="formIAcceptConditions" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            </ion-item>
+
           </ion-list>
 
           <section style="display: flex; align-items: center; justify-content:
@@ -188,7 +204,7 @@
               Annuler
             </ion-button> -->
 
-            <ion-button color="medium" [disabled]="form.invalid" type="submit">
+            <ion-button color="medium" [disabled]="form.invalid" type="submit" fill="outline">
               <ion-icon slot="end" name="person-add-outline"></ion-icon>
               Créer un compte
             </ion-button>
@@ -199,9 +215,10 @@
 
       </div>
 
-      <div style="height: 15vh; margin-bottom: -15vh; position: relative; width: 75vw; padding: 0.7em 0.3em; color: grey;">
+      <div style="/*height: 15vh; margin-bottom: -15vh; position: relative;*/ width: 75vw; padding: 0.7em 0.3em;" [ngStyle]="{'color': gsbMainService.defaultColor}">
         <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le login doit comporter au moins 6 caractères (Alpahnumériques, ".", "_", "-" ou " ")</p>
         <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le mot de passe doit comporter 8 caractères dont au moins un majuscule et une minuscule</p>
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Consulter les conditions d'utilisations : <a href="http://google.com/">http//OurWebSiteIDK.com/CVEC/</a></p>
       </div>
 
     </div>

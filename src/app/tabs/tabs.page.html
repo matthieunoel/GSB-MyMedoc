@@ -21,7 +21,7 @@
 
 <ion-tabs></ion-tabs>
 
-<ion-menu side="end" content-id="main-content" style="--width: 80vw;">
+<ion-menu side="end" content-id="main-content" style="--width: 80vw;" *ngIf="gsbMainService.logedIn">
   <ion-header>
     <ion-toolbar translucent>
       <ion-title>Menu</ion-title>

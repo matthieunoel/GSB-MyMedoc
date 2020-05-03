@@ -42,9 +42,13 @@ export class Tab2Page {
   public refreshList(refresher: any) {
     // this.updatePrisesList()
     // this.updateEventListFromPrisesList()
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   refresher.detail.complete()
+    // }, 1500);
+    this.gsbMainService.loadData()
+    .then(() => {
       refresher.detail.complete()
-    }, 1500);
+    })
   }
 
 

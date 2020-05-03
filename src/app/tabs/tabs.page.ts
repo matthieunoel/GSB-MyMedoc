@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, MenuController } from '@ionic/angular';
+import { GsbMainService } from '../gsb-main.service';
 
 @Component({
   selector: 'app-tabs',
@@ -8,7 +9,7 @@ import { NavController, MenuController } from '@ionic/angular';
 })
 export class TabsPage {
 
-  constructor(private navController: NavController, public menuController: MenuController) {
+  constructor(private navController: NavController, public menuController: MenuController, public gsbMainService: GsbMainService) {
     this.navController.navigateForward('/tabs/tab3');
   }
 
