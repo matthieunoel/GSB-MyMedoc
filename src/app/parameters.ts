@@ -1,6 +1,12 @@
 export class Parameters {
 
-    static heureMatin: number
-    static heureSoir: number
+    /* User params */
+    static heureMatinPrise: number
+    static heureSoirPrise: number
+    static heureMatinCalend: number
+    static heureSoirCalend: number
+
+    /* Admin params */
+    static apiAddress: string
 
 }

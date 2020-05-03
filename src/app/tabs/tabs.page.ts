@@ -8,7 +8,9 @@ import { NavController, MenuController } from '@ionic/angular';
 })
 export class TabsPage {
 
-  constructor(private navController: NavController, public menuController: MenuController) {}
+  constructor(private navController: NavController, public menuController: MenuController) {
+    this.navController.navigateForward('/tabs/tab3');
+  }
 
   // TODO: Remmener au "main" d'une page on click
 

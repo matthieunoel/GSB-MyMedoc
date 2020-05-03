@@ -31,8 +31,13 @@
           <p>({{ gsbMainService.printDate(prise.datePrise) }})</p>
         </ion-label>
       </ion-item>
+
       <ion-item style="width: 100%;">
         <ion-toggle slot="end" [(ngModel)]="sausage" disabled="true"></ion-toggle>
+        <div style="height: calc(100% - 4px); width: 10px; border: 2px solid;
+          margin-right: 0.7em; border-radius: 4px;"
+          [ngStyle]="{'color': gsbMainService.defaultColor, 'background-color':
+          gsbMainService.defaultColor + '50'}"> </div>
         <ion-label>
           <h2 style="font-size: large">. . .</h2>
         </ion-label>
@@ -49,7 +54,7 @@
       align-items: center; animation-duration: 0.5s;" class="animated
       slideInUp">
       <mwl-calendar-week-view [viewDate]="viewDate" [daysInWeek]="daysInWeek"
-        [hourSegments]="1" [dayStartHour]="6" [dayEndHour]="22"
+        [hourSegments]="1" [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour"
         [events]="events" [refresh]="refresh"
         (eventTimesChanged)="eventTimesChanged($event)" style="width: 100%;">
       </mwl-calendar-week-view>

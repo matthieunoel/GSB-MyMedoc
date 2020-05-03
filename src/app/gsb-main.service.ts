@@ -7,6 +7,7 @@ import { promise } from 'protractor';
 // const parameters: Parameters = require('./parameters')
 
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 
 const appName = require('../../package.json').name
 
@@ -19,7 +20,7 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController, private localNotifications: LocalNotifications) {
+  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP) {
 
     // window.setInterval(() => {
 
@@ -38,7 +39,7 @@ export class GsbMainService {
 
     this.loadParameters()
 
-    console.log("appName :", appName)
+    // console.log("appName :", appName)
 
   }
 
@@ -46,12 +47,15 @@ export class GsbMainService {
   // public niceColors: string[] = ["#ff7b00", "#c23616", "#0097e6", "#8c7ae6", "#e1b12c", "#44bd32"] /* Custom Palette */
   // public niceColors: string[] = ["#f53b57", "#3c40c6", "#0fbcf9", "#05c46b", "#ffa801", "#1e272e"] /* Swedish Palette */
   public niceColors: string[] = ["#F44336", "#9C27B0", "#2196F3", "#4CAF50", "#FF9800", "#607D8B"] /* Basic Palette */
+  public defaultColor: string = "#a3aaaf"
   public data: Data = {
-    id: 0,
-    login: 'LOGIN',
-    password: 'PASSWORD',
+    id: undefined,
+    login: undefined,
+    password: undefined,
     ordonnances: []
   }
+
+  public logedIn: boolean = false
 
 
   // listeDesPrises: PriseMedoc[] = []
@@ -158,8 +162,11 @@ export class GsbMainService {
 
 
   private loadParameters() {
-    Parameters.heureMatin = 8
-    Parameters.heureSoir = 20
+    Parameters.heureMatinPrise = 8
+    Parameters.heureSoirPrise = 20
+    Parameters.heureMatinCalend = 6
+    Parameters.heureSoirCalend = 22
+    Parameters.apiAddress = "http://btsgpe12020.epsi-lyon.fr"
   }
 
   public async init() {
@@ -295,7 +302,7 @@ export class GsbMainService {
         if (medoc.couleur != undefined) {
           color = medoc.couleur
         } else {
-          color = "#a3aaaf"
+          color = this.defaultColor
         }
 
         medoc.prises.forEach(prise => {
@@ -330,7 +337,7 @@ export class GsbMainService {
         if (medoc.couleur != undefined) {
           color = medoc.couleur
         } else {
-          color = "#a3aaaf"
+          color = this.defaultColor
         }
 
         let listesDatesProgramee: Date[] = []
@@ -387,7 +394,7 @@ export class GsbMainService {
             // S'il y a un médicament a prendre par jour
             if (medoc.nbFoisParJour === 1) {
 
-              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoirPrise), medoc.nom, color))
               medoc.prises.push
               // console.log("README-listeDesPrises: ", listeDesPrises)
 
@@ -395,23 +402,23 @@ export class GsbMainService {
             // S'il y a 2 médicaments a prendre par jour
             else if (medoc.nbFoisParJour === 2) {
 
-              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom, color))
-              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatinPrise), medoc.nom, color))
+              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoirPrise), medoc.nom, color))
 
             }
             // S'il y a plus de 2 médicaments a prendre par jour
             else if (medoc.nbFoisParJour !== 0) {
 
-              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin), medoc.nom, color))
-              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoir), medoc.nom, color))
+              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatinPrise), medoc.nom, color))
+              medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureSoirPrise), medoc.nom, color))
 
               const nbFoisEnPlus = medoc.nbFoisParJour - 1
 
               // On fais une moyenne et on attribue des médicaments entre les heures du matin et du soir
-              let timeLeft = (Parameters.heureSoir - Parameters.heureMatin) / nbFoisEnPlus
+              let timeLeft = (Parameters.heureSoirPrise - Parameters.heureMatinPrise) / nbFoisEnPlus
 
               for (let index = 1; index < nbFoisEnPlus; index++) {
-                medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatin + index * timeLeft),medoc.nom,color))
+                medoc.prises.push(this.createPrise(addHours(startOfDay(addDays(new Date(), dayIncrement)), Parameters.heureMatinPrise + index * timeLeft),medoc.nom,color))
               }
 
             }
@@ -490,7 +497,9 @@ export class GsbMainService {
           if (medoc.prises[index3].id === paramPrise.id) {
             medoc.prises[index3] = paramPrise
             this.localNotifications.clear(paramPrise.id)
-            this.notificate(paramPrise.id, appName, `N'oubliez de prendre "${paramPrise.event.title}" !`, paramPrise.datePrise)
+            if (!paramPrise.pris) {
+              this.notificate(paramPrise.id, appName, `N'oubliez de prendre "${paramPrise.event.title}" à ${(new Date(paramPrise.datePrise.toString())).getHours()}h !`, paramPrise.datePrise)
+            }
             // console.log("prise nom :", medoc.prises[index3])
           }
         }
@@ -512,6 +521,145 @@ export class GsbMainService {
     // console.log("this.data.ordonnances[0]", this.data.ordonnances[0])
 
   }
+
+
+  public checkIfLoggedIn(): Promise<boolean> {
+
+    return new Promise(async (resolve, reject) => {
+
+      let userData: Data
+      console.log("Reading cache ...")
+      if (typeof (Storage) != "undefined") {
+        const str: string = localStorage.getItem("userData")
+        // console.log(str)
+        if (str !== "NaN" && str != null && str != undefined) {
+          userData = JSON.parse(str)
+          console.log("User-data extracted succesfully from cache")
+        }
+        else {
+          userData = undefined
+          console.log("No User-data founded in cache")
+        }
+        
+      } else {
+        console.error("Cache is not available for now ...")
+      }
+
+      // console.log("Adding manual UserData")
+      // userData = {
+      //   id: 0,
+      //   login: 'UserTest1',
+      //   password: 'PassPass',
+      //   ordonnances: []
+      // }
+
+      // console.log('userData :', userData)
+
+      if (userData != undefined) {
+        console.log("LogIn founded, trying to connect ...")
+        const resType: boolean  = await this.signIn(userData.login, userData.password)
+        console.log("LogIn validation :", resType)
+        resolve(resType)
+      }
+      else {
+        console.log("No LogIn founded.")
+        resolve(false)
+      }
+
+    });
+
+  }
+
+  public async signIn(username: string, password: string): Promise<boolean> {
+
+    // console.log({
+    //   username,
+    //   password
+    // })
+
+    return new Promise(async (resolve, reject) => {
+
+      try {
+
+        const res: any = await this.http.post(
+          `${Parameters.apiAddress}/api/auth/signin`,
+          {
+            username,
+            password
+          },
+          {}
+        )
+
+        console.log("HTTP SIGNIN res :", res)
+
+        this.logedIn = true
+
+        console.log("Saving data ...")
+        if (typeof (Storage) != "undefined") {
+          localStorage.setItem("userData", JSON.stringify(this.data))
+        } else {
+          console.error("Storage is not available for now ...")
+        }
+
+        resolve(true)
+
+      } catch (error) {
+
+        console.error("HTTP SIGNIN error :", error)
+        resolve(false)
+
+      }
+
+    });
+
+  }
+
+  public async signUp(username: string, email: string, password: string): Promise<boolean> {
+
+    return new Promise(async (resolve, reject) => {
+      
+      console.log({
+        username,
+        email,
+        password
+      })
+
+      try {
+
+        const res: any = await this.http.post(
+          `${Parameters.apiAddress}/api/auth/signup`,
+          {
+            username,
+            email,
+            password
+          },
+          {}
+        )
+
+        console.log("HTTP SIGNUP res :", res)
+
+         resolve(await this.signIn(username, password))
+
+      } catch (error) {
+
+        console.error("HTTP SIGNUP error :", error)
+        resolve(false)
+
+      }
+
+    });
+
+  }
+
+  // public testHTTP() {
+  //   this.http.get("http://btsgpe12020.epsi-lyon.fr/", {}, {})
+  //     .then((res) => {
+  //       console.log("HTTP response :", res)
+  //     })
+  //     .catch((err) => {
+  //       console.error("HTTP error :", err)
+  //     })
+  // }
 
 
 
@@ -619,6 +767,8 @@ export class GsbMainService {
 
   public notificate(id: number,title: string, text: string, date: Date) {
     
+    // console.log("Notifcation params :", {id, title, text, date})
+
     try {
       
       this.localNotifications.schedule({

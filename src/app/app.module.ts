@@ -16,6 +16,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
 
+import { HTTP } from '@ionic-native/http/ngx';
+
 declare const require: any;
 
 @NgModule({
@@ -36,6 +38,7 @@ declare const require: any;
     Calendar,
     SplashScreen,
     LocalNotifications,
+    HTTP,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy

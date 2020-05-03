@@ -1,5 +1,5 @@
 <div class="ion-page" id="main-content">
-  <ion-header>
+  <ion-header *ngIf="gsbMainService.logedIn">
     <ion-toolbar>
       <ion-icon name="person" slot="start" style="margin: 0.4em;" size="large"></ion-icon>
       <ion-buttons slot="end">
@@ -8,13 +8,203 @@
       <ion-title>Mon Compte</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
+
+  <ion-content class="ion-padding" *ngIf="checkStep('test')">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
       <!-- <h1>Mon compte</h1> -->
       <ion-button (click)="DELETE_ME()">
-        Send notification
+        TEST BUTTONS
       </ion-button>
     </div>
   </ion-content>
+
+  <!-- <ion-content class="ion-padding" *ngIf="checkStep('loading')">
+    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+  </ion-content> -->
+
+  <ion-content class="ion-padding" *ngIf="checkStep('menu')">
+    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;">
+      <!-- <h1>Mon compte</h1> -->
+      <div style="display: flex; flex-flow: column; align-items: center;
+        justify-content: space-evenly; height: 60vh; width: 75vw; border:
+        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+
+        <div>
+          <h2 style="text-align: center;">Bienvenue sur</h2>
+          <h1 style="text-align: center; border-bottom: green solid 2px; color:
+            green; font-weight: 600;">GSB-MyMedoc</h1>
+        </div>
+
+        <div style="width: 100%; display: flex; flex-flow: column; align-items: center; justify-content: center;">
+          <ion-button (click)="changeStepTo('logIn')" size="medium" color="medium"
+            expand="block" style="width: 90%;">
+            <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
+              Se connecter
+              <ion-icon name="log-in-outline" size="large"></ion-icon>
+            </div>
+          </ion-button>
+          <ion-button (click)="changeStepTo('signUp')" size="medium" color="medium"
+            expand="block" style="width: 90%;">
+            <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
+              Créer un compte
+              <ion-icon name="person-add-outline" size="large"></ion-icon>
+            </div>
+          </ion-button>
+        </div>
+        
+      </div>
+    </div>
+  </ion-content>
+
+  <ion-content class="ion-padding" *ngIf="checkStep('logIn')">
+    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;">
+
+      <div style="height: 15px; display: flex; align-items: flex-start; justify-content: flex-start;
+      margin-bottom: -15px; position: relative; top: 15px; width: 75vw; padding-left: 0.7em;">
+        <div style="color: cornflowerblue; text-decoration: underline;" (click)="changeStepTo('menu')">
+          <ion-icon slot="end" name="chevron-forward-outline" style="transform: rotate(180deg); position: relative; top: 2px;"></ion-icon>
+          Retour
+        </div>
+      </div>
+
+      <div style="display: flex; flex-flow: column; align-items: center;
+        justify-content: space-evenly; height: 60vh; width: 75vw; border:
+        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+        
+        <form style="margin-top: 1.4em; max-width: 100%;" #form="ngForm"
+        (ngSubmit)="signIn(form)">
+
+          <ion-item>
+            <ion-label class="ion-text-wrap" style="font-size: large">
+              Login :
+            </ion-label>
+            <ion-input style="font-size: medium;" type="text" name="username"
+              ngModel required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="ion-text-wrap" style="font-size: large">
+              Mot de passe :
+            </ion-label>
+            <ion-input style="font-size: medium;" type="password" name="password"
+              ngModel required>
+            </ion-input>
+          </ion-item>
+
+          <section style="display: flex; align-items: center; justify-content:
+            space-evenly; margin: 0.7em 0;">
+
+            <!-- <ion-button color="medium" (click)="changeStepTo('menu')">
+              <ion-icon slot="end" name="add-outline" style="transform:
+                rotate(45deg);"></ion-icon>
+              Annuler
+            </ion-button> -->
+
+            <ion-button color="medium" [disabled]="form.invalid" type="submit">
+              <ion-icon slot="end" name="log-in-outline"></ion-icon>
+              Se connecter
+            </ion-button>
+
+          </section>
+
+        </form>
+
+      </div>
+
+    </div>
+  </ion-content>
+
+  <ion-content class="ion-padding" *ngIf="checkStep('signUp')">
+    <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;">
+
+      <div style="height: 15px; display: flex; align-items: flex-start; justify-content: flex-start;
+      margin-bottom: -15px; position: relative; top: 15px; width: 75vw; padding-left: 0.7em;">
+        <div style="color: cornflowerblue; text-decoration: underline;" (click)="changeStepTo('menu')">
+          <ion-icon slot="end" name="chevron-forward-outline" style="transform: rotate(180deg); position: relative; top: 2px;"></ion-icon>
+          Retour
+        </div>
+      </div>
+
+      <div style="display: flex; flex-flow: column; align-items: center;
+        justify-content: space-evenly; height: 60vh; width: 75vw; border:
+        rgb(206, 206, 206) solid 2px; border-radius: 15px;">
+
+        <form style="margin-top: 1.4em;" #form="ngForm"
+        (ngSubmit)="signUp(form)">
+
+          <ion-list lines="full" class="ion-no-margin ion-no-padding">
+            <ion-item>
+              <ion-label class="ion-text-wrap" style="font-size: large">
+                Login :
+              </ion-label>
+              <ion-input style="font-size: medium;" type="text" name="username"
+                pattern="[A-Za-z0-9._-\s]{6,32}" ngModel required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label class="ion-text-wrap" style="font-size: large">
+                Email :
+              </ion-label>
+              <ion-input style="font-size: medium;" type="email" name="email"
+                inputmode="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" ngModel required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label class="ion-text-wrap" style="font-size: large">
+                Mot de passe :
+              </ion-label>
+              <ion-input style="font-size: medium;" type="password" name="password"
+                pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel required>
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label class="ion-text-wrap" style="font-size: large">
+                <p style="margin: 0; padding: 0; font-size: inherit; color: inherit;">Veuillez re-saisir</p>
+                <p style="margin: 0; padding: 0; font-size: inherit; color: inherit;">le mot de passe :</p>
+              </ion-label>
+              <ion-input style="font-size: medium;" type="password" inputmode="password" name="passwordDoubleCheck"
+                pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel required>
+              </ion-input>
+            </ion-item>
+          </ion-list>
+
+          <section style="display: flex; align-items: center; justify-content:
+            space-evenly; margin: 0.7em 0;">
+
+            <!-- <ion-button color="medium" (click)="changeStepTo('menu')">
+              <ion-icon slot="end" name="add-outline" style="transform:
+                rotate(45deg);"></ion-icon>
+              Annuler
+            </ion-button> -->
+
+            <ion-button color="medium" [disabled]="form.invalid" type="submit">
+              <ion-icon slot="end" name="person-add-outline"></ion-icon>
+              Créer un compte
+            </ion-button>
+
+          </section>
+
+        </form>
+
+      </div>
+
+      <div style="height: 15vh; margin-bottom: -15vh; position: relative; width: 75vw; padding: 0.7em 0.3em; color: grey;">
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le login doit comporter au moins 6 caractères (Alpahnumériques, ".", "_", "-" ou " ")</p>
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le mot de passe doit comporter 8 caractères dont au moins un majuscule et une minuscule</p>
+      </div>
+
+    </div>
+  </ion-content>
+
 </div>

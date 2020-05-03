@@ -6,6 +6,7 @@ import { addDays, addHours, startOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { GsbMainService } from '../gsb-main.service';
 import { PriseMedoc } from '../interfaces';
+import { Parameters } from '../parameters';
 const dateFormater = require('date-format');
 // import { colors } from '../demo-utils/colors';
 // import { EventColor } from '';
@@ -31,6 +32,8 @@ export class Tab1Page {
   viewDate: Date = new Date();
   daysInWeek = 3;
   events: CalendarEvent[] = [];
+  dayStartHour: number = Parameters.heureMatinCalend
+  dayEndHour: number = Parameters.heureSoirCalend
 
   // constructor(private gsbMainService: GsbMainService, public navController: NavController, private calendar: Calendar) {
 
