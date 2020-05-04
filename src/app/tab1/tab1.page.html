@@ -70,29 +70,16 @@
     </ion-fab-list>
   </ion-fab>
 
-  <!-- <ion-content *ngIf="checkStep('list')" class="animated slideInDown" style="animation-duration: 0.5s;">
-    <ion-list style="margin-bottom: 10vh;"> 
-      <ion-item *ngFor="let prise of gsbMainService.listeDesPrises" style="width: 100%; animation-duration: 0.5s;" class="animated slideInRight">
-          <ion-toggle slot="end" [(ngModel)]="prise.pris"></ion-toggle>
-        <ion-label>
-          <h2 style="font-size: large">{{ prise.event.title }}</h2>
-          <p style="font-size: ridiculous;">({{ printDate(prise.datePrise) }})</p>
-        </ion-label>
-      </ion-item>
-      <ion-item style="width: 100%;">
-        <ion-toggle slot="end" [(ngModel)]="sausage" disabled="true"></ion-toggle>
-        <ion-label>
-          <h2 style="font-size: large">. . .</h2>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+  <div *ngIf="!gsbMainService.connected" style="background-color: var(--ion-color-danger);
+  padding-left: 0.3em; color: white; animation-duration: 0.5s;" class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Vous n'êtes pas connécté à internet ...
+  </div>
 
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="switch()">
-        <ion-fab-button color="dark">
-          <ion-icon name="calendar-sharp" size="large" class="animated slow swing"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-list>
-        </ion-fab-list>
-      </ion-fab> -->
+  <div *ngIf="!gsbMainService.serverUp && gsbMainService.connected" style="background-color: var(--ion-color-warning);
+  padding-left: 0.3em; animation-duration: 0.5s; font-size: 0.9em;" class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Le serveur n'est pas disponible pour le moment ...
+  </div>
+
 </div>

@@ -119,6 +119,8 @@ export class Tab1Page {
   }
 
   public refreshCalendar(refresher: any) {
+    this.dayStartHour = Parameters.heureMatinCalend
+    this.dayEndHour = Parameters.heureSoirCalend
     this.updatePrisesList()
     this.updateEventListFromPrisesList()
     setTimeout(() => {

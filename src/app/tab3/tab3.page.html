@@ -15,13 +15,85 @@
   </ion-header>
 
 
-  <ion-content class="ion-padding" *ngIf="checkStep('main')">
+  <ion-content *ngIf="checkStep('main')">
     <!-- <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
       
     </div> -->
+    <!-- <ion-button (click)='signOut()'>
+      Sign Out
+    </ion-button> -->
+    <ion-list>
+      <ion-item>
+        <div style="display: flex; flex-flow: column; align-items: flex-start;
+          justify-content: flex-start; margin-bottom: 0.7em;">
+          <h1 style="margin: 0; padding: 0;">Matthieu NOEL</h1>
+          <p style="margin: 0; padding: 0;">(matthieunoel@gmail.com)</p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="changeStepTo('parameters')" color="medium"
+          fill="outline" size="medium">
+          Paramètres
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="signOut()" color="medium" fill="outline"
+          size="medium">
+          Se déconnecter
+        </ion-button>
+      </ion-item>
+      <!-- <ion-item style="margin-bottom: 0.3em;"> -->
+      <div style="display: flex; flex-flow: row; align-items: center;
+        justify-content: flex-end; padding-right: 0.3em; padding-top: 0.3em;">
+        <p style="margin: 0; padding: 0; font-size: x-small; color:
+          var(--ion-color-medium);">{{ appName }} v{{ version }}</p>
+      </div>
+      <!-- </ion-item> -->
+    </ion-list>
 
-    Ok ... ?
+  </ion-content>
+
+  <ion-content *ngIf="checkStep('parameters')" class="animated slideInRight" style="box-shadow: 2px 2px 4px #000000;">
+
+    <div style="height: 100%; width: 100%; display: flex;">
+
+      <form #form="ngForm" (ngSubmit)="validateParams(form)" style="width: 100%;">
+        <ion-list style="width: 100%;">
+        <ion-item lines="none" detailIcon>
+          <div style="color: cornflowerblue; text-decoration: underline;" (click)="changeStepTo('main')">
+            <ion-icon slot="end" name="chevron-forward-outline" style="transform:
+              rotate(180deg); position: relative; top: 2px;"></ion-icon>
+            Retour
+          </div>
+          <!-- <ion-icon slot="start" name="chevron-forward-outline" style="transform: rotate(180deg); position: relative; top: 2px; color: cornflowerblue;"></ion-icon>
+          <ion-label style="color: cornflowerblue; text-decoration: underline;">Retour</ion-label> -->
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Heure favorite de prise du matin :</ion-label>
+          <ion-input name="heureMatinPrise" type="number" pattern="[0-9]+" ngModel [ngModel]="paramheureMatinPrise" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Heure favorite de prise du soir :</ion-label>
+          <ion-input name="heureSoirPrise" type="number" pattern="[0-9]+" ngModel [ngModel]="paramheureSoirPrise" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Heure d'affichage du calendrier du matin :</ion-label>
+          <ion-input name="heureMatinCalend" type="number" pattern="[0-9]+" ngModel [ngModel]="paramheureMatinCalend" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Heure d'affichage du calendrier du soir :</ion-label>
+          <ion-input name="heureSoirCalend" type="number" pattern="[0-9]+" ngModel [ngModel]="paramheureSoirCalend" required></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button fill="outline" slot="end" color="medium" [disabled]="form.invalid" type="submit">
+            Valider
+          </ion-button>
+        </ion-item>
+      </ion-list>
+      </form>
+
+    </div>
 
   </ion-content>
 
@@ -32,7 +104,6 @@
       <ion-progress-bar type="indeterminate"></ion-progress-bar>
     </div>
   </ion-content> -->
-
   <ion-content class="ion-padding" *ngIf="checkStep('menu')">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
@@ -43,28 +114,35 @@
         [ngStyle]="{'border-color': gsbMainService.defaultColor}">
 
         <div>
-          <h2 style="text-align: center; font-size: 1.2em;">Veuillez vous authentifier</h2>
-          <h1 style="text-align: center; font-size: 1.7em; border-bottom: green solid 2px; color:
+          <h2 style="text-align: center; font-size: 1.2em;">Veuillez vous
+            authentifier</h2>
+          <h1 style="text-align: center; font-size: 1.7em; border-bottom: green
+            solid 2px; color:
             green; font-weight: 600;">GSB-MyMedoc</h1>
         </div>
 
-        <div style="width: 100%; display: flex; flex-flow: column; align-items: center; justify-content: center;">
-          <ion-button (click)="changeStepTo('logIn')" size="medium" color="medium"
+        <div style="width: 100%; display: flex; flex-flow: column; align-items:
+          center; justify-content: center;">
+          <ion-button (click)="changeStepTo('logIn')" size="medium"
+            color="medium"
             expand="block" style="width: 90%;" fill="outline">
-            <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
+            <div style="width: 100%; display: flex; flex-flow: row; align-items:
+              center; justify-content: space-between;">
               Se connecter
               <ion-icon name="log-in-outline" size="large"></ion-icon>
             </div>
           </ion-button>
-          <ion-button (click)="changeStepTo('signUp')" size="medium" color="medium"
+          <ion-button (click)="changeStepTo('signUp')" size="medium"
+            color="medium"
             expand="block" style="width: 90%;" fill="outline">
-            <div style="width: 100%; display: flex; flex-flow: row; align-items: center; justify-content: space-between;">
+            <div style="width: 100%; display: flex; flex-flow: row; align-items:
+              center; justify-content: space-between;">
               Créer un compte
               <ion-icon name="person-add-outline" size="large"></ion-icon>
             </div>
           </ion-button>
         </div>
-        
+
       </div>
     </div>
   </ion-content>
@@ -72,11 +150,14 @@
   <ion-content class="ion-padding" *ngIf="checkStep('logIn')">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
-
-      <div style="height: 15px; display: flex; align-items: flex-start; justify-content: flex-start;
-      margin-bottom: -15px; position: relative; top: 15px; width: 75vw; padding-left: 0.7em;">
-        <div style="color: cornflowerblue; text-decoration: underline;" (click)="changeStepTo('menu')">
-          <ion-icon slot="end" name="chevron-forward-outline" style="transform: rotate(180deg); position: relative; top: 2px;"></ion-icon>
+      <div style="height: 15px; display: flex; align-items: flex-start;
+        justify-content: flex-start;
+        margin-bottom: -15px; position: relative; top: 15px; width: 75vw;
+        padding-left: 0.7em;">
+        <div style="color: cornflowerblue; text-decoration: underline;"
+          (click)="changeStepTo('menu')">
+          <ion-icon slot="end" name="chevron-forward-outline" style="transform:
+            rotate(180deg); position: relative; top: 2px;"></ion-icon>
           Retour
         </div>
       </div>
@@ -85,9 +166,9 @@
         justify-content: space-evenly; height: 390px; width: 75vw; border:
         solid 2px; border-radius: 15px; overflow: hidden;"
         [ngStyle]="{'border-color': gsbMainService.defaultColor}">
-        
+
         <form style="margin-top: 1.4em; max-width: 100%;" #form="ngForm"
-        (ngSubmit)="signIn(form)">
+          (ngSubmit)="signIn(form)">
 
           <ion-item>
             <ion-label class="ion-text-wrap" style="font-size: large">
@@ -102,7 +183,8 @@
             <ion-label class="ion-text-wrap" style="font-size: large">
               Mot de passe :
             </ion-label>
-            <ion-input style="font-size: medium;" type="password" name="password"
+            <ion-input style="font-size: medium;" type="password"
+              name="password"
               ngModel required>
             </ion-input>
           </ion-item>
@@ -115,8 +197,8 @@
                 rotate(45deg);"></ion-icon>
               Annuler
             </ion-button> -->
-
-            <ion-button color="medium" [disabled]="form.invalid" type="submit" fill="outline">
+            <ion-button color="medium" [disabled]="form.invalid" type="submit"
+              fill="outline">
               <ion-icon slot="end" name="log-in-outline"></ion-icon>
               Se connecter
             </ion-button>
@@ -133,11 +215,14 @@
   <ion-content class="ion-padding" *ngIf="checkStep('signUp')">
     <div id="CONTENT" style="min-height: 100%; width: 100%; display: flex;
       flex-direction: column; align-items: center; justify-content: center;">
-
-      <div style="height: 15px; display: flex; align-items: flex-start; justify-content: flex-start;
-      margin-bottom: -15px; position: relative; top: 15px; width: 75vw; padding-left: 0.7em;">
-        <div style="color: cornflowerblue; text-decoration: underline;" (click)="changeStepTo('menu')">
-          <ion-icon slot="end" name="chevron-forward-outline" style="transform: rotate(180deg); position: relative; top: 2px;"></ion-icon>
+      <div style="height: 15px; display: flex; align-items: flex-start;
+        justify-content: flex-start;
+        margin-bottom: -15px; position: relative; top: 15px; width: 75vw;
+        padding-left: 0.7em;">
+        <div style="color: cornflowerblue; text-decoration: underline;"
+          (click)="changeStepTo('menu')">
+          <ion-icon slot="end" name="chevron-forward-outline" style="transform:
+            rotate(180deg); position: relative; top: 2px;"></ion-icon>
           Retour
         </div>
       </div>
@@ -148,7 +233,7 @@
         [ngStyle]="{'border-color': gsbMainService.defaultColor}">
 
         <form style="margin-top: 1.4em;" #form="ngForm"
-        (ngSubmit)="signUp(form)">
+          (ngSubmit)="signUp(form)">
 
           <ion-list lines="full" class="ion-no-margin ion-no-padding">
             <ion-item>
@@ -165,7 +250,9 @@
                 Email :
               </ion-label>
               <ion-input style="font-size: medium;" type="email" name="email"
-                inputmode="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" ngModel required>
+                inputmode="email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" ngModel
+                required>
               </ion-input>
             </ion-item>
 
@@ -173,26 +260,34 @@
               <ion-label class="ion-text-wrap" style="font-size: large">
                 Mot de passe :
               </ion-label>
-              <ion-input style="font-size: medium;" type="password" name="password"
+              <ion-input style="font-size: medium;" type="password"
+                name="password"
                 pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel required>
               </ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label class="ion-text-wrap" style="font-size: large">
-                <p style="margin: 0; padding: 0; font-size: inherit; color: inherit;">Veuillez re-saisir</p>
-                <p style="margin: 0; padding: 0; font-size: inherit; color: inherit;">le mot de passe :</p>
+                <p style="margin: 0; padding: 0; font-size: inherit; color:
+                  inherit;">Veuillez re-saisir</p>
+                <p style="margin: 0; padding: 0; font-size: inherit; color:
+                  inherit;">le mot de passe :</p>
               </ion-label>
-              <ion-input style="font-size: medium;" type="password" inputmode="password" name="passwordDoubleCheck"
+              <ion-input style="font-size: medium;" type="password"
+                inputmode="password" name="passwordDoubleCheck"
                 pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" ngModel required>
               </ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-label class="ion-text-wrap" style="font-size: x-small;" [ngStyle]="{'color': gsbMainService.defaultColor}">
-                J'accepte les conditions d'utilisations de l'application GSB-MyMedoc
+              <ion-label class="ion-text-wrap" style="font-size: x-small;"
+                [ngStyle]="{'color': gsbMainService.defaultColor}">
+                J'accepte les conditions d'utilisations de l'application
+                GSB-MyMedoc
               </ion-label>
-              <ion-checkbox color="light" slot="end" [(ngModel)]="formIAcceptConditions" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-checkbox color="light" slot="end"
+                [(ngModel)]="formIAcceptConditions"
+                [ngModelOptions]="{standalone: true}"></ion-checkbox>
             </ion-item>
 
           </ion-list>
@@ -205,8 +300,8 @@
                 rotate(45deg);"></ion-icon>
               Annuler
             </ion-button> -->
-
-            <ion-button color="medium" [disabled]="form.invalid" type="submit" fill="outline">
+            <ion-button color="medium" [disabled]="form.invalid" type="submit"
+              fill="outline">
               <ion-icon slot="end" name="person-add-outline"></ion-icon>
               Créer un compte
             </ion-button>
@@ -217,13 +312,37 @@
 
       </div>
 
-      <div style="/*height: 15vh; margin-bottom: -15vh; position: relative;*/ width: 75vw; padding: 0.7em 0.3em;" [ngStyle]="{'color': gsbMainService.defaultColor}">
-        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le login doit comporter au moins 6 caractères (Alpahnumériques, ".", "_", "-" ou " ")</p>
-        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Le mot de passe doit comporter 8 caractères dont au moins un majuscule et une minuscule</p>
-        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom: 0.3em;">- Consulter les conditions d'utilisations : <a href="http://google.com/">http//OurWebSiteIDK.com/CVEC/</a></p>
+      <div style="/*height: 15vh; margin-bottom: -15vh; position: relative;*/
+        width: 75vw; padding: 0.7em 0.3em;" [ngStyle]="{'color':
+        gsbMainService.defaultColor}">
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom:
+          0.3em;">- Le login doit comporter au moins 6 caractères
+          (Alpahnumériques, ".", "_", "-" ou " ")</p>
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom:
+          0.3em;">- Le mot de passe doit comporter 8 caractères dont au moins un
+          majuscule et une minuscule</p>
+        <p style="margin: 0; padding: 0; font-size: 0.7em; margin-bottom:
+          0.3em;">- Consulter les conditions d'utilisations : <a
+            href="http://google.com/">http//OurWebSiteIDK.com/CVEC/</a></p>
       </div>
 
     </div>
   </ion-content>
+
+  <div *ngIf="!gsbMainService.connected" style="background-color:
+    var(--ion-color-danger);
+    padding-left: 0.3em; color: white; animation-duration: 0.5s;"
+    class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Vous n'êtes pas connécté à internet ...
+  </div>
+
+  <div *ngIf="!gsbMainService.serverUp && gsbMainService.connected"
+    style="background-color: var(--ion-color-warning);
+    padding-left: 0.3em; animation-duration: 0.5s; font-size: 0.9em;"
+    class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Le serveur n'est pas disponible pour le moment ...
+  </div>
 
 </div>

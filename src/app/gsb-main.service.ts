@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { PriseMedoc, Ordonnance, Medoc, Data } from './interfaces';
 import { startOfDay, addHours, addDays } from 'date-fns';
 import { Parameters } from './parameters'
@@ -25,7 +25,13 @@ export class GsbMainService {
 
   // static availableId: number = 0
 
-  constructor(private alertController: AlertController, private localNotifications: LocalNotifications, private http: HTTP, private platform: Platform, private network: Network) {
+  constructor(private alertController: AlertController,
+    private localNotifications: LocalNotifications,
+    private http: HTTP,
+    private platform: Platform,
+    private network: Network,
+    private navController: NavController
+    ) {
 
     if (this.platform.is('cordova') || this.platform.is('capacitor')) {
 
@@ -93,7 +99,35 @@ export class GsbMainService {
     }
 
     
+    this.localNotifications.on('click').subscribe(data => {
+      console.log('notification data :', data)
+      this.alertInfo('NOTIFICATION PATH :', data.data.path)
+      this.navController.navigateForward(data.data.path)
+    });
 
+    // this.localNotifications.schedule({
+    //   id: 1001,
+    //   title: 'NOTIFCATION-TEST',
+    //   text: 'Message from the past : "Ping ...',
+    //   trigger: {
+    //     at: new Date(new Date().getTime() + 10000)
+    //   },
+    //   data: {
+    //     path: '/tabs/tab2'
+    //   }
+    // })
+
+    // this.localNotifications.schedule({
+    //   id: 1002,
+    //   title: 'NOTIFCATION-TEST',
+    //   text: ' ... ponG" ;)',
+    //   trigger: {
+    //     at: new Date(new Date().getTime() + 15000)
+    //   },
+    //   data: {
+    //     path: '/tabs/tab1'
+    //   }
+    // })
     
 
     // window.setInterval(() => {
@@ -495,6 +529,25 @@ export class GsbMainService {
     });
   }
 
+  public addPriseEvent(priseMedoc: PriseMedoc, medocName: string, color: string): PriseMedoc {
+    return {
+      id: priseMedoc.id,
+      datePrise: priseMedoc.datePrise,
+      pris: priseMedoc.pris,
+      event: {
+        id: GsbMainService.generateId(),
+        allDay: false,
+        draggable: true,
+        start: priseMedoc.datePrise,
+        title: medocName,
+        color: {
+          primary: color,
+          secondary: color + "50",
+        },
+      }
+    }
+  }
+
   private testNewPriseMedoc(idJour: number, nbPrisesSemaines: number): boolean {
 
     let monTableau: boolean[][] = [];
@@ -540,7 +593,11 @@ export class GsbMainService {
       }
     }
 
-    this.notificate(newPrise.id, appName, `N'oubliez de prendre votre "${newPrise.event.title}" à ${(new Date(newPrise.datePrise.toString())).getHours()}h !`, newPrise.datePrise)
+    this.notificate(newPrise.id,
+      appName,
+      `N'oubliez de prendre votre "${newPrise.event.title}" à ${(new Date(newPrise.datePrise.toString())).getHours()}h !`,
+      newPrise.datePrise,
+      '/tabs/tab1')
 
     return newPrise
   }
@@ -562,7 +619,11 @@ export class GsbMainService {
             medoc.prises[index3] = paramPrise
             this.localNotifications.clear(paramPrise.id)
             if (!paramPrise.pris) {
-              this.notificate(paramPrise.id, appName, `N'oubliez de prendre votre "${paramPrise.event.title}" à ${(new Date(paramPrise.datePrise.toString())).getHours()}h !`, paramPrise.datePrise)
+              this.notificate(paramPrise.id,
+                appName,
+                `N'oubliez de prendre votre "${paramPrise.event.title}" à ${(new Date(paramPrise.datePrise.toString())).getHours()}h !`,
+                paramPrise.datePrise,
+                '/tabs/tab1')
             }
             // console.log("prise nom :", medoc.prises[index3])
           }
@@ -637,10 +698,18 @@ export class GsbMainService {
         // console.log(str)
 
         if (str !== "NaN" && str != null && str != undefined) {
-          userData = JSON.parse(str)
-          console.log("User-data extracted succesfully from cache")
-          // console.log('str :', str)
-          // console.log('userData :', userData)
+          
+          try {
+            userData = JSON.parse(str)
+            console.log("User-data extracted succesfully from cache")
+            // console.log('str :', str)
+            // console.log('Actual userdata :', userData)
+          } catch (error) {
+            console.error('Error in cache\'s JSON parsing :', error)
+            console.log("No User-data founded in cache")
+            userData = undefined
+          }
+          
         }
         else {
           userData = undefined
@@ -775,6 +844,32 @@ export class GsbMainService {
 
   }
 
+  public async signOut() {
+
+    console.log("Removing data ...")
+    if (typeof (Storage) != "undefined") {
+      // localStorage.setItem("userData", undefined)
+      localStorage.removeItem('userData')
+    } else {
+      console.error("Storage is not available for now ...")
+    }
+
+    // console.log('Actual userdata :', localStorage.getItem('userData'))
+
+    this.logedIn = false
+
+  }
+
+
+  public changeParams(params: any) {
+    console.log('PARAMS RECEIVED :', params)
+    Parameters.heureMatinPrise = params.heureMatinPrise
+    Parameters.heureSoirPrise = params.heureSoirPrise
+    Parameters.heureMatinCalend = params.heureMatinCalend
+    Parameters.heureSoirCalend = params.heureSoirCalend
+  } 
+  
+
   // public testHTTP() {
   //   this.http.get("http://btsgpe12020.epsi-lyon.fr/", {}, {})
   //     .then((res) => {
@@ -785,28 +880,9 @@ export class GsbMainService {
   //     })
   // }
 
-
-
-
-
-  public addPriseEvent(priseMedoc: PriseMedoc, medocName: string, color: string): PriseMedoc {
-    return {
-      id: priseMedoc.id,
-      datePrise: priseMedoc.datePrise,
-      pris: priseMedoc.pris,
-      event: {
-        id: GsbMainService.generateId(),
-        allDay: false,
-        draggable: true,
-        start: priseMedoc.datePrise,
-        title: medocName,
-        color: {
-          primary: color,
-          secondary: color + "50",
-        },
-      }
-    }
-  }
+  // public refreshEventList() {
+  //   this.listeDesPrises = this.getPrisesList(this.data)
+  // }
 
   public static generateId(): number {
     // this.availableId--
@@ -832,11 +908,6 @@ export class GsbMainService {
 
     return id
   }
-
-  // public refreshEventList() {
-  //   this.listeDesPrises = this.getPrisesList(this.data)
-  // }
-
 
   public async alertInfo(header: string, message: string) {
     const alert = await this.alertController.create({
@@ -889,7 +960,7 @@ export class GsbMainService {
     return dateFormater.asString(`${listeJours[date.getDay()]} dd/MM, hh:mm`, date)
   }
 
-  public notificate(id: number,title: string, text: string, date: Date) {
+  public notificate(id: number,title: string, text: string, date: Date, path: string) {
     
     // console.log("Notifcation params :", {id, title, text, date})
 
@@ -901,6 +972,9 @@ export class GsbMainService {
         text,
         trigger: {
           at: date
+        },
+        data: {
+          path
         }
       });
 

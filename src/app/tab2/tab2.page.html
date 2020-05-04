@@ -689,5 +689,16 @@
 
   </ion-content>
 
+  <div *ngIf="!gsbMainService.connected" style="background-color: var(--ion-color-danger);
+  padding-left: 0.3em; color: white; animation-duration: 0.5s;" class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Vous n'êtes pas connécté à internet ...
+  </div>
+
+  <div *ngIf="!gsbMainService.serverUp && gsbMainService.connected" style="background-color: var(--ion-color-warning);
+  padding-left: 0.3em; animation-duration: 0.5s; font-size: 0.9em;" class="animated slideInUp">
+    <ion-icon name="warning-outline" style="position: relative; top: 3px;"></ion-icon>
+    Le serveur n'est pas disponible pour le moment ...
+  </div>
 
 </div>

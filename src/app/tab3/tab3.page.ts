@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GsbMainService } from '../gsb-main.service';
 import { LoadingController, NavController } from '@ionic/angular';
+import { Parameters } from '../parameters'
 
 @Component({
   selector: 'app-tab3',
@@ -11,6 +12,15 @@ export class Tab3Page {
 
   currentStep: string = "menu"
   formIAcceptConditions: boolean
+  paramheureMatinPrise = Parameters.heureMatinPrise
+  paramheureSoirPrise = Parameters.heureSoirPrise
+  paramheureMatinCalend = Parameters.heureMatinCalend
+  paramheureSoirCalend = Parameters.heureSoirCalend
+
+  appName = require('../../../package.json').name
+  version = require('../../../package.json').version
+
+
 
   constructor(private gsbMainService: GsbMainService, private loadingController: LoadingController, private navController: NavController) {
 
@@ -120,6 +130,21 @@ export class Tab3Page {
       loading.remove()
     }
 
+  }
+
+  public signOut() {
+    this.gsbMainService.signOut()
+    this.changeStepTo('menu')
+  }
+
+
+  public validateParams(form: any) {
+    this.gsbMainService.changeParams({
+      heureMatinPrise: form.form.value.heureMatinPrise,
+      heureSoirPrise: form.form.value.heureSoirPrise,
+      heureMatinCalend: form.form.value.heureMatinCalend,
+      heureSoirCalend: form.form.value.heureSoirCalend
+    })
   }
 
   
