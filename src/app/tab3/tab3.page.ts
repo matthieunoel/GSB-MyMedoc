@@ -139,6 +139,7 @@ export class Tab3Page {
 
 
   public validateParams(form: any) {
+    // console.log('form.form.value :', form.form.value)
     this.gsbMainService.changeParams({
       heureMatinPrise: form.form.value.heureMatinPrise,
       heureSoirPrise: form.form.value.heureSoirPrise,

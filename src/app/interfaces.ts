@@ -1,6 +1,7 @@
 export interface Data {
     id: number
     login: string
+    email: string
     password: string
     ordonnances: Ordonnance[]
 }

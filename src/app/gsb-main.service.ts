@@ -3,7 +3,6 @@ import { AlertController, NavController } from '@ionic/angular';
 import { PriseMedoc, Ordonnance, Medoc, Data } from './interfaces';
 import { startOfDay, addHours, addDays } from 'date-fns';
 import { Parameters } from './parameters'
-import { promise } from 'protractor';
 // const parameters: Parameters = require('./parameters')
 
 import { LocalNotifications } from '../../node_modules/@ionic-native/local-notifications/ngx';
@@ -148,6 +147,7 @@ export class GsbMainService {
   public data: Data = {
     id: undefined,
     login: undefined,
+    email: undefined,
     password: undefined,
     ordonnances: []
   }
@@ -260,11 +260,41 @@ export class GsbMainService {
 
 
   private loadParameters() {
-    Parameters.heureMatinPrise = 8
-    Parameters.heureSoirPrise = 20
-    Parameters.heureMatinCalend = 6
-    Parameters.heureSoirCalend = 22
+    
     Parameters.apiAddress = "http://btsgpe12020.epsi-lyon.fr"
+
+    if (typeof (Storage) != "undefined") {
+      // localStorage.setItem("parameters", JSON.stringify({
+      //   heureMatinPrise: Parameters.heureMatinPrise,
+      //   heureSoirPrise: Parameters.heureSoirPrise,
+      //   heureMatinCalend: Parameters.heureMatinCalend,
+      //   heureSoirCalen: Parameters.heureSoirCalend
+      // }))
+      const str: string = localStorage.getItem('parameters')
+      // if (condition) {
+      //   const strJSON: any = JSON.parse(str)
+      //   Parameters.heureMatinPrise = 8
+      //   Parameters.heureSoirPrise = 20
+      //   Parameters.heureMatinCalend = 6
+      //   Parameters.heureSoirCalend = 22
+      // }
+      if (str !== "NaN" && str != null && str != undefined) {
+        const strJSON: any = JSON.parse(str)
+        Parameters.heureMatinPrise = strJSON.heureMatinPrise,
+        Parameters.heureSoirPrise = strJSON.heureSoirPrise,
+        Parameters.heureMatinCalend = strJSON.heureMatinCalend,
+        Parameters.heureSoirCalend = strJSON.heureSoirCalend
+      }
+      else {
+        Parameters.heureMatinPrise = 8
+        Parameters.heureSoirPrise = 20
+        Parameters.heureMatinCalend = 6
+        Parameters.heureSoirCalend = 22
+      }
+    } else {
+      console.error("Storage is not available for now ...")
+    }
+
   }
 
   public async init() {
@@ -680,6 +710,7 @@ export class GsbMainService {
         this.data = {
           id: 0,
           login: 'UserTest1',
+          email: 'usertest@mai.mail',
           password: 'PassPass',
           ordonnances: []
         }
@@ -778,6 +809,7 @@ export class GsbMainService {
         this.data = {
           id: resJSON.id,
           login: username,
+          email: resJSON.email,
           password,
           ordonnances: []
         }
@@ -867,6 +899,18 @@ export class GsbMainService {
     Parameters.heureSoirPrise = params.heureSoirPrise
     Parameters.heureMatinCalend = params.heureMatinCalend
     Parameters.heureSoirCalend = params.heureSoirCalend
+
+    if (typeof (Storage) != "undefined") {
+      localStorage.setItem("parameters", JSON.stringify({
+        heureMatinPrise: params.heureMatinPrise,
+        heureSoirPrise: params.heureSoirPrise,
+        heureMatinCalend: params.heureMatinCalend,
+        heureSoirCalend: params.heureSoirCalend
+      }))
+    } else {
+      console.error("Storage is not available for now ...")
+    }
+
   } 
   
 
